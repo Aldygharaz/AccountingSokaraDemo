@@ -311,7 +311,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
               </span>
             </div>
             <span className="font-mono text-sm font-black tabular-nums">
-              {balanceSheet.isBalanced ? 'SEIMBANG / BALANCE' : `SELISIH Rp ${balanceSheet.discrepancy}`}
+              {balanceSheet.isBalanced ? 'SEIMBANG / BALANCE' : `SELISIH Rp ${balanceSheet.discrepancy.toLocaleString('id-ID')}`}
             </span>
           </div>
 

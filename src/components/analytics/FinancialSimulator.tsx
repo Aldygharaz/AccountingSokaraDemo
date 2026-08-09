@@ -160,7 +160,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             type="range"
             min="-50"
             max="100"
-            step="5"
+            step="1"
             value={salesGrowth}
             onChange={(e) => {
               // soundFx.playClick();
@@ -207,7 +207,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             type="range"
             min="-30"
             max="50"
-            step="5"
+            step="1"
             value={cogsInflation}
             onChange={(e) => {
               // soundFx.playClick();
@@ -254,7 +254,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             type="range"
             min="-40"
             max="40"
-            step="5"
+            step="1"
             value={opexReduction}
             onChange={(e) => {
               // soundFx.playClick();
