@@ -117,18 +117,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
       <div className="space-y-4">
         {/* Brand Header */}
-        <div className="flex items-center gap-3 px-3 py-2.5 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50/50 dark:from-[#1E1F22] dark:to-[#2B2D31] border border-blue-200/60 dark:border-[#3F4147]">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30 shrink-0">
-            <Sparkles className="w-5 h-5 text-amber-300 animate-pulse" />
-          </div>
-          <div className="min-w-0">
-            <h1 className="font-black text-sm tracking-tight text-slate-900 dark:text-[#F2F3F5] leading-tight truncate">
-              Sokara <span className="text-blue-600 dark:text-[#0984E3]">Accounting</span>
-            </h1>
-            <p className="text-[10px] text-blue-700 dark:text-blue-400 font-black tracking-wider uppercase truncate flex items-center gap-1">
-              <span>Sokara AI Enterprise</span>
-            </p>
-          </div>
+        <div className="flex items-center justify-center px-4 py-3 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200/60 dark:border-[#3F4147]">
+          <img src="/sokara-horizontal-light-bg.svg" alt="Sokara Accounting" className="h-8 w-auto object-contain dark:hidden" />
+          <img src="/sokara-horizontal-dark-bg.svg" alt="Sokara Accounting" className="h-8 w-auto object-contain hidden dark:block" />
         </div>
 
         {/* Navigation Sections */}
