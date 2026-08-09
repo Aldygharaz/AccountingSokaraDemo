@@ -88,7 +88,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-95 text-white text-xs font-black shadow-lg shadow-blue-600/25 transition-all self-start sm:self-auto hover:scale-[1.02] active:scale-[0.98]"
         >
           <Sparkles className="w-4 h-4 text-amber-300" />
-          <span>✨ Auto-Match Semua Mutasi Faktur</span>
+          <span>Auto-Match Semua Mutasi Faktur</span>
         </button>
       </div>
 
@@ -183,7 +183,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
                   <td className="py-3 px-4 text-center">
                     {item.isReconciled ? (
                       <span className="text-emerald-600 dark:text-emerald-400 font-bold text-xs">
-                        ✓ Cocok
+                        Cocok
                       </span>
                     ) : item.referenceNo ? (
                       <button

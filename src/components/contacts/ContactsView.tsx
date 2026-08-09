@@ -97,7 +97,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
               iconOnly
             />
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
             Kelola data mitra bisnis, pelanggan tetap, supplier dagang, dan saldo tagihan terbuka.
           </p>
         </div>
@@ -170,13 +170,13 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
             <div>
               {/* Header Icon + Name */}
               <div className="flex items-center gap-3 mb-4 pr-16">
-                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-slate-100 to-slate-200 border border-slate-300/50 flex items-center justify-center font-black text-slate-700 text-base shadow-sm">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-slate-100 to-slate-200 border border-slate-300/50 flex items-center justify-center font-black text-slate-700 dark:text-slate-200 text-base shadow-sm">
                   {contact.name.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-slate-900 leading-tight">{contact.name}</h3>
                   {contact.companyName && (
-                    <p className="text-[11px] text-slate-500 font-medium">{contact.companyName}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-[#B5BAC1] font-medium">{contact.companyName}</p>
                   )}
                 </div>
               </div>
@@ -190,7 +190,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                     </span>
                     <span
                       className={`text-xs font-black tabular-nums ${
-                        (contact.openBalanceAR || contact.arBalance || 0) > 0 ? 'text-rose-600' : 'text-slate-700'
+                        (contact.openBalanceAR || contact.arBalance || 0) > 0 ? 'text-rose-600' : 'text-slate-700 dark:text-slate-200'
                       }`}
                     >
                       {formatIDR(contact.openBalanceAR || contact.arBalance || 0)}
@@ -204,7 +204,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                     </span>
                     <span
                       className={`text-xs font-black tabular-nums ${
-                        (contact.openBalanceAP || contact.apBalance || 0) > 0 ? 'text-amber-600' : 'text-slate-700'
+                        (contact.openBalanceAP || contact.apBalance || 0) > 0 ? 'text-amber-600' : 'text-slate-700 dark:text-slate-200'
                       }`}
                     >
                       {formatIDR(contact.openBalanceAP || contact.apBalance || 0)}
@@ -230,7 +230,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                 {contact.address && (
                   <div className="flex items-start gap-2">
                     <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-                    <span className="text-[11px] text-slate-500 line-clamp-2">{contact.address}</span>
+                    <span className="text-[11px] text-slate-500 dark:text-[#B5BAC1] line-clamp-2">{contact.address}</span>
                   </div>
                 )}
               </div>
@@ -260,7 +260,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
         <form onSubmit={handleCreateContact} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Tipe Kontak *
               </label>
               <select
@@ -275,7 +275,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Nama Kontak / Individu *
               </label>
               <input
@@ -291,7 +291,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Nama Perusahaan / Bisnis (Opsional)
               </label>
               <input
@@ -304,7 +304,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 NPWP / Tax ID (Opsional)
               </label>
               <input
@@ -319,7 +319,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Email Kontak
               </label>
               <input
@@ -332,7 +332,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Nomor Telepon / WhatsApp
               </label>
               <input
@@ -346,7 +346,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
               Alamat Lengkap Kantor / Toko
             </label>
             <textarea
@@ -389,7 +389,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
             {/* Summary */}
             <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
               <div>
-                <p className="text-xs text-slate-500 font-bold uppercase">
+                <p className="text-xs text-slate-500 dark:text-[#B5BAC1] font-bold uppercase">
                   {selectedContactHistory.type === 'vendor' ? 'Total Pembelian (Purchases)' : 'Total Penjualan (Sales)'}
                 </p>
                 <p className="text-base font-black text-slate-900 tabular-nums">
@@ -397,7 +397,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                 </p>
               </div>
               <div>
-                <p className="text-xs text-slate-500 font-bold uppercase">Sisa Tagihan Terbuka</p>
+                <p className="text-xs text-slate-500 dark:text-[#B5BAC1] font-bold uppercase">Sisa Tagihan Terbuka</p>
                 <p className="text-base font-black text-rose-600 tabular-nums">
                   {formatIDR(selectedContactHistory.arBalance || selectedContactHistory.apBalance || 0)}
                 </p>

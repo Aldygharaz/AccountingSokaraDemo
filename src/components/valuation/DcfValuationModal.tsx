@@ -37,7 +37,7 @@ export const DcfValuationModal: React.FC<DcfValuationModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="📈 Studio Valuasi Bisnis DCF (Discounted Cash Flow) & WACC Modeling"
+      title="Studio Valuasi Bisnis DCF (Discounted Cash Flow) & WACC Modeling" icon={<LineChart className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">
@@ -78,7 +78,7 @@ export const DcfValuationModal: React.FC<DcfValuationModalProps> = ({
               }}
               className="px-3 py-1 rounded-xl bg-white dark:bg-[#1E1F22] border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-bold hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              🏛️ Blue Chip (9.5% / 3.0%)
+              ️ Blue Chip (9.5% / 3.0%)
             </button>
             <button
               onClick={() => {
@@ -88,7 +88,7 @@ export const DcfValuationModal: React.FC<DcfValuationModalProps> = ({
               }}
               className="px-3 py-1 rounded-xl bg-emerald-600 text-white font-bold hover:scale-[1.02] active:scale-[0.98] transition-all shadow-sm"
             >
-              💎 Baseline (10.5% / 3.5%)
+              Baseline (10.5% / 3.5%)
             </button>
             <button
               onClick={() => {
@@ -98,7 +98,7 @@ export const DcfValuationModal: React.FC<DcfValuationModalProps> = ({
               }}
               className="px-3 py-1 rounded-xl bg-white dark:bg-[#1E1F22] border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-bold hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              🚀 High Growth (13.0% / 4.5%)
+              High Growth (13.0% / 4.5%)
             </button>
           </div>
         </div>

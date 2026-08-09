@@ -1,5 +1,5 @@
 import React from 'react';
-import {
+import { BrainCircuit,
   TrendingUp,
   ShieldCheck,
   Zap,
@@ -34,7 +34,7 @@ export const CfoIntelligenceModal: React.FC<CfoIntelligenceModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="📊 Executive CFO Intelligence Hub (DuPont & Altman Z-Score)"
+      title="Executive CFO Intelligence Hub (DuPont & Altman Z-Score)" icon={<BrainCircuit className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">
@@ -266,7 +266,7 @@ export const CfoIntelligenceModal: React.FC<CfoIntelligenceModalProps> = ({
                 </h4>
               </div>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
-                {cfo.runway.isSelfSustaining ? '🟢 Arus Kas Positif' : '🔴 Net Burn'}
+                {cfo.runway.isSelfSustaining ? 'Arus Kas Positif' : 'Net Burn'}
               </span>
             </div>
 

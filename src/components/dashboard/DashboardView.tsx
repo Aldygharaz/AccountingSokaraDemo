@@ -150,20 +150,24 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     }
   });
 
-  const filteredStats = monthlyStats.filter(m => m.rev > 0 || m.exp > 0);
-  const baseMonthData = filteredStats.length > 0 ? filteredStats : [{ month: 'Jan', rev: 0, exp: 0, profit: 0 }];
-
+  const currentMonthIdx = new Date().getMonth();
   const monthData = timeframe === '6M'
-    ? baseMonthData.slice(-6)
+    ? monthlyStats.slice(Math.max(0, currentMonthIdx - 5), currentMonthIdx + 1)
     : timeframe === 'YTD'
-    ? baseMonthData
-    : baseMonthData;
+    ? monthlyStats.slice(0, currentMonthIdx + 1)
+    : monthlyStats;
 
   const maxVal = Math.max(...monthData.map(d => Math.max(d.rev, d.exp, d.profit, 1000000))) * 1.2;
   const chartHeight = 220;
   const chartWidth = 650;
 
-  const getX = (idx: number) => 50 + idx * ((chartWidth - 100) / (monthData.length - 1));
+  const getX = (idx: number) => 50 + idx * ((chartWidth - 100) / Math.max(1, monthData.length - 1));
+  const formatYAxis = (val: number) => {
+    if (val >= 1000000000) return (val / 1000000000).toFixed(1) + 'B';
+    if (val >= 1000000) return (val / 1000000).toFixed(0) + 'M';
+    if (val >= 1000) return (val / 1000).toFixed(0) + 'K';
+    return val.toString();
+  };
   const getY = (val: number) => chartHeight - 30 - (val / maxVal) * (chartHeight - 60);
 
   const revPoints = monthData.map((d, i) => `${getX(i)},${getY(d.rev)}`).join(' ');
@@ -593,7 +597,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </defs>
 
               {/* Grid Lines */}
-              {[0, 15000000, 30000000, 45000000].map((val, idx) => {
+              {[0, maxVal * 0.33, maxVal * 0.66, maxVal].map((val, idx) => {
                 const y = getY(val);
                 return (
                   <g key={idx}>
@@ -612,7 +616,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                       textAnchor="end"
                       className="text-[9px] fill-slate-400 dark:fill-[#80848E] font-mono font-bold"
                     >
-                      {(val / 1000000).toFixed(0)}M
+                      {formatYAxis(val)}
                     </text>
                   </g>
                 );

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import { Banknote,
   Coins,
   ArrowRightLeft,
   TrendingUp,
@@ -55,7 +55,7 @@ export const ForexStudioModal: React.FC<ForexStudioModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="💱 Multi-Currency & Revaluasi Selisih Kurs Valas (PSAK 10)"
+      title="Multi-Currency & Revaluasi Selisih Kurs Valas (PSAK 10)" icon={<Banknote className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-4xl"
     >
       <div className="space-y-6">
@@ -78,7 +78,7 @@ export const ForexStudioModal: React.FC<ForexStudioModalProps> = ({
               {formatIDR(totalUnrealizedGainLoss)}
             </div>
             <div className="text-[10px] font-bold text-amber-200">
-              {totalUnrealizedGainLoss >= 0 ? '🟢 Laba Kurs (Gain)' : '🔴 Rugi Kurs (Loss)'}
+              {totalUnrealizedGainLoss >= 0 ? 'Laba Kurs (Gain)' : 'Rugi Kurs (Loss)'}
             </div>
           </div>
         </div>

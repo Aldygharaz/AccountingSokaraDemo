@@ -89,7 +89,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
         setStep(1);
         onClose();
       }}
-      title="🏛️ Wizard Tutup Buku & Jurnal Penutup (Closing Entries)"
+      title="️ Wizard Tutup Buku & Jurnal Penutup (Closing Entries)" icon={<Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-4xl"
     >
       <div className="space-y-6">
@@ -103,8 +103,8 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <div className="text-xs font-black text-slate-800 dark:text-white">
                 Proses Tutup Buku Periode Fiskal Bulanan
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-[#B5BAC1]">
-                Nolkan Akun Pendapatan & Beban ➔ Alokasikan Saldo Bersih ke Akun 3201/3202 Laba Ditahan.
+              <div className="text-[11px] text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
+                Nolkan Akun Pendapatan & Beban Alokasikan Saldo Bersih ke Akun 3201/3202 Laba Ditahan.
               </div>
             </div>
           </div>
@@ -115,7 +115,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
                 ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-400 border border-rose-200 dark:border-rose-800'
                 : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
             }`}>
-              {isAlreadyClosed ? '🔒 Periode Terkunci' : '🔓 Periode Terbuka'}
+              {isAlreadyClosed ? 'Periode Terkunci' : 'Periode Terbuka'}
             </span>
           </div>
         </div>
@@ -125,7 +125,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
           <div className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-black text-slate-700 dark:text-slate-200 mb-1.5">
+                <label className="block text-xs font-black text-slate-700 dark:text-slate-200 dark:text-slate-200 mb-1.5">
                   Pilih Periode Fiskal
                 </label>
                 <select
@@ -168,7 +168,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
                   {formatIDR(preview.netIncome)}
                 </span>
               </div>
-              <div className="text-right text-xs font-bold text-slate-500 dark:text-[#B5BAC1]">
+              <div className="text-right text-xs font-bold text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
                 Entri Penutup: <span className="font-mono text-blue-600 dark:text-blue-400">JV-CLOSE-{selectedMonth.replace('-', '')}</span>
               </div>
             </div>
@@ -176,7 +176,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
             {/* Closing Journal Lines Preview */}
             <div className="border border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden">
               <div className="bg-slate-100/80 dark:bg-[#2B2D31] px-4 py-2.5 border-b border-slate-200 dark:border-[#3F4147] flex items-center justify-between">
-                <span className="text-xs font-black text-slate-700 dark:text-slate-200 uppercase tracking-wider">
+                <span className="text-xs font-black text-slate-700 dark:text-slate-200 dark:text-slate-200 uppercase tracking-wider">
                   Draft Jurnal Penutup Majemuk (Compound Closing Entry)
                 </span>
                 <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
@@ -185,7 +185,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               </div>
               <div className="max-h-48 overflow-y-auto divide-y divide-slate-100 dark:divide-[#3F4147] text-xs">
                 {preview.closingEntry.lines.length === 0 ? (
-                  <div className="p-6 text-center text-slate-500 dark:text-[#B5BAC1]">
+                  <div className="p-6 text-center text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
                     Tidak ada transaksi pendapatan atau beban di periode ini.
                   </div>
                 ) : (
@@ -284,7 +284,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#3F4147] text-slate-700 dark:text-slate-200 text-xs font-black"
+                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#3F4147] text-slate-700 dark:text-slate-200 dark:text-slate-200 text-xs font-black"
               >
                 Kembali
               </button>
@@ -311,32 +311,32 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <h3 className="text-xl font-black text-slate-900 dark:text-white">
                 Sertifikat Penutupan Buku Fiskal Resmi
               </h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1 font-mono">
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1 font-mono">
                 No. Sertifikasi: {certData.certificateNumber}
               </p>
             </div>
 
             <div className="max-w-md mx-auto p-5 rounded-2xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200 dark:border-[#3F4147] text-left text-xs space-y-2.5">
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1]">Periode Buku:</span>
+                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Periode Buku:</span>
                 <span className="font-black text-slate-800 dark:text-white">{certData.periodMonth}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1]">Laba / (Rugi) Bersih Ditransfer:</span>
+                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Laba / (Rugi) Bersih Ditransfer:</span>
                 <span className={`font-black tabular-nums ${certData.netIncome >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
                   {formatIDR(certData.netIncome)}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1]">Status Akun Nominal:</span>
+                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Status Akun Nominal:</span>
                 <span className="font-bold text-slate-800 dark:text-white">Saldo 0.00 (Nol)</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1]">Otorisasi Oleh:</span>
+                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Otorisasi Oleh:</span>
                 <span className="font-bold text-slate-800 dark:text-white">{state.currentUser.name} (Role: {state.currentUser.role.toUpperCase()})</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1]">Tanggal Kunci:</span>
+                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Tanggal Kunci:</span>
                 <span className="font-bold text-slate-800 dark:text-white">{certData.closedAt}</span>
               </div>
             </div>
@@ -345,7 +345,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#3F4147] text-slate-700 dark:text-slate-200 text-xs font-black flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-[#383A40]"
+                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#3F4147] text-slate-700 dark:text-slate-200 dark:text-slate-200 text-xs font-black flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-[#383A40]"
               >
                 <Printer className="w-4 h-4" />
                 <span>Cetak Sertifikat Penutupan</span>

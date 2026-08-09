@@ -50,7 +50,7 @@ export const TaxStudioView: React.FC<TaxStudioViewProps> = ({ state }) => {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Pajak & Kepatuhan Fiskal Indonesia (Tax Studio)
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
             Kalkulator PPN 11%/12%, PPh 23 Jasa 2%, dan PPh Final UMKM 0.5% (PP 23/2018).
           </p>
         </div>
@@ -96,7 +96,7 @@ export const TaxStudioView: React.FC<TaxStudioViewProps> = ({ state }) => {
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="p-6 rounded-2xl glass-card border border-slate-200 dark:border-slate-700">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-[#B5BAC1]">
                 PPN Masukan (Akun 1105 - Pembelian)
               </span>
               <div className="text-2xl font-black text-blue-700 dark:text-blue-400 tabular-nums mt-1">
@@ -106,7 +106,7 @@ export const TaxStudioView: React.FC<TaxStudioViewProps> = ({ state }) => {
             </div>
 
             <div className="p-6 rounded-2xl glass-card border border-slate-200 dark:border-slate-700">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-[#B5BAC1]">
                 PPN Keluaran (Akun 2102 - Penjualan)
               </span>
               <div className="text-2xl font-black text-slate-900 dark:text-white tabular-nums mt-1">
@@ -151,7 +151,7 @@ export const TaxStudioView: React.FC<TaxStudioViewProps> = ({ state }) => {
               <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">
                 Skema PPh Final PP 23/2018 (0.5% Omzet Bruto)
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1]">
                 Khusus wajib pajak badan/orang pribadi dengan peredaran bruto tidak melebihi Rp 4.8 Miliar per tahun.
               </p>
             </div>
@@ -188,12 +188,12 @@ export const TaxStudioView: React.FC<TaxStudioViewProps> = ({ state }) => {
           <h3 className="text-lg font-extrabold text-slate-900 dark:text-white">
             Withholding Tax: PPh Pasal 23 (2% Jasa & Sewa)
           </h3>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 dark:text-[#B5BAC1]">
             Kalkulasi pemotongan PPh 23 atas jasa konsultan, jasa perbaikan, dan sewa selain tanah/bangunan.
           </p>
 
           <div className="p-4 rounded-xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200 dark:border-slate-700 space-y-3">
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300">
               Simulasi Nilai Jasa Kena Pajak (Rp)
             </label>
             <input

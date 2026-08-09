@@ -48,7 +48,7 @@ export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="🧮 PSAK 71 / IFRS 9 Expected Credit Loss (ECL) & CKPN Piutang"
+      title="PSAK 71 / IFRS 9 Expected Credit Loss (ECL) & CKPN Piutang" icon={<ShieldAlert className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">

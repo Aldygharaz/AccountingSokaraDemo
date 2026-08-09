@@ -168,7 +168,7 @@ export const App: React.FC = () => {
         description: `Jurnal nomor ${unbalanced.entryNumber} memiliki selisih debit dan kredit yang tidak sama.`,
         impact: 'Laporan Neraca dan Laba Rugi berpotensi tidak seimbang.',
         recommendedAction: 'Jalankan auto-fix untuk menyelaraskan baris jurnal.',
-        autoFixLabel: '✨ Auto-Fix Jurnal Seimbang',
+        autoFixLabel: 'Auto-Fix Jurnal Seimbang',
         onAutoFix: () => {
           store.restoreLedgerIntegrity();
           setPokaYokeAnomaly(null);
@@ -187,14 +187,14 @@ export const App: React.FC = () => {
         description: `Sisa stok fisik adalah ${lowStock.qtyOnHand} ${lowStock.unit}, berada di bawah batas minimum operasional toko.`,
         impact: 'Potensi kehilangan penjualan akibat kehabisan persediaan (stockout).',
         recommendedAction: 'Terbitkan Purchase Bill otomatis untuk mengisi ulang 50 unit barang.',
-        autoFixLabel: '✨ Auto-Fix Terbitkan PO Restock',
+        autoFixLabel: 'Auto-Fix Terbitkan PO Restock',
         onAutoFix: () => {
           store.createPurchaseBill({
             contactId: state.contacts.find((c) => c.type === 'vendor')?.id || state.contacts[0]?.id || '',
             date: new Date().toISOString().split('T')[0],
             dueDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
             items: [{ productId: lowStock.id, qty: 50, unitCost: lowStock.avgCost, isTaxable: true }],
-            notes: `✨ Auto-Fix Poka-Yoke: Restock otomatis ${lowStock.name}`,
+            notes: `Auto-Fix Poka-Yoke: Restock otomatis ${lowStock.name}`,
           });
           setPokaYokeAnomaly(null);
         },
@@ -215,14 +215,14 @@ export const App: React.FC = () => {
         description: `Tagihan ${overdueInv.contactName} sebesar Rp ${overdueInv.remainingAmount.toLocaleString('id-ID')} telah melewati tanggal jatuh tempo (${overdueInv.dueDate}).`,
         impact: 'Mempengaruhi rasio perputaran piutang (DSO) dan arus kas masuk.',
         recommendedAction: 'Catat penerimaan pelunasan piutang ke akun Bank BCA.',
-        autoFixLabel: '✨ Auto-Fix Pelunasan Piutang',
+        autoFixLabel: 'Auto-Fix Pelunasan Piutang',
         onAutoFix: () => {
           store.receiveInvoicePayment({
             invoiceId: overdueInv.id,
             date: new Date().toISOString().split('T')[0],
             amount: overdueInv.remainingAmount,
             paymentAccountId: 'acc-1102',
-            notes: `✨ Auto-Fix Poka-Yoke: Pelunasan instan tagihan ${overdueInv.invoiceNumber}`,
+            notes: `Auto-Fix Poka-Yoke: Pelunasan instan tagihan ${overdueInv.invoiceNumber}`,
           });
           setPokaYokeAnomaly(null);
         },
@@ -239,7 +239,7 @@ export const App: React.FC = () => {
       description: 'Seluruh jurnal seimbang, stok aman, dan tidak ada anomali piutang.',
       impact: 'Bisnis beroperasi dengan efisiensi maksimal.',
       recommendedAction: 'Teruskan pekerjaan Anda.',
-      autoFixLabel: '✨ Tutup Laporan',
+      autoFixLabel: 'Tutup Laporan',
       onAutoFix: () => setPokaYokeAnomaly(null),
     });
   };
@@ -293,7 +293,7 @@ export const App: React.FC = () => {
             description: 'Anda akan menghapus seluruh data transaksi dan mengembalikannya ke data sampel awal. Tindakan ini bersifat permanen dan tidak dapat dibatalkan.',
             impact: 'Seluruh entri jurnal, faktur, laporan keuangan, dan data operasional yang baru ditambahkan akan hilang secara permanen.',
             recommendedAction: 'Pastikan Anda tidak sedang mendemokan data penting kepada klien sebelum melanjutkan.',
-            autoFixLabel: '✨ Ya, Reset Database Sekarang',
+            autoFixLabel: 'Ya, Reset Database Sekarang',
             onAutoFix: () => {
               soundFx.playClick();
               resetToDefaultSeed();
@@ -442,7 +442,7 @@ export const App: React.FC = () => {
             description: 'Anda akan menghapus seluruh data transaksi dan mengembalikannya ke data sampel awal. Tindakan ini bersifat permanen dan tidak dapat dibatalkan.',
             impact: 'Seluruh entri jurnal, faktur, laporan keuangan, dan data operasional yang baru ditambahkan akan hilang secara permanen.',
             recommendedAction: 'Pastikan Anda tidak sedang mendemokan data penting kepada klien sebelum melanjutkan.',
-            autoFixLabel: '✨ Ya, Reset Database Sekarang',
+            autoFixLabel: 'Ya, Reset Database Sekarang',
             onAutoFix: () => {
               soundFx.playClick();
               resetToDefaultSeed();

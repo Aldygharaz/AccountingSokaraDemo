@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Factory,
   Layers,
   Sparkles,
   CheckCircle2,
@@ -50,7 +51,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="💼 Akuntansi Biaya Manufaktur & Job-Order Costing (HPP Produksi)"
+      title="Akuntansi Biaya Manufaktur & Job-Order Costing (HPP Produksi)" icon={<Factory className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">
@@ -199,7 +200,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
               Rekomendasi Harga Jual & Profit Margin (Target Markup 40%)
             </div>
             <div className="text-[11px] text-emerald-700 dark:text-emerald-400 mt-0.5">
-              HPP Pokok: {formatIDR(cost.unitCost)} / unit ➔ Harga Jual Rekomendasi: <strong>{formatIDR(cost.suggestedSellingPrice)}</strong> / unit ({cost.grossMarginPct}% Gross Margin).
+              HPP Pokok: {formatIDR(cost.unitCost)} / unit Harga Jual Rekomendasi: <strong>{formatIDR(cost.suggestedSellingPrice)}</strong> / unit ({cost.grossMarginPct}% Gross Margin).
             </div>
           </div>
 

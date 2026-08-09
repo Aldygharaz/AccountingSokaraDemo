@@ -82,6 +82,7 @@ export const calculateAccountBalances = (
   });
 
   journalEntries.forEach((entry) => {
+    if (entry.sourceType === 'closing_entry' || entry.isVoided) return;
     entry.lines.forEach((line) => {
       const current = balanceMap.get(line.accountId) || new Decimal(0);
       const acc = accounts.find((a) => a.id === line.accountId);
@@ -164,6 +165,7 @@ export const generateIncomeStatement = (
   });
 
   journalEntries.forEach((entry) => {
+    if (entry.sourceType === 'closing_entry' || entry.isVoided) return;
     if (startDate && entry.date < startDate) return;
     if (endDate && entry.date > endDate) return;
 
@@ -331,7 +333,9 @@ export const generateBalanceSheet = (
 
   const totalAssetsDec = totalCurrentAssets.plus(totalNonCurrentAssets);
   const totalLiabilitiesDec = totalCurrentLiabilities.plus(totalNonCurrentLiabilities);
-  const totalEquityDec = totalBaseEquity.plus(currentPeriodNetIncomeDec);
+  // If closing entries exist for this period, net income is already in retained earnings
+  const hasClosingEntries = journalEntries.some(j => j.sourceType === 'closing_entry' && j.date <= asOfDate && !j.isVoided);
+  const totalEquityDec = hasClosingEntries ? totalBaseEquity : totalBaseEquity.plus(currentPeriodNetIncomeDec);
   const totalLiabilitiesAndEquityDec = totalLiabilitiesDec.plus(totalEquityDec);
 
   const discrepancyDec = totalAssetsDec.minus(totalLiabilitiesAndEquityDec).abs();
@@ -476,10 +480,10 @@ export const calculateFinancialRatios = (
   const bs = generateBalanceSheet(accounts, journalEntries, asOfDate);
   const pnl = generateIncomeStatement(accounts, journalEntries, undefined, asOfDate);
 
-  const invAccount = bs.currentAssets.find((a) => a.accountCode === '1104');
+  const invAccount = bs.currentAssets.find((a) => a.accountName.toLowerCase().includes('persediaan'));
   const inventoryAmount = invAccount ? invAccount.amount : 0;
 
-  const cashAccounts = bs.currentAssets.filter((a) => a.accountCode === '1101' || a.accountCode === '1102');
+  const cashAccounts = bs.currentAssets.filter((a) => a.accountName.toLowerCase().includes('kas') || a.accountName.toLowerCase().includes('bank'));
   const cashAmount = cashAccounts.reduce((sum, a) => sum + a.amount, 0);
 
   const currentLiabilities = bs.totalCurrentLiabilities || 1;

@@ -477,8 +477,10 @@ class AccountingStore {
     this.notify();
 
     if (data.isPOS && data.tenderedAmount !== undefined && data.tenderedAmount >= grandTotal) {
-      const cashAccount = this.state.accounts.find(a => a.code === '1101');
-      if (cashAccount) {
+      let cashAccount = this.state.accounts.find(a => a.code === '1101');
+      // Allow fallback if ID is slightly modified
+        if (!cashAccount) cashAccount = this.state.accounts.find(a => a.name.toLowerCase().includes('kas') || a.code.startsWith('1101'));
+        if (cashAccount) {
         this.receiveInvoicePayment({
           invoiceId: invoice.id,
           date: data.date,
@@ -684,7 +686,7 @@ class AccountingStore {
   }): { success: boolean; error?: string } {
     const invoice = this.state.invoices.find((i) => i.id === data.invoiceId);
     if (!invoice) return { success: false, error: 'Faktur tidak ditemukan' };
-    if (data.amount <= 0 || data.amount > invoice.remainingAmount) {
+    if (data.amount <= 0 || data.amount - invoice.remainingAmount > 0.01) {
       return { success: false, error: `Nominal tidak valid. Sisa tagihan adalah Rp ${invoice.remainingAmount}` };
     }
 
@@ -735,7 +737,7 @@ class AccountingStore {
   }): { success: boolean; error?: string } {
     const bill = this.state.purchaseBills.find((b) => b.id === data.billId);
     if (!bill) return { success: false, error: 'Tagihan tidak ditemukan' };
-    if (data.amount <= 0 || data.amount > bill.remainingAmount) {
+    if (data.amount <= 0 || data.amount - bill.remainingAmount > 0.01) {
       return { success: false, error: `Nominal tidak valid. Sisa hutang adalah Rp ${bill.remainingAmount}` };
     }
 
@@ -1088,12 +1090,16 @@ class AccountingStore {
   }
 
   public deleteContact(id: string) {
+    const isInUse = this.state.invoices.some(i => i.contactId === id) || this.state.purchaseBills.some(b => b.contactId === id);
+    if (isInUse) return { success: false, error: 'Kontak sedang digunakan dalam transaksi aktif.' };
     this.state.contacts = this.state.contacts.filter((c) => c.id !== id);
     this.notify();
     return { success: true };
   }
 
   public deleteProduct(id: string) {
+    const isInUse = this.state.stockMovements.some(m => m.productId === id);
+    if (isInUse) return { success: false, error: 'Produk memiliki riwayat pergerakan stok.' };
     this.state.products = this.state.products.filter((p) => p.id !== id);
     this.notify();
     return { success: true };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import { Scale,
   FileText,
   Building2,
   CheckCircle2,
@@ -39,7 +39,7 @@ export const Tax1771Modal: React.FC<Tax1771ModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="📑 Kertas Kerja Rekonsiliasi Fiskal & SPT Tahunan PPh Badan 1771 (UU HPP)"
+      title="Kertas Kerja Rekonsiliasi Fiskal & SPT Tahunan PPh Badan 1771 (UU HPP)" icon={<Scale className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">

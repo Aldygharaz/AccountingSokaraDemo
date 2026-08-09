@@ -225,7 +225,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
                   Scanner Active (&lt;50ms)
                 </span>
               </div>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1]">
                 Pindai barcode hardware atau klik produk untuk penambahan instan ke keranjang kasir.
               </p>
             </div>
@@ -249,7 +249,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
               <h3 className="text-xl font-black text-slate-900 dark:text-white">
                 Transaksi Kasir Berhasil Dicatat!
               </h3>
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">
                 Jurnal umum berpasangan otomatis terbentuk dan stok barang telah dikurangi.
               </p>
             </div>
@@ -366,7 +366,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
             <div className="lg:col-span-5 p-4 flex flex-col justify-between bg-slate-50/50 dark:bg-[#1E1F22]/50 overflow-hidden">
               {/* Customer Selector */}
               <div className="mb-3">
-                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-300 mb-1">
+                <label className="block text-[11px] font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 mb-1">
                   Pelanggan Kasir
                 </label>
                 <select
@@ -389,7 +389,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
                 {cart.length === 0 ? (
                   <div className="p-8 text-center text-xs text-slate-400 flex flex-col items-center justify-center gap-2">
                     <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-full">
-                      <ShoppingCart className="w-5 h-5 text-slate-300 dark:text-slate-500" />
+                      <ShoppingCart className="w-5 h-5 text-slate-300 dark:text-slate-500 dark:text-[#B5BAC1]" />
                     </div>
                     Keranjang kosong. Pindai barcode atau pilih barang di sebelah kiri.
                   </div>
@@ -452,7 +452,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
 
                 <div className="grid grid-cols-2 gap-2 pt-2">
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 mb-0.5">
+                    <label className="block text-[10px] font-bold text-slate-500 dark:text-[#B5BAC1] mb-0.5">
                       Uang Tunai (Tendered)
                     </label>
                     <CurrencyInput
@@ -477,7 +477,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
                               soundFx.playClick();
                               setCashTendered(amount);
                             }}
-                            className="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[10px] font-bold text-slate-700 dark:text-slate-300 rounded-lg transition-colors border border-slate-200 dark:border-slate-700"
+                            className="px-2 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-[10px] font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 rounded-lg transition-colors border border-slate-200 dark:border-slate-700"
                           >
                             {amount === grandTotal ? 'Uang Pas' : formatIDR(amount)}
                           </button>
@@ -485,7 +485,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
                     </div>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-bold text-slate-500 mb-0.5">
+                    <label className="block text-[10px] font-bold text-slate-500 dark:text-[#B5BAC1] mb-0.5">
                       Kembalian (Rp 100)
                     </label>
                     <div className="px-2.5 py-1.5 text-xs rounded-xl bg-slate-100 dark:bg-slate-800 font-mono font-black text-slate-900 dark:text-white">

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import { ArrowRightLeft, BrainCircuit, 
   FileSpreadsheet,
   Printer,
   Calendar,
@@ -98,10 +98,10 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
       <div className="glass-card rounded-2xl p-4 flex flex-col md:flex-row items-center justify-between gap-4 no-print">
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto">
           {[
-            { id: 'pnl', label: 'Laba Rugi (P&L)' },
-            { id: 'balance_sheet', label: 'Neraca (Balance Sheet)' },
-            { id: 'cash_flow', label: 'Arus Kas (Direct)' },
-            { id: 'simulation', label: '✨ What-If Simulator' },
+            { id: 'pnl', label: 'Laba Rugi (P&L)', icon: <TrendingUp className="w-3.5 h-3.5" /> },
+            { id: 'balance_sheet', label: 'Neraca (Balance Sheet)', icon: <Scale className="w-3.5 h-3.5" /> },
+            { id: 'cash_flow', label: 'Arus Kas (Direct)', icon: <ArrowRightLeft className="w-3.5 h-3.5" /> },
+            { id: 'simulation', label: 'What-If Simulator', icon: <BrainCircuit className="w-3.5 h-3.5" /> },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -115,7 +115,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
                   : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
               }`}
             >
-              {tab.label}
+              <div className="flex items-center gap-1.5">{tab.icon && tab.icon}<span>{tab.label}</span></div>
             </button>
           ))}
         </div>

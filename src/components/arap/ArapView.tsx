@@ -166,7 +166,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
               iconOnly
             />
           </div>
-          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">
             Analisa umur piutang pelanggan dan jadwal jatuh tempo tagihan pemasok dengan validasi silang Neraca.
           </p>
         </div>
@@ -181,7 +181,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
             className={`px-4 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 ${
               activeModule === 'ar'
                 ? 'bg-blue-600 dark:bg-[#0984E3] text-white shadow-sm'
-                : 'text-slate-700 dark:text-[#DBDEE1] hover:text-slate-900 dark:hover:text-white'
+                : 'text-slate-700 dark:text-slate-200 dark:text-[#DBDEE1] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <ArrowUpRight className="w-4 h-4" />
@@ -195,7 +195,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
             className={`px-4 py-1.5 rounded-lg text-xs font-black transition-all flex items-center gap-1.5 ${
               activeModule === 'ap'
                 ? 'bg-blue-600 dark:bg-[#0984E3] text-white shadow-sm'
-                : 'text-slate-700 dark:text-[#DBDEE1] hover:text-slate-900 dark:hover:text-white'
+                : 'text-slate-700 dark:text-slate-200 dark:text-[#DBDEE1] hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <ArrowDownLeft className="w-4 h-4" />
@@ -222,7 +222,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
             <p className="text-xs font-black text-slate-900 dark:text-white">
               Validasi Silang Neraca (Cross-Verification Guaranteed)
             </p>
-            <p className="text-[11px] text-slate-500 dark:text-[#B5BAC1]">
+            <p className="text-[11px] text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
               Total {activeModule === 'ar' ? 'Piutang' : 'Hutang'} Aging: <strong className="text-slate-900 dark:text-white">{formatIDR(grandTotal)}</strong> ≡ Saldo Akun Neraca ({activeModule === 'ar' ? '1103' : '2101'}): <strong className="text-slate-900 dark:text-white">{formatIDR(activeModule === 'ar' ? bsAR : bsAP)}</strong>
             </p>
           </div>
@@ -273,7 +273,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
               </div>
 
               <div className="mt-3 flex items-center justify-between text-[11px] font-bold">
-                <span className={isSelected ? 'text-blue-200' : 'text-slate-500 dark:text-[#B5BAC1]'}>
+                <span className={isSelected ? 'text-blue-200' : 'text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]'}>
                   {bucket.count} faktur
                 </span>
                 <span className={isSelected ? 'text-blue-100' : 'text-blue-600 dark:text-blue-400 font-black'}>
@@ -305,7 +305,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
                 <th className="py-3 px-4">No. Ref</th>
                 <th className="py-3 px-4">{activeModule === 'ar' ? 'Pelanggan' : 'Pemasok / Vendor'}</th>
                 <th className="py-3 px-4">Tanggal Transaksi</th>
@@ -328,8 +328,8 @@ export const ArapView: React.FC<ArapViewProps> = ({
                   <tr key={item.id} className="hover:bg-slate-50/70 transition-colors">
                     <td className="py-3 px-4 font-mono font-bold text-blue-700">{item.refNumber}</td>
                     <td className="py-3 px-4 font-bold text-slate-900">{item.contactName}</td>
-                    <td className="py-3 px-4 text-slate-500">{item.date}</td>
-                    <td className="py-3 px-4 text-slate-500">{item.dueDate}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{item.date}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{item.dueDate}</td>
                     <td className="py-3 px-4 text-center">
                       <span
                         className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-extrabold ${
@@ -345,7 +345,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
                         {Number.isNaN(item.daysOverdue) || item.daysOverdue === 0 ? 'Belum Jatuh Tempo' : `Lewat ${item.daysOverdue} Hari`}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-right tabular-nums text-slate-500">
+                    <td className="py-3 px-4 text-right tabular-nums text-slate-500 dark:text-[#B5BAC1]">
                       {formatIDR(item.total)}
                     </td>
                     <td className="py-3 px-4 text-right font-black text-rose-600 tabular-nums">
@@ -388,7 +388,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                   Tanggal Penerimaan *
                 </label>
                 <input
@@ -401,7 +401,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                   Rekening Penerimaan (Kas / Bank) *
                 </label>
                 <select
@@ -422,7 +422,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-bold text-slate-700">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200">
                   Jumlah Uang yang Diterima (Rp) *
                 </label>
                 <button 
@@ -445,7 +445,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Catatan Pembayaran
               </label>
               <input
@@ -492,7 +492,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                   Tanggal Pembayaran *
                 </label>
                 <input
@@ -505,7 +505,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                   Rekening Pengeluaran (Kas / Bank) *
                 </label>
                 <select
@@ -526,7 +526,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
 
             <div>
               <div className="flex items-center justify-between mb-1">
-                <label className="block text-xs font-bold text-slate-700">
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-200">
                   Jumlah Uang yang Dibayarkan (Rp) *
                 </label>
                 <button 
@@ -549,7 +549,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Catatan / Bukti Transfer
               </label>
               <input

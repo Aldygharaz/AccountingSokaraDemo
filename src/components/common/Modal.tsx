@@ -6,6 +6,7 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
+  icon?: React.ReactNode;
   subtitle?: string;
   children: React.ReactNode;
   maxWidth?: string;
@@ -17,6 +18,7 @@ export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
+  icon,
   subtitle,
   children,
   maxWidth = 'max-w-2xl',

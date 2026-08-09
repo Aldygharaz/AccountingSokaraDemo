@@ -78,7 +78,7 @@ const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts:
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-[#B5BAC1]">
+                    <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
                       <span className="flex items-center gap-1">
                         <Calendar className="w-3.5 h-3.5" /> {je.date}
                       </span>
@@ -88,7 +88,7 @@ const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts:
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs font-bold text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider mb-1">
+                    <div className="text-xs font-bold text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] uppercase tracking-wider mb-1">
                       Total Mutasi
                     </div>
                     <div className="font-mono font-black text-lg text-slate-900 dark:text-white">
@@ -117,16 +117,16 @@ const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts:
                         return (
                           <tr key={l.id} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31]">
                             <td className="py-2 px-3">
-                              <div className="font-bold text-slate-700 dark:text-[#F2F3F5]">{acc?.code}</div>
-                              <div className="text-[10px] text-slate-500 dark:text-[#B5BAC1]">{acc?.name}</div>
+                              <div className="font-bold text-slate-700 dark:text-slate-200 dark:text-[#F2F3F5]">{acc?.code}</div>
+                              <div className="text-[10px] text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{acc?.name}</div>
                             </td>
                             <td className="py-2 px-3 text-slate-600 dark:text-[#DBDEE1] max-w-[200px] truncate" title={l.memo}>
                               {l.memo || '-'}
                             </td>
-                            <td className="py-2 px-3 text-right font-mono text-slate-700 dark:text-[#DBDEE1]">
+                            <td className="py-2 px-3 text-right font-mono text-slate-700 dark:text-slate-200 dark:text-[#DBDEE1]">
                               {l.debit > 0 ? formatIDR(l.debit) : ''}
                             </td>
-                            <td className="py-2 px-3 text-right font-mono text-slate-700 dark:text-[#DBDEE1]">
+                            <td className="py-2 px-3 text-right font-mono text-slate-700 dark:text-slate-200 dark:text-[#DBDEE1]">
                               {l.kredit > 0 ? formatIDR(l.kredit) : ''}
                             </td>
                           </tr>
@@ -331,7 +331,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Transaksi & Buku Jurnal Umum
           </h1>
-          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">
             Pencatatan faktur, tagihan, dan mutasi kas yang otomatis menghasilkan entri jurnal seimbang.
           </p>
         </div>
@@ -400,14 +400,14 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <Receipt className="w-8 h-8" />
               </div>
-              <h3 className="text-sm font-bold text-slate-700 dark:text-white">Belum Ada Faktur Penjualan</h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">Buat faktur pertama Anda untuk mencatat piutang dan penjualan.</p>
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 dark:text-white">Belum Ada Faktur Penjualan</h3>
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">Buat faktur pertama Anda untuk mencatat piutang dan penjualan.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
+                <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] uppercase tracking-wider">
                   <th className="py-3 px-4">
                     <div className="flex items-center gap-1">
                       <span>No. Faktur</span>
@@ -439,8 +439,8 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                   <tr key={inv.id} className="hover:bg-slate-50/80 dark:hover:bg-[#383A40] transition-colors">
                     <td className="py-3 px-4 font-mono font-black text-blue-600 dark:text-blue-400">{inv.invoiceNumber}</td>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{inv.contactName}</td>
-                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{inv.date}</td>
-                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{inv.dueDate}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{inv.date}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{inv.dueDate}</td>
                     <td className="py-3 px-4 text-right tabular-nums text-slate-600 dark:text-[#DBDEE1]">
                       {formatIDR(inv.subtotal)}
                     </td>
@@ -493,14 +493,14 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <Building2 className="w-8 h-8" />
               </div>
-              <h3 className="text-sm font-bold text-slate-700 dark:text-white">Belum Ada Tagihan Pembelian</h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">Catat tagihan dari supplier untuk menambah hutang dan stok.</p>
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 dark:text-white">Belum Ada Tagihan Pembelian</h3>
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">Catat tagihan dari supplier untuk menambah hutang dan stok.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
+                <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] uppercase tracking-wider">
                   <th className="py-3 px-4">No. Tagihan</th>
                   <th className="py-3 px-4">Pemasok / Supplier</th>
                   <th className="py-3 px-4">Tanggal</th>
@@ -516,8 +516,8 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                   <tr key={b.id} className="hover:bg-slate-50/80 dark:hover:bg-[#383A40] transition-colors">
                     <td className="py-3 px-4 font-mono font-black text-emerald-600 dark:text-emerald-400">{b.billNumber}</td>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{b.contactName}</td>
-                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{b.date}</td>
-                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{b.dueDate}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{b.date}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{b.dueDate}</td>
                     <td className="py-3 px-4 text-right tabular-nums text-slate-600 dark:text-[#DBDEE1]">
                       {formatIDR(b.subtotal)}
                     </td>
@@ -557,14 +557,14 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <DollarSign className="w-8 h-8" />
               </div>
-              <h3 className="text-sm font-bold text-slate-700 dark:text-white">Belum Ada Transaksi Kas</h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">Catat penerimaan atau pengeluaran kas non-faktur.</p>
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 dark:text-white">Belum Ada Transaksi Kas</h3>
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">Catat penerimaan atau pengeluaran kas non-faktur.</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
             <table className="w-full text-left text-xs border-collapse">
               <thead>
-                <tr className="bg-slate-50/80 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-bold text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
+                <tr className="bg-slate-50/80 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-bold text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] uppercase tracking-wider">
                   <th className="py-3 px-4">No. Transaksi</th>
                   <th className="py-3 px-4">Tanggal</th>
                   <th className="py-3 px-4">Tipe Kas</th>
@@ -577,7 +577,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 {state.cashTransactions.map((c) => (
                   <tr key={c.id} className="hover:bg-slate-50/70 dark:hover:bg-[#2B2D31] transition-colors">
                     <td className="py-3 px-4 font-mono font-bold text-blue-600 dark:text-[#0984E3]">{c.txNumber}</td>
-                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{c.date}</td>
+                    <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{c.date}</td>
                     <td className="py-3 px-4">
                       <span
                         className={`inline-block text-[10px] font-black px-2 py-0.5 rounded-full border uppercase ${
@@ -589,7 +589,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                         {c.type === 'masuk' ? 'KAS MASUK (+)' : 'KAS KELUAR (-)'}
                       </span>
                     </td>
-                    <td className="py-3 px-4 font-semibold text-slate-700 dark:text-white">{c.category}</td>
+                    <td className="py-3 px-4 font-semibold text-slate-700 dark:text-slate-200 dark:text-white">{c.category}</td>
                     <td className="py-3 px-4 text-slate-600 dark:text-[#DBDEE1]">{c.recipientOrPayer}</td>
                     <td className="py-3 px-4 text-right font-black text-slate-900 dark:text-white tabular-nums">
                       {formatIDR(c.amount)}
@@ -611,8 +611,8 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <FileSpreadsheet className="w-8 h-8" />
               </div>
-              <h3 className="text-sm font-bold text-slate-700 dark:text-white">Belum Ada Entri Jurnal</h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">Entri jurnal akan terbuat secara otomatis dari faktur dan tagihan.</p>
+              <h3 className="text-sm font-bold text-slate-700 dark:text-slate-200 dark:text-white">Belum Ada Entri Jurnal</h3>
+              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">Entri jurnal akan terbuat secara otomatis dari faktur dan tagihan.</p>
             </div>
           ) : (
             <>
@@ -634,12 +634,12 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                     <span className="font-mono font-black text-blue-700 dark:text-[#0984E3] text-sm">
                       {je.entryNumber}
                     </span>
-                    <span className="text-xs text-slate-500 dark:text-[#B5BAC1]">• {je.date}</span>
+                    <span className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">• {je.date}</span>
                     <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 dark:bg-[#1E1F22] text-slate-600 dark:text-[#DBDEE1]">
                       {je.sourceType}
                     </span>
                   </div>
-                  <div className="text-xs font-semibold text-slate-700 dark:text-white">
+                  <div className="text-xs font-semibold text-slate-700 dark:text-slate-200 dark:text-white">
                     {je.description}
                   </div>
                 </div>
@@ -660,12 +660,12 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                         return (
                           <tr key={l.id} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31]">
                             <td className="py-2 px-3">
-                              <span className="font-mono font-bold text-slate-700 dark:text-[#DBDEE1] mr-2">
+                              <span className="font-mono font-bold text-slate-700 dark:text-slate-200 dark:text-[#DBDEE1] mr-2">
                                 {acc?.code}
                               </span>
                               <span className="font-medium text-slate-900 dark:text-white">{acc?.name}</span>
                             </td>
-                            <td className="py-2 px-3 text-slate-500 dark:text-[#B5BAC1] text-[11px]">{l.memo}</td>
+                            <td className="py-2 px-3 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] text-[11px]">{l.memo}</td>
                             <td className="py-2 px-3 text-right font-mono font-bold tabular-nums text-slate-800 dark:text-white">
                               {l.debit > 0 ? formatIDR(l.debit) : '-'}
                             </td>
@@ -714,7 +714,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Pilih Pelanggan (Customer) *
               </label>
               <select
@@ -733,7 +733,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Tanggal Faktur *
               </label>
               <input
@@ -746,7 +746,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Jatuh Tempo Pembayaran *
               </label>
               <input
@@ -774,13 +774,13 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             {invItems.map((item, idx) => (
-              <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+              <div key={idx} className="grid grid-cols-12 overflow-x-auto min-w-[800px] gap-2 items-center">
                 <div className="col-span-5">
                   <select
                     value={item.productId}
                     onChange={(e) => {
                       const prod = state.products.find((p) => p.id === e.target.value);
-                      const updated = [...invItems];
+                      const updated = structuredClone(invItems);
                       updated[idx].productId = e.target.value;
                       if (prod) updated[idx].unitPrice = prod.salePrice;
                       setInvItems(updated);
@@ -800,7 +800,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                     type="number"
                     value={item.qty || ''}
                     onChange={(e) => {
-                      const updated = [...invItems];
+                      const updated = structuredClone(invItems);
                       updated[idx].qty = Number(e.target.value);
                       setInvItems(updated);
                     }}
@@ -814,7 +814,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                   <CurrencyInput
                     value={item.unitPrice || ''}
                     onChange={(val) => {
-                      const updated = [...invItems];
+                      const updated = structuredClone(invItems);
                       updated[idx].unitPrice = val === '' ? 0 : val;
                       setInvItems(updated);
                     }}
@@ -829,7 +829,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                       type="checkbox"
                       checked={item.isTaxable}
                       onChange={(e) => {
-                        const updated = [...invItems];
+                        const updated = structuredClone(invItems);
                         updated[idx].isTaxable = e.target.checked;
                         setInvItems(updated);
                       }}
@@ -855,11 +855,11 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
           {/* Subtotal & Total Preview */}
           <div className="flex justify-end">
             <div className="w-64 space-y-1.5 text-xs">
-              <div className="flex justify-between text-slate-500">
+              <div className="flex justify-between text-slate-500 dark:text-[#B5BAC1]">
                 <span>Subtotal:</span>
                 <span className="font-mono tabular-nums">{formatIDR(invoiceSubtotal)}</span>
               </div>
-              <div className="flex justify-between text-slate-500">
+              <div className="flex justify-between text-slate-500 dark:text-[#B5BAC1]">
                 <span>PPN Keluaran 11%:</span>
                 <span className="font-mono tabular-nums">{formatIDR(invoiceTax)}</span>
               </div>
@@ -905,7 +905,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Pilih Pemasok / Supplier *
               </label>
               <select
@@ -924,7 +924,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Tanggal Pembelian *
               </label>
               <input
@@ -937,7 +937,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Jatuh Tempo Tagihan *
               </label>
               <input
@@ -965,13 +965,13 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             {billItems.map((item, idx) => (
-              <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+              <div key={idx} className="grid grid-cols-12 overflow-x-auto min-w-[800px] gap-2 items-center">
                 <div className="col-span-5">
                   <select
                     value={item.productId}
                     onChange={(e) => {
                       const prod = state.products.find((p) => p.id === e.target.value);
-                      const updated = [...billItems];
+                      const updated = structuredClone(billItems);
                       updated[idx].productId = e.target.value;
                       if (prod) updated[idx].unitCost = prod.avgCost;
                       setBillItems(updated);
@@ -991,7 +991,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                     type="number"
                     value={item.qty || ''}
                     onChange={(e) => {
-                      const updated = [...billItems];
+                      const updated = structuredClone(billItems);
                       updated[idx].qty = Number(e.target.value);
                       setBillItems(updated);
                     }}
@@ -1005,7 +1005,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                   <CurrencyInput
                     value={item.unitCost || ''}
                     onChange={(val) => {
-                      const updated = [...billItems];
+                      const updated = structuredClone(billItems);
                       updated[idx].unitCost = val === '' ? 0 : val;
                       setBillItems(updated);
                     }}
@@ -1020,7 +1020,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                       type="checkbox"
                       checked={item.isTaxable}
                       onChange={(e) => {
-                        const updated = [...billItems];
+                        const updated = structuredClone(billItems);
                         updated[idx].isTaxable = e.target.checked;
                         setBillItems(updated);
                       }}
@@ -1046,11 +1046,11 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
           {/* Subtotal & Total Preview */}
           <div className="flex justify-end">
             <div className="w-64 space-y-1.5 text-xs">
-              <div className="flex justify-between text-slate-500">
+              <div className="flex justify-between text-slate-500 dark:text-[#B5BAC1]">
                 <span>Subtotal:</span>
                 <span className="font-mono tabular-nums">{formatIDR(billSubtotal)}</span>
               </div>
-              <div className="flex justify-between text-slate-500">
+              <div className="flex justify-between text-slate-500 dark:text-[#B5BAC1]">
                 <span>PPN Masukan 11%:</span>
                 <span className="font-mono tabular-nums">{formatIDR(billTax)}</span>
               </div>
@@ -1095,7 +1095,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Arah Aliran Kas *
               </label>
               <select
@@ -1109,7 +1109,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Tanggal Transaksi *
               </label>
               <input
@@ -1124,7 +1124,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Rekening Kas / Bank yang Digunakan *
               </label>
               <select
@@ -1143,7 +1143,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Akun Lawan (Beban / Ekuitas / Pendapatan) *
               </label>
               <select
@@ -1164,7 +1164,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Kategori Transaksi Kas
               </label>
               <select
@@ -1180,7 +1180,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
               </select>
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
                 Jumlah Uang Transaksi (Rp) *
             </label>
             <CurrencyInput
@@ -1197,7 +1197,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-white mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-white mb-1">
               Deskripsi / Keterangan Transaksi *
             </label>
             <input
@@ -1214,7 +1214,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             <button
               type="button"
               onClick={() => setIsCashModalOpen(false)}
-              className="px-4 py-2 text-sm font-bold text-slate-500 hover:text-slate-700 dark:text-[#B5BAC1] dark:hover:text-white"
+              className="px-4 py-2 text-sm font-bold text-slate-500 dark:text-[#B5BAC1] hover:text-slate-700 dark:text-slate-200 dark:text-[#B5BAC1] dark:hover:text-white"
             >
               Batal
             </button>

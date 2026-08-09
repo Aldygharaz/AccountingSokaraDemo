@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import { Landmark,
   FileSpreadsheet,
   Printer,
   Download,
@@ -88,7 +88,7 @@ export const OfficialReportExportModal: React.FC<OfficialReportExportModalProps>
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="📑 Ekspor Laporan Keuangan Resmi (Standar PSAK / SAK EMKM)"
+      title="Ekspor Laporan Keuangan Resmi (Standar PSAK / SAK EMKM)" icon={<Landmark className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">

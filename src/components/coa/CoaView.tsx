@@ -183,7 +183,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
               iconOnly
             />
           </div>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
             Klik pada akun mana saja untuk membuka Buku Besar (T-Account Ledger Drilldown).
           </p>
         </div>
@@ -251,7 +251,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
                 setActiveTypeFilter('all');
                 setSearchTerm('');
               }}
-              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-200/80 dark:bg-[#383A40] text-slate-700 dark:text-slate-200 text-xs font-semibold hover:bg-slate-300"
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-200/80 dark:bg-[#383A40] text-slate-700 dark:text-slate-200 dark:text-slate-200 text-xs font-semibold hover:bg-slate-300"
               title="Reset Filter (Ctrl + Shift + F)"
             >
               <RotateCcw className="w-3 h-3" />
@@ -278,7 +278,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
+              <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] uppercase tracking-wider">
                 <th className="py-3 px-4">Kode</th>
                 <th className="py-3 px-4">Nama Akun</th>
                 <th className="py-3 px-4">Kategori Utama</th>
@@ -395,7 +395,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 mb-1">
                 Kode Akun (Contoh: 1106, 6105) *
               </label>
               <input
@@ -409,7 +409,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 mb-1">
                 Kategori Utama Akun *
               </label>
               <select
@@ -427,7 +427,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 mb-1">
               Nama Akun *
             </label>
             <input
@@ -442,7 +442,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 mb-1">
                 Sub-Tipe Akun *
               </label>
               <select
@@ -485,7 +485,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300 mb-1">
                 Posisi Saldo Normal
               </label>
               <select

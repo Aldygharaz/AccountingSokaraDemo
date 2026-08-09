@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import {
+import { Lightbulb,
+
   BookOpen,
   Search,
   Sparkles,
@@ -194,7 +195,7 @@ export const ManualBookView: React.FC<ManualBookViewProps> = ({ onNavigateToTab 
                         {topic.description}
                       </p>
                       <div className="mt-2 text-xs text-blue-700 dark:text-blue-400 font-bold">
-                        💡 Dampak Finansial: {topic.businessContext}
+                        <div className="flex items-center gap-1.5"><Lightbulb className="w-3.5 h-3.5 text-blue-500" /> Dampak Finansial: {topic.businessContext}</div>
                       </div>
                     </div>
 

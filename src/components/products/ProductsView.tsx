@@ -98,7 +98,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               iconOnly
             />
           </div>
-          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">
             Katalog barang dagang dengan kalkulasi HPP otomatis (Metode Weighted Average Costing).
           </p>
         </div>
@@ -157,7 +157,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
                 <th className="py-3 px-4">SKU</th>
                 <th className="py-3 px-4">Nama Produk</th>
                 <th className="py-3 px-4">Kategori</th>
@@ -189,7 +189,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                       </div>
                     </td>
                     <td className="py-3.5 px-4">
-                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-100 text-slate-700 dark:text-slate-200">
                         {prod.category}
                       </span>
                     </td>
@@ -220,7 +220,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                     <td className="py-3.5 px-4 text-center">
                       <button
                         onClick={() => setSelectedStockProduct(prod)}
-                        className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 hover:text-blue-600 rounded-lg flex items-center gap-1.5 transition-colors group relative"
+                        className="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-500 dark:text-[#B5BAC1] hover:text-blue-600 rounded-lg flex items-center gap-1.5 transition-colors group relative"
                         title="Kartu Stok"
                       >
                         <History className="w-4 h-4" />
@@ -247,7 +247,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
         <form onSubmit={handleCreateProduct} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Kode SKU Produk *
               </label>
               <input
@@ -261,7 +261,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Kategori Barang *
               </label>
               <select
@@ -281,7 +281,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Nama Produk Dagangan *
               </label>
               <input
@@ -295,7 +295,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Satuan Ukuran (Unit) *
               </label>
               <input
@@ -311,7 +311,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Harga Jual ke Pelanggan (Rp) *
               </label>
               <input
@@ -326,7 +326,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Batas Minimum Stok (Alert) *
               </label>
               <input
@@ -424,7 +424,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
             <div className="overflow-x-auto border border-slate-200 rounded-xl">
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
-                  <tr className="bg-slate-100 border-b border-slate-200 text-[10px] font-bold text-slate-500 uppercase">
+                  <tr className="bg-slate-100 border-b border-slate-200 text-[10px] font-bold text-slate-500 dark:text-[#B5BAC1] uppercase">
                     <th className="py-2.5 px-3">Tanggal</th>
                     <th className="py-2.5 px-3">Tipe</th>
                     <th className="py-2.5 px-3">No. Referensi</th>
@@ -466,7 +466,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
                           <td className="py-2.5 px-3 text-right font-black text-slate-900">
                             {qtyVal} {selectedStockProduct.unit}
                           </td>
-                          <td className="py-2.5 px-3 text-right font-mono text-slate-500">
+                          <td className="py-2.5 px-3 text-right font-mono text-slate-500 dark:text-[#B5BAC1]">
                             {formatIDR(sm.unitPrice || sm.unitCost || 0)}
                           </td>
                           <td className="py-2.5 px-3 text-right font-mono font-bold text-slate-800 dark:text-slate-200">

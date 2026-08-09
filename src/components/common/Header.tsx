@@ -1,5 +1,5 @@
 import React from 'react';
-import {
+import { BookOpen, BrainCircuit, SearchCode, Factory, Landmark, 
   Search,
   UserCheck,
   ShieldAlert,
@@ -111,7 +111,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 hover:bg-blue-100 text-blue-900 dark:text-blue-300 border border-blue-200 dark:border-blue-800 text-xs font-black transition-all shadow-sm"
             title="Buka Buku Panduan & Kamus SOP Akuntansi"
           >
-            <span>📖 Panduan SOP</span>
+            <BookOpen className="w-4 h-4 shrink-0" /><span>Panduan SOP</span>
           </button>
         )}
 
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-purple-900 dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-xs font-black transition-all shadow-sm"
             title="Buka Executive CFO Intelligence & DuPont Analysis (F9)"
           >
-            <span>📊 CFO (F9)</span>
+            <BrainCircuit className="w-4 h-4 shrink-0" /><span>CFO (F9)</span>
           </button>
         )}
 
@@ -152,7 +152,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden 2xl:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 text-emerald-900 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-black transition-all shadow-sm"
             title="Buka Forensik SHA-256 Audit Chain (F10)"
           >
-            <span>🛡️ Forensik (F10)</span>
+            <SearchCode className="w-4 h-4 shrink-0" /><span>Forensik (F10)</span>
           </button>
         )}
 
@@ -166,7 +166,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden 2xl:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-purple-900 dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-xs font-black transition-all shadow-sm"
             title="Buka Job-Order & Activity-Based Costing (F7)"
           >
-            <span>💼 HPP Costing (F7)</span>
+            <Factory className="w-4 h-4 shrink-0" /><span>HPP Costing (F7)</span>
           </button>
         )}
 
@@ -180,7 +180,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden 2xl:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 hover:bg-indigo-100 text-indigo-900 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 text-xs font-black transition-all shadow-sm"
             title="Ekspor Laporan Keuangan Resmi PSAK/IFRS (Ctrl+Shift+E)"
           >
-            <span>📑 Ekspor PSAK</span>
+            <Landmark className="w-4 h-4 shrink-0" /><span>Ekspor PSAK</span>
           </button>
         )}
 
@@ -197,27 +197,27 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="absolute top-full right-0 mt-2 w-48 bg-white dark:bg-[#2B2D31] rounded-xl shadow-lg border border-slate-200 dark:border-[#3F4147] py-2 z-50 flex flex-col gap-1 px-2">
               {onOpenClosing && (
                 <button onClick={() => { setIsMobileMenuOpen(false); onOpenClosing(); }} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1E1F22] text-xs font-bold text-slate-700 dark:text-slate-200">
-                  🔒 Tutup Buku
+                  Tutup Buku
                 </button>
               )}
               {onOpenCfo && (
                 <button onClick={() => { setIsMobileMenuOpen(false); onOpenCfo(); }} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1E1F22] text-xs font-bold text-slate-700 dark:text-slate-200">
-                  🧠 CFO Intel
+                  CFO Intel
                 </button>
               )}
               {onOpenForensic && (
                 <button onClick={() => { setIsMobileMenuOpen(false); onOpenForensic(); }} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1E1F22] text-xs font-bold text-slate-700 dark:text-slate-200">
-                  🕵️ Forensik
+                  ️ Forensik
                 </button>
               )}
               {onOpenCosting && (
                 <button onClick={() => { setIsMobileMenuOpen(false); onOpenCosting(); }} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1E1F22] text-xs font-bold text-slate-700 dark:text-slate-200">
-                  💼 HPP Costing
+                  HPP Costing
                 </button>
               )}
               {onOpenOfficialExport && (
                 <button onClick={() => { setIsMobileMenuOpen(false); onOpenOfficialExport(); }} className="text-left px-3 py-2 rounded-lg hover:bg-slate-50 dark:hover:bg-[#1E1F22] text-xs font-bold text-slate-700 dark:text-slate-200">
-                  📑 Ekspor PSAK
+                  Ekspor PSAK
                 </button>
               )}
             </div>

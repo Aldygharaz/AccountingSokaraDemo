@@ -36,7 +36,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
 
   // Preset scenarios
   const handleApplyPreset = (preset: 'aggressive' | 'moderate' | 'crisis' | 'reset') => {
-    soundFx.playClick();
+    // soundFx.playClick();
     if (preset === 'aggressive') {
       setSalesGrowth(35);
       setCogsInflation(8);
@@ -102,7 +102,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             title="Skenario Pertumbuhan Agresif: Omzet +35%, HPP +8%, Beban -15%"
           >
             <Zap className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>🚀 Ekspansi Agresif</span>
+            <span>Ekspansi Agresif</span>
           </button>
 
           <button
@@ -111,7 +111,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             title="Skenario Target Baseline 2026: Omzet +15%, HPP +5%, Beban -10%"
           >
             <Target className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span>⚖️ Baseline 2026</span>
+            <span>️ Baseline 2026</span>
           </button>
 
           <button
@@ -120,7 +120,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             title="Skenario Krisis & Inflasi: Omzet -20%, HPP +15%, Beban +5%"
           >
             <ShieldAlert className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
-            <span>🛡️ Skenario Krisis</span>
+            <span>️ Skenario Krisis</span>
           </button>
 
           <button
@@ -163,7 +163,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             step="5"
             value={salesGrowth}
             onChange={(e) => {
-              soundFx.playClick();
+              // soundFx.playClick();
               setSalesGrowth(Number(e.target.value));
             }}
             className="w-full accent-blue-600 cursor-pointer h-2 bg-slate-200 dark:bg-[#383A40] rounded-lg"
@@ -210,7 +210,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             step="5"
             value={cogsInflation}
             onChange={(e) => {
-              soundFx.playClick();
+              // soundFx.playClick();
               setCogsInflation(Number(e.target.value));
             }}
             className="w-full accent-rose-600 cursor-pointer h-2 bg-slate-200 dark:bg-[#383A40] rounded-lg"
@@ -257,7 +257,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
             step="5"
             value={opexReduction}
             onChange={(e) => {
-              soundFx.playClick();
+              // soundFx.playClick();
               setOpexReduction(Number(e.target.value));
             }}
             className="w-full accent-emerald-600 cursor-pointer h-2 bg-slate-200 dark:bg-[#383A40] rounded-lg"
@@ -334,7 +334,7 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
                 : 'text-rose-700 dark:text-rose-400'
             }`}
           >
-            {simulatedNPM >= 10 ? '✨ Margin Sangat Sehat' : simulatedNPM >= 0 ? '⚠️ Margin Menipis' : '🚨 Posisi Rugi'}
+            {simulatedNPM >= 10 ? 'Margin Sangat Sehat' : simulatedNPM >= 0 ? 'Margin Menipis' : 'Posisi Rugi'}
           </span>
         </div>
 

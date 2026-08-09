@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import { Calculator,
   CalendarClock,
   CheckCircle2,
   Calendar,
@@ -46,7 +46,7 @@ export const AmortizationScheduleModal: React.FC<AmortizationScheduleModalProps>
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="⏳ Amortisasi Biaya Dibayar Dimuka (Prepaid Expenses - PSAK 1)"
+      title="Amortisasi Biaya Dibayar Dimuka (Prepaid Expenses - PSAK 1)" icon={<Calculator className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-4xl"
     >
       <div className="space-y-6">
@@ -81,7 +81,7 @@ export const AmortizationScheduleModal: React.FC<AmortizationScheduleModalProps>
 
         {/* Prepaids list */}
         <div className="border border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden">
-          <div className="bg-slate-100/80 dark:bg-[#2B2D31] px-4 py-2.5 border-b border-slate-200 dark:border-[#3F4147] grid grid-cols-12 text-[11px] font-black text-slate-700 dark:text-[#DBDEE1] uppercase tracking-wider">
+          <div className="bg-slate-100/80 dark:bg-[#2B2D31] px-4 py-2.5 border-b border-slate-200 dark:border-[#3F4147] grid grid-cols-12 text-[11px] font-black text-slate-700 dark:text-slate-200 dark:text-[#DBDEE1] uppercase tracking-wider">
             <span className="col-span-4">Akun & Deskripsi Polis / Sewa</span>
             <span className="col-span-2 text-right">Nilai Awal</span>
             <span className="col-span-2 text-right">Amortisasi/Bulan</span>
@@ -113,7 +113,7 @@ export const AmortizationScheduleModal: React.FC<AmortizationScheduleModalProps>
                     {formatIDR(p.monthlyAmortization)}
                   </div>
 
-                  <div className="col-span-2 text-right text-slate-500 tabular-nums">
+                  <div className="col-span-2 text-right text-slate-500 dark:text-[#B5BAC1] tabular-nums">
                     {formatIDR(p.amortizedAmount)} ({progressPct}%)
                   </div>
 
