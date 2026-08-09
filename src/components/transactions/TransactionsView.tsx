@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {
+import { User,
   Receipt,
   Plus,
   Minus,
@@ -31,6 +31,118 @@ interface TransactionsViewProps {
   onCreateCashTx: (data: any) => { success: boolean; error?: string };
   onVoidInvoice: (id: string) => { success: boolean; error?: string };
 }
+
+
+import { useVirtualizer } from '@tanstack/react-virtual';
+
+const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts: any[] }) => {
+  const parentRef = React.useRef(null);
+
+  const virtualizer = useVirtualizer({
+    count: journals.length,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => 250,
+    overscan: 3,
+  });
+
+  return (
+    <div ref={parentRef} style={{ height: '70vh', overflow: 'auto' }} className="space-y-6 pr-2">
+      <div style={{ height: `${virtualizer.getTotalSize()}px`, width: '100%', position: 'relative' }}>
+        {virtualizer.getVirtualItems().map((virtualRow) => {
+          const je = journals[virtualRow.index];
+          return (
+            <div
+              key={virtualRow.index}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                transform: `translateY(${virtualRow.start}px)`,
+              }}
+            >
+              <div
+                className={`bg-white dark:bg-[#2B2D31] border ${
+                  je.isVoided
+                    ? 'border-rose-200 dark:border-rose-900/50 opacity-75'
+                    : 'border-slate-200 dark:border-[#3F4147]'
+                } rounded-xl p-5 shadow-sm hover:shadow-md transition-shadow mb-4`}
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <h3 className="font-black text-slate-900 dark:text-[#F2F3F5]">{je.entryNumber}</h3>
+                      {je.isVoided && (
+                        <span className="bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 px-2 py-0.5 rounded text-[10px] font-bold uppercase">
+                          Dibatalkan / Void
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-[#B5BAC1]">
+                      <span className="flex items-center gap-1">
+                        <Calendar className="w-3.5 h-3.5" /> {je.date}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <User className="w-3.5 h-3.5" /> {je.createdBy}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs font-bold text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider mb-1">
+                      Total Mutasi
+                    </div>
+                    <div className="font-mono font-black text-lg text-slate-900 dark:text-white">
+                      {formatIDR(je.totalDebit)}
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-sm text-slate-600 dark:text-[#DBDEE1] mb-4 bg-slate-50 dark:bg-[#1E1F22] p-3 rounded-lg border border-slate-100 dark:border-[#3F4147]">
+                  {je.description}
+                </p>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead>
+                      <tr className="text-[10px] font-bold text-slate-400 dark:text-[#B5BAC1] uppercase">
+                        <th className="py-1 px-3">Kode & Akun Buku Besar</th>
+                        <th className="py-1 px-3">Memo Baris</th>
+                        <th className="py-1 px-3 text-right">Debit</th>
+                        <th className="py-1 px-3 text-right">Kredit</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
+                      {je.lines.map((l: any) => {
+                        const acc = accounts.find((a: any) => a.id === l.accountId);
+                        return (
+                          <tr key={l.id} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31]">
+                            <td className="py-2 px-3">
+                              <div className="font-bold text-slate-700 dark:text-[#F2F3F5]">{acc?.code}</div>
+                              <div className="text-[10px] text-slate-500 dark:text-[#B5BAC1]">{acc?.name}</div>
+                            </td>
+                            <td className="py-2 px-3 text-slate-600 dark:text-[#DBDEE1] max-w-[200px] truncate" title={l.memo}>
+                              {l.memo || '-'}
+                            </td>
+                            <td className="py-2 px-3 text-right font-mono text-slate-700 dark:text-[#DBDEE1]">
+                              {l.debit > 0 ? formatIDR(l.debit) : ''}
+                            </td>
+                            <td className="py-2 px-3 text-right font-mono text-slate-700 dark:text-[#DBDEE1]">
+                              {l.kredit > 0 ? formatIDR(l.kredit) : ''}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 export const TransactionsView: React.FC<TransactionsViewProps> = ({
   state,
