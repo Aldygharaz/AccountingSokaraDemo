@@ -17,18 +17,22 @@ import { generateClosingEntries } from '../../lib/closingEngine';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface PeriodClosingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const closedPeriods = useStore(s => s.closedPeriods);
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+  const currentUser = useStore(s => s.currentUser);
+
   const generateMonthOptions = () => {
     const options = [];
     const currentYear = new Date().getFullYear();
@@ -55,8 +59,8 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
   } | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  const isAlreadyClosed = state.closedPeriods.some((p) => p.periodMonth === selectedMonth);
-  const preview = generateClosingEntries(state.accounts, state.journalEntries, selectedMonth);
+  const isAlreadyClosed = closedPeriods.some((p) => p.periodMonth === selectedMonth);
+  const preview = generateClosingEntries(accounts, journalEntries, selectedMonth);
 
   const handleExecuteClose = () => {
     setErrorMsg(null);
@@ -190,7 +194,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
                   </div>
                 ) : (
                   preview.closingEntry.lines.map((l, i) => {
-                    const acc = state.accounts.find((a) => a.id === l.accountId);
+                    const acc = accounts.find((a) => a.id === l.accountId);
                     return (
                       <div key={i} className="px-4 py-2 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-[#383A40]">
                         <div className="flex items-center gap-2">
@@ -333,7 +337,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Otorisasi Oleh:</span>
-                <span className="font-bold text-slate-800 dark:text-white">{state.currentUser.name} (Role: {state.currentUser.role.toUpperCase()})</span>
+                <span className="font-bold text-slate-800 dark:text-white">{currentUser.name} (Role: {currentUser.role.toUpperCase()})</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Tanggal Kunci:</span>

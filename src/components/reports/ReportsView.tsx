@@ -24,12 +24,15 @@ import { LedgerDrilldownDrawer } from '../ui/LedgerDrilldownDrawer';
 import { Account } from '../../types/accounting';
 import { Tooltip } from '../common/Tooltip';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface ReportsViewProps {
-  state: AppState;
-}
+  }
 
-export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
+export const ReportsView: React.FC<ReportsViewProps> = ({}) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [activeReport, setActiveReport] = useState<'pnl' | 'balance_sheet' | 'cash_flow' | 'simulation'>('pnl');
 
   // Date filters
@@ -46,9 +49,9 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
   const [selectedDrilldownAccount, setSelectedDrilldownAccount] = useState<Account | null>(null);
 
   // Dynamic calculations directly from journal lines
-  const incomeStatement = React.useMemo(() => generateIncomeStatement(state.accounts, state.journalEntries, startDate, endDate), [state.accounts, state.journalEntries, startDate, endDate]);
-  const balanceSheet = React.useMemo(() => generateBalanceSheet(state.accounts, state.journalEntries, asOfDate), [state.accounts, state.journalEntries, asOfDate]);
-  const cashFlow = React.useMemo(() => generateCashFlowDirect(state.accounts, state.journalEntries, startDate, endDate), [state.accounts, state.journalEntries, startDate, endDate]);
+  const incomeStatement = React.useMemo(() => generateIncomeStatement(accounts, journalEntries, startDate, endDate), [accounts, journalEntries, startDate, endDate]);
+  const balanceSheet = React.useMemo(() => generateBalanceSheet(accounts, journalEntries, asOfDate), [accounts, journalEntries, asOfDate]);
+  const cashFlow = React.useMemo(() => generateCashFlowDirect(accounts, journalEntries, startDate, endDate), [accounts, journalEntries, startDate, endDate]);
 
   const handlePrint = () => {
     soundFx.playClick();
@@ -56,7 +59,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
   };
 
   const handleDrilldownByCode = (accountCode: string) => {
-    const acc = state.accounts.find((a) => a.code === accountCode);
+    const acc = accounts.find((a) => a.code === accountCode);
     if (acc) {
       soundFx.playClick();
       setSelectedDrilldownAccount(acc);
@@ -558,14 +561,14 @@ export const ReportsView: React.FC<ReportsViewProps> = ({ state }) => {
       )}
 
       {/* REPORT 4: WHAT-IF SIMULATOR */}
-      {activeReport === 'simulation' && <FinancialSimulator state={state} />}
+      {activeReport === 'simulation' && <FinancialSimulator />}
 
       {/* Ledger Drilldown Drawer */}
       <LedgerDrilldownDrawer
         isOpen={!!selectedDrilldownAccount}
         onClose={() => setSelectedDrilldownAccount(null)}
         account={selectedDrilldownAccount}
-        journalEntries={state.journalEntries}
+        journalEntries={journalEntries}
       />
     </div>
   );

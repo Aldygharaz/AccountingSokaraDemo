@@ -23,7 +23,6 @@ import { Tooltip } from '../common/Tooltip';
 import { PokaYokeModal } from '../ui/PokaYokeModal';
 
 interface TransactionsViewProps {
-  state: AppState;
   currentUser: UserSession;
   activeSubTab?: 'invoices' | 'bills' | 'cash' | 'journals';
   onCreateInvoice: (data: any) => { success: boolean; error?: string };
@@ -34,6 +33,7 @@ interface TransactionsViewProps {
 
 
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { useStore } from '../../lib/storage';
 
 const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts: any[] }) => {
   const parentRef = React.useRef(null);
@@ -145,7 +145,6 @@ const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts:
 };
 
 export const TransactionsView: React.FC<TransactionsViewProps> = ({
-  state,
   currentUser,
   activeSubTab = 'invoices',
   onCreateInvoice,
@@ -153,6 +152,14 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
   onCreateCashTx,
   onVoidInvoice,
 }) => {
+  const contacts = useStore(s => s.contacts);
+  const products = useStore(s => s.products);
+  const invoices = useStore(s => s.invoices);
+  const purchaseBills = useStore(s => s.purchaseBills);
+  const cashTransactions = useStore(s => s.cashTransactions);
+  const journalEntries = useStore(s => s.journalEntries);
+  const accounts = useStore(s => s.accounts);
+
   const [currentTab, setCurrentTab] = useState<'invoices' | 'bills' | 'cash' | 'journals'>(activeSubTab);
 
   React.useEffect(() => {
@@ -167,7 +174,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
   const [voidInvoiceId, setVoidInvoiceId] = useState<string | null>(null);
 
   // New Invoice State
-  const [invContactId, setInvContactId] = useState(state.contacts[0]?.id || '');
+  const [invContactId, setInvContactId] = useState(contacts[0]?.id || '');
   const [invDate, setInvDate] = useState(new Date().toISOString().split('T')[0]);
   const [invDueDate, setInvDueDate] = useState(
     new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
@@ -177,16 +184,16 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
     { productId: string; qty: number; unitPrice: number; isTaxable: boolean }[]
   >([
     {
-      productId: state.products[0]?.id || '',
+      productId: products[0]?.id || '',
       qty: 10,
-      unitPrice: state.products[0]?.salePrice || 78000,
+      unitPrice: products[0]?.salePrice || 78000,
       isTaxable: true,
     },
   ]);
 
   // New Purchase Bill State
   const [billContactId, setBillContactId] = useState(
-    state.contacts.find((c) => c.type === 'vendor' || c.type === 'keduanya')?.id || state.contacts[0]?.id || ''
+    contacts.find((c) => c.type === 'vendor' || c.type === 'keduanya')?.id || contacts[0]?.id || ''
   );
   const [billDate, setBillDate] = useState(new Date().toISOString().split('T')[0]);
   const [billDueDate, setBillDueDate] = useState(
@@ -197,9 +204,9 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
     { productId: string; qty: number; unitCost: number; isTaxable: boolean }[]
   >([
     {
-      productId: state.products[0]?.id || '',
+      productId: products[0]?.id || '',
       qty: 50,
-      unitCost: state.products[0]?.avgCost || 62000,
+      unitCost: products[0]?.avgCost || 62000,
       isTaxable: true,
     },
   ]);
@@ -230,7 +237,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
   const billTotal = billSubtotal + billTax;
 
   const handleAddInvoiceItem = () => {
-    const firstProd = state.products[0];
+    const firstProd = products[0];
     setInvItems([
       ...invItems,
       {
@@ -243,7 +250,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
   };
 
   const handleAddBillItem = () => {
-    const firstProd = state.products[0];
+    const firstProd = products[0];
     setBillItems([
       ...billItems,
       {
@@ -373,10 +380,10 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
       {/* Navigation Sub-Tabs */}
       <div className="glass-card rounded-2xl p-2 flex flex-wrap items-center gap-1.5">
         {[
-          { id: 'invoices', label: `Faktur Penjualan (${state.invoices.length})` },
-          { id: 'bills', label: `Tagihan Pembelian (${state.purchaseBills.length})` },
-          { id: 'cash', label: `Transaksi Kas & Bank (${state.cashTransactions.length})` },
-          { id: 'journals', label: `Buku Jurnal Umum (${state.journalEntries.length})` },
+          { id: 'invoices', label: `Faktur Penjualan (${invoices.length})` },
+          { id: 'bills', label: `Tagihan Pembelian (${purchaseBills.length})` },
+          { id: 'cash', label: `Transaksi Kas & Bank (${cashTransactions.length})` },
+          { id: 'journals', label: `Buku Jurnal Umum (${journalEntries.length})` },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -395,7 +402,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
       {/* Tab 1: Sales Invoices List */}
       {currentTab === 'invoices' && (
         <div className="glass-card rounded-2xl overflow-hidden">
-          {state.invoices.length === 0 ? (
+          {invoices.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center">
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <Receipt className="w-8 h-8" />
@@ -435,7 +442,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
-                {state.invoices.map((inv) => (
+                {invoices.map((inv) => (
                   <tr key={inv.id} className="hover:bg-slate-50/80 dark:hover:bg-[#383A40] transition-colors">
                     <td className="py-3 px-4 font-mono font-black text-blue-600 dark:text-blue-400">{inv.invoiceNumber}</td>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{inv.contactName}</td>
@@ -488,7 +495,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
       {/* Tab 2: Purchase Bills List */}
       {currentTab === 'bills' && (
         <div className="glass-card rounded-2xl overflow-hidden">
-          {state.purchaseBills.length === 0 ? (
+          {purchaseBills.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center">
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <Building2 className="w-8 h-8" />
@@ -512,7 +519,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
-                {state.purchaseBills.map((b) => (
+                {purchaseBills.map((b) => (
                   <tr key={b.id} className="hover:bg-slate-50/80 dark:hover:bg-[#383A40] transition-colors">
                     <td className="py-3 px-4 font-mono font-black text-emerald-600 dark:text-emerald-400">{b.billNumber}</td>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">{b.contactName}</td>
@@ -552,7 +559,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
       {/* Tab 3: Direct Cash Transactions */}
       {currentTab === 'cash' && (
         <div className="glass-card rounded-2xl overflow-hidden">
-          {state.cashTransactions.length === 0 ? (
+          {cashTransactions.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center">
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <DollarSign className="w-8 h-8" />
@@ -574,7 +581,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
-                {state.cashTransactions.map((c) => (
+                {cashTransactions.map((c) => (
                   <tr key={c.id} className="hover:bg-slate-50/70 dark:hover:bg-[#2B2D31] transition-colors">
                     <td className="py-3 px-4 font-mono font-bold text-blue-600 dark:text-[#0984E3]">{c.txNumber}</td>
                     <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">{c.date}</td>
@@ -606,7 +613,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
       {/* Tab 4: General Journals Ledger (Read-Only) */}
       {currentTab === 'journals' && (
         <div className="space-y-4">
-          {state.journalEntries.length === 0 ? (
+          {journalEntries.length === 0 ? (
             <div className="glass-card rounded-2xl overflow-hidden flex flex-col items-center justify-center p-12 text-center">
               <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-[#1E1F22] flex items-center justify-center text-slate-400 dark:text-[#80848E] mb-4">
                 <FileSpreadsheet className="w-8 h-8" />
@@ -620,14 +627,14 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-blue-600" />
               <span>
-                Seluruh <strong>{state.journalEntries.length} entri jurnal</strong> terverifikasi
+                Seluruh <strong>{journalEntries.length} entri jurnal</strong> terverifikasi
                 memiliki <strong>Total Debit = Total Kredit</strong>.
               </span>
             </div>
           </div>
 
           <div className="space-y-4">
-            {state.journalEntries.map((je) => (
+            {journalEntries.map((je) => (
               <div key={je.id} className="glass-card rounded-2xl p-4 overflow-hidden">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 dark:border-[#3F4147] gap-2 mb-3">
                   <div className="flex items-center gap-2">
@@ -656,7 +663,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
                       {je.lines.map((l) => {
-                        const acc = state.accounts.find((a) => a.id === l.accountId);
+                        const acc = accounts.find((a) => a.id === l.accountId);
                         return (
                           <tr key={l.id} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31]">
                             <td className="py-2 px-3">
@@ -722,7 +729,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 onChange={(e) => setInvContactId(e.target.value)}
                 className="w-full px-3 py-2 text-xs rounded-xl glass-input font-bold"
               >
-                {state.contacts
+                {contacts
                   .filter((c) => c.type === 'customer' || c.type === 'keduanya')
                   .map((c) => (
                     <option key={c.id} value={c.id}>
@@ -779,7 +786,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                   <select
                     value={item.productId}
                     onChange={(e) => {
-                      const prod = state.products.find((p) => p.id === e.target.value);
+                      const prod = products.find((p) => p.id === e.target.value);
                       const updated = structuredClone(invItems);
                       updated[idx].productId = e.target.value;
                       if (prod) updated[idx].unitPrice = prod.salePrice;
@@ -787,7 +794,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                     }}
                     className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 bg-white"
                   >
-                    {state.products.map((p) => (
+                    {products.map((p) => (
                       <option key={p.id} value={p.id}>
                         {p.name} (Stok: {p.qtyOnHand})
                       </option>
@@ -913,7 +920,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 onChange={(e) => setBillContactId(e.target.value)}
                 className="w-full px-3 py-2 text-xs rounded-xl glass-input font-bold"
               >
-                {state.contacts
+                {contacts
                   .filter((c) => c.type === 'vendor' || c.type === 'keduanya')
                   .map((c) => (
                     <option key={c.id} value={c.id}>
@@ -970,7 +977,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                   <select
                     value={item.productId}
                     onChange={(e) => {
-                      const prod = state.products.find((p) => p.id === e.target.value);
+                      const prod = products.find((p) => p.id === e.target.value);
                       const updated = structuredClone(billItems);
                       updated[idx].productId = e.target.value;
                       if (prod) updated[idx].unitCost = prod.avgCost;
@@ -978,7 +985,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                     }}
                     className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 bg-white"
                   >
-                    {state.products.map((p) => (
+                    {products.map((p) => (
                       <option key={p.id} value={p.id}>
                         {p.name} (HPP Lama: {formatIDR(p.avgCost)})
                       </option>
@@ -1132,7 +1139,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 onChange={(e) => setCashAccountId(e.target.value)}
                 className="w-full px-3 py-2 text-xs rounded-xl glass-input font-bold"
               >
-                {state.accounts
+                {accounts
                   .filter((a) => a.code === '1101' || a.code === '1102')
                   .map((a) => (
                     <option key={a.id} value={a.id}>
@@ -1151,7 +1158,7 @@ export const TransactionsView: React.FC<TransactionsViewProps> = ({
                 onChange={(e) => setContraAccountId(e.target.value)}
                 className="w-full px-3 py-2 text-xs rounded-xl glass-input font-bold"
               >
-                {state.accounts
+                {accounts
                   .filter((a) => a.type === 'beban' || a.type === 'ekuitas' || a.type === 'pendapatan' || a.subType === 'aset_tetap')
                   .map((a) => (
                     <option key={a.id} value={a.id}>

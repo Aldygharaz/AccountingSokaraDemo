@@ -16,18 +16,20 @@ import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface ProductsViewProps {
-  state: AppState;
   onAddProduct: (prod: Omit<Product, 'id' | 'avgCost' | 'qtyOnHand' | 'createdAt'> & { initialQty?: number; initialCost?: number }) => void;
   onOpenNewBill: () => void;
 }
 
 export const ProductsView: React.FC<ProductsViewProps> = ({
-  state,
   onAddProduct,
   onOpenNewBill,
 }) => {
+  const products = useStore(s => s.products);
+  const stockMovements = useStore(s => s.stockMovements);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -43,9 +45,9 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
   const [initialQty, setInitialQty] = useState<number>(0);
   const [minStockAlert, setMinStockAlert] = useState<number>(15);
 
-  const categories = Array.from(new Set(state.products.map((p) => p.category)));
+  const categories = Array.from(new Set(products.map((p) => p.category)));
 
-  const filteredProducts = state.products.filter((p) => {
+  const filteredProducts = products.filter((p) => {
     if (selectedCategory !== 'all' && p.category !== selectedCategory) return false;
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
@@ -80,7 +82,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
 
   // Stock movements for selected product
   const movementsForSelected = selectedStockProduct
-    ? state.stockMovements.filter((sm) => sm.productId === selectedStockProduct.id)
+    ? stockMovements.filter((sm) => sm.productId === selectedStockProduct.id)
     : [];
 
   return (

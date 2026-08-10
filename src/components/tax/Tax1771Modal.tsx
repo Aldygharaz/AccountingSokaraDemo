@@ -15,20 +15,22 @@ import { computeTax1771, FiscalCorrectionItem } from '../../lib/tax1771Engine';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface Tax1771ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const Tax1771Modal: React.FC<Tax1771ModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [selectedYear, setSelectedYear] = useState<number>(2026);
-  const tax = computeTax1771(state.accounts, state.journalEntries, selectedYear);
+  const tax = computeTax1771(accounts, journalEntries, selectedYear);
 
   const handlePrint = () => {
     soundFx.playChime();

@@ -17,17 +17,20 @@ import { AppState } from '../../lib/storage';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
+import { useStore } from '../../lib/storage';
 
 interface ContactsViewProps {
-  state: AppState;
   onAddContact: (contact: Omit<Contact, 'id' | 'openBalanceAR' | 'openBalanceAP' | 'totalSales' | 'totalPurchases' | 'createdAt'>) => void;
   onOpenNewInvoiceForContact?: (contactId: string) => void;
 }
 
 export const ContactsView: React.FC<ContactsViewProps> = ({
-  state,
   onAddContact,
 }) => {
+  const contacts = useStore(s => s.contacts);
+  const invoices = useStore(s => s.invoices);
+  const purchaseBills = useStore(s => s.purchaseBills);
+
   const [filterType, setFilterType] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -42,7 +45,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
   const [address, setAddress] = useState('');
   const [taxId, setTaxId] = useState('');
 
-  const filteredContacts = state.contacts.filter((c) => {
+  const filteredContacts = contacts.filter((c) => {
     if (filterType === 'customer' && c.type !== 'customer' && c.type !== 'keduanya') return false;
     if (filterType === 'vendor' && c.type !== 'vendor' && c.type !== 'keduanya') return false;
     if (searchTerm) {
@@ -410,9 +413,9 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                 Riwayat Transaksi Terkait
               </h4>
               {(() => {
-                const salesInvoices = state.invoices.filter((i) => i.contactId === selectedContactHistory.id);
-                const purchaseBills = (state.purchaseBills || []).filter((b) => b.contactId === selectedContactHistory.id);
-                const totalTransactions = salesInvoices.length + purchaseBills.length;
+                const salesInvoices = invoices.filter((i) => i.contactId === selectedContactHistory.id);
+                const filteredPurchaseBills = (purchaseBills || []).filter((b) => b.contactId === selectedContactHistory.id);
+                const totalTransactions = salesInvoices.length + filteredPurchaseBills.length;
 
                 if (totalTransactions === 0) {
                   return <p className="text-xs text-slate-400">Belum ada riwayat transaksi.</p>;
@@ -434,7 +437,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                         </div>
                       </div>
                     ))}
-                    {purchaseBills.map((bill) => (
+                    {filteredPurchaseBills.map((bill) => (
                       <div key={bill.id} className="p-3 flex items-center justify-between bg-white hover:bg-slate-50">
                         <div>
                           <p className="font-bold text-purple-600">{bill.billNumber}</p>

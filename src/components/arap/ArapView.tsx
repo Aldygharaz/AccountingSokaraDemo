@@ -19,9 +19,9 @@ import {
 } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
+import { useStore } from '../../lib/storage';
 
 interface ArapViewProps {
-  state: AppState;
   onReceiveInvoicePayment: (data: {
     invoiceId: string;
     date: string;
@@ -39,10 +39,14 @@ interface ArapViewProps {
 }
 
 export const ArapView: React.FC<ArapViewProps> = ({
-  state,
   onReceiveInvoicePayment,
   onPayPurchaseBill,
 }) => {
+  const invoices = useStore(s => s.invoices);
+  const purchaseBills = useStore(s => s.purchaseBills);
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [activeModule, setActiveModule] = useState<'ar' | 'ap'>('ar');
   const [selectedAgingBucket, setSelectedAgingBucket] = useState<string>('all');
 
@@ -56,7 +60,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Compute live aging buckets
-  const arItems = state.invoices.map((i) => ({
+  const arItems = invoices.map((i) => ({
     id: i.id,
     refNumber: i.invoiceNumber,
     contactName: i.contactName,
@@ -70,7 +74,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
   const arBuckets = calculateAgingBuckets(arItems);
   const totalAR = arBuckets.reduce((sum, b) => sum + b.amount, 0);
 
-  const apItems = state.purchaseBills.map((b) => ({
+  const apItems = purchaseBills.map((b) => ({
     id: b.id,
     refNumber: b.billNumber,
     contactName: b.contactName,
@@ -85,7 +89,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
   const totalAP = apBuckets.reduce((sum, b) => sum + b.amount, 0);
 
   // Cross verification check with balance sheet
-  const balanceSheet = generateBalanceSheet(state.accounts, state.journalEntries);
+  const balanceSheet = generateBalanceSheet(accounts, journalEntries);
   const bsAR = balanceSheet.currentAssets.find((a) => a.accountCode === '1103')?.amount || 0;
   const bsAP = balanceSheet.currentLiabilities.find((a) => a.accountCode === '2101')?.amount || 0;
 
@@ -409,7 +413,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
                   onChange={(e) => setPaymentAccountId(e.target.value)}
                   className="w-full px-3 py-2 text-xs rounded-xl glass-input font-bold"
                 >
-                  {state.accounts
+                  {accounts
                     .filter((a) => a.code === '1101' || a.code === '1102')
                     .map((a) => (
                       <option key={a.id} value={a.id}>
@@ -513,7 +517,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
                   onChange={(e) => setPaymentAccountId(e.target.value)}
                   className="w-full px-3 py-2 text-xs rounded-xl glass-input font-bold"
                 >
-                  {state.accounts
+                  {accounts
                     .filter((a) => a.code === '1101' || a.code === '1102')
                     .map((a) => (
                       <option key={a.id} value={a.id}>

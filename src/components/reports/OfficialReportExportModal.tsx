@@ -18,24 +18,27 @@ import {
 } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface OfficialReportExportModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const OfficialReportExportModal: React.FC<OfficialReportExportModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+  const currentUser = useStore(s => s.currentUser);
+
   const [reportType, setReportType] = useState<'balance_sheet' | 'income_statement' | 'cash_flow'>('balance_sheet');
   const [asOfDate, setAsOfDate] = useState('2026-08-31');
 
-  const bs = generateBalanceSheet(state.accounts, state.journalEntries, asOfDate);
-  const pnl = generateIncomeStatement(state.accounts, state.journalEntries, undefined, asOfDate);
-  const cf = generateCashFlowDirect(state.accounts, state.journalEntries, undefined, asOfDate);
+  const bs = generateBalanceSheet(accounts, journalEntries, asOfDate);
+  const pnl = generateIncomeStatement(accounts, journalEntries, undefined, asOfDate);
+  const cf = generateCashFlowDirect(accounts, journalEntries, undefined, asOfDate);
 
   const handlePrint = () => {
     soundFx.playChime();
@@ -302,7 +305,7 @@ export const OfficialReportExportModal: React.FC<OfficialReportExportModalProps>
           <div className="pt-8 border-t border-slate-200 dark:border-[#3F4147] grid grid-cols-2 text-center text-xs">
             <div>
               <div className="text-slate-400 mb-12">Disiapkan Oleh:</div>
-              <div className="font-black text-slate-900 dark:text-white uppercase">{state.currentUser.name}</div>
+              <div className="font-black text-slate-900 dark:text-white uppercase">{currentUser.name}</div>
               <div className="text-[10px] text-slate-500">Chief Accountant / Controller (BKP/CPA)</div>
             </div>
             <div>

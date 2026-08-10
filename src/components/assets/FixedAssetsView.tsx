@@ -18,17 +18,18 @@ import {
 } from '../../lib/assetEngine';
 import { soundFx } from '../../lib/soundFx';
 import { PokaYokeModal } from '../ui/PokaYokeModal';
+import { useStore } from '../../lib/storage';
 
 interface FixedAssetsViewProps {
-  state: AppState;
   onPostDepreciation: (assetId: string, date: string) => { success: boolean; error?: string };
 }
 
 export const FixedAssetsView: React.FC<FixedAssetsViewProps> = ({
-  state,
   onPostDepreciation,
 }) => {
-  const [selectedAsset, setSelectedAsset] = useState<FixedAsset | null>(state.fixedAssets[0] || null);
+  const fixedAssets = useStore(s => s.fixedAssets);
+
+  const [selectedAsset, setSelectedAsset] = useState<FixedAsset | null>(fixedAssets[0] || null);
   const [postDate, setPostDate] = useState(new Date().toISOString().split('T')[0]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -88,7 +89,7 @@ export const FixedAssetsView: React.FC<FixedAssetsViewProps> = ({
       <div className="glass-card rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#1E1F22]">
           <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-            Daftar Aktiva Tetap Toko ({state.fixedAssets.length} unit)
+            Daftar Aktiva Tetap Toko ({fixedAssets.length} unit)
           </h3>
         </div>
 
@@ -107,7 +108,7 @@ export const FixedAssetsView: React.FC<FixedAssetsViewProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-              {state.fixedAssets.length === 0 ? (
+              {fixedAssets.length === 0 ? (
                 <tr>
                   <td colSpan={8} className="py-8 text-center text-slate-500 dark:text-[#B5BAC1]">
                     <div className="flex flex-col items-center justify-center gap-2">
@@ -120,7 +121,7 @@ export const FixedAssetsView: React.FC<FixedAssetsViewProps> = ({
                   </td>
                 </tr>
               ) : (
-                state.fixedAssets.map((asset) => {
+                fixedAssets.map((asset) => {
                   const monthly = calculateMonthlyDepreciation(asset);
                 const isSelected = selectedAsset?.id === asset.id;
 

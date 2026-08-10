@@ -21,17 +21,19 @@ import {
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface JobOrderCostingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
   isOpen,
   onClose,
 }) => {
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [selectedJob, setSelectedJob] = useState<JobOrderCostSheet>(DEMO_JOB_ORDERS[0]);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
@@ -40,7 +42,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
   const handlePostCompletion = () => {
     soundFx.playChaChing();
     const res = generateJobCompletionJournal(selectedJob);
-    (store as any).state.journalEntries.push(res.journalEntry);
+    (store as any).journalEntries.push(res.journalEntry);
     (store as any).notify();
     setSuccessMessage(
       `Jurnal Penyelesaian Produksi Job Order ${selectedJob.jobCode} sebesar ${formatIDR(res.summary.totalManufacturingCost)} berhasil diposting ke Akun 1104 Persediaan Barang Jadi!`

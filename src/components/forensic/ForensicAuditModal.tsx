@@ -15,18 +15,18 @@ import { AppState, store } from '../../lib/storage';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface ForensicAuditModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const ForensicAuditModal: React.FC<ForensicAuditModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+
   const [isVerifying, setIsVerifying] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 

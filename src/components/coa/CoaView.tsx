@@ -21,6 +21,7 @@ import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
 import { LedgerDrilldownDrawer } from '../ui/LedgerDrilldownDrawer';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 const formatSubType = (subType: string) => {
   const mapping: Record<string, string> = {
@@ -40,16 +41,17 @@ const formatSubType = (subType: string) => {
 };
 
 interface CoaViewProps {
-  state: AppState;
   onAddAccount: (acc: Omit<Account, 'id' | 'isSystem' | 'isActive'>) => void;
   onDeleteAccount: (id: string) => { success: boolean; error?: string };
 }
 
 export const CoaView: React.FC<CoaViewProps> = ({
-  state,
   onAddAccount,
   onDeleteAccount,
 }) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [activeTypeFilter, setActiveTypeFilter] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -79,15 +81,15 @@ export const CoaView: React.FC<CoaViewProps> = ({
   }, []);
 
   // Calculate live running balances for all accounts
-  const balanceMap = calculateAccountBalances(state.accounts, state.journalEntries);
+  const balanceMap = calculateAccountBalances(accounts, journalEntries);
 
   // Check for unbalanced journals
-  const unbalancedCount = state.journalEntries.filter(
+  const unbalancedCount = journalEntries.filter(
     (je) => Math.abs(je.totalDebit - je.totalKredit) >= 0.01
   ).length;
 
   // Filter accounts
-  const filteredAccounts = state.accounts.filter((acc) => {
+  const filteredAccounts = accounts.filter((acc) => {
     if (activeTypeFilter !== 'all' && acc.type !== activeTypeFilter) return false;
     if (searchTerm) {
       const matchCode = acc.code.toLowerCase().includes(searchTerm.toLowerCase());
@@ -124,7 +126,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
       return;
     }
 
-    const isDuplicate = state.accounts.some((a) => a.code === newCode);
+    const isDuplicate = accounts.some((a) => a.code === newCode);
     if (isDuplicate) {
       setErrorMessage(`Kode akun ${newCode} sudah terdaftar. Gunakan kode unik lain.`);
       return;
@@ -166,7 +168,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
           isOpen={!!selectedDrilldownAccount}
           onClose={() => setSelectedDrilldownAccount(null)}
           account={selectedDrilldownAccount}
-          journalEntries={state.journalEntries}
+          journalEntries={journalEntries}
         />
       )}
 
@@ -522,7 +524,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
         isOpen={!!selectedDrilldownAccount}
         onClose={() => setSelectedDrilldownAccount(null)}
         account={selectedDrilldownAccount}
-        journalEntries={state.journalEntries}
+        journalEntries={journalEntries}
       />
     </div>
   );

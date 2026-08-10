@@ -13,24 +13,26 @@ import { AppState, store } from '../../lib/storage';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface ForexStudioModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const ForexStudioModal: React.FC<ForexStudioModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const forexExposures = useStore(s => s.forexExposures);
+  const forexRates = useStore(s => s.forexRates);
+
   const [periodDate, setPeriodDate] = useState(new Date().toISOString().split('T')[0]);
   const [isPosting, setIsPosting] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const exposures = state.forexExposures || [];
-  const rates = state.forexRates || [];
+  const exposures = forexExposures || [];
+  const rates = forexRates || [];
 
   const totalUnrealizedGainLoss = exposures.reduce(
     (sum, exp) => sum + exp.unrealizedGainLossIDR,

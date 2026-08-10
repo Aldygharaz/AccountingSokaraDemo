@@ -13,22 +13,23 @@ import { AppState, store } from '../../lib/storage';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface AmortizationScheduleModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const AmortizationScheduleModal: React.FC<AmortizationScheduleModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const prepaidExpenses = useStore(s => s.prepaidExpenses);
+
   const [selectedMonth, setSelectedMonth] = useState('2026-03');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const prepaids = state.prepaidExpenses || [];
+  const prepaids = prepaidExpenses || [];
   const totalPrepaidBalance = prepaids.reduce((sum, p) => sum + p.remainingBalance, 0);
   const totalMonthlyAmortization = prepaids.reduce((sum, p) => sum + p.monthlyAmortization, 0);
 

@@ -21,13 +21,16 @@ import {
   generateBalanceSheet,
 } from '../../lib/accountingEngine';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface FinancialSimulatorProps {
-  state: AppState;
-}
+  }
 
-export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state }) => {
-  const baseIncome = generateIncomeStatement(state.accounts, state.journalEntries);
+export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({}) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
+  const baseIncome = generateIncomeStatement(accounts, journalEntries);
 
   // Simulation Sliders
   const [salesGrowth, setSalesGrowth] = useState<number>(15); // +15%
@@ -151,116 +154,6 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({ state })
                   : 'bg-slate-200 dark:bg-[#383A40] text-slate-700 dark:text-[#DBDEE1] border-slate-300 dark:border-[#3F4147]'
               }`}
             >
-              {salesGrowth > 0 ? `+${salesGrowth}%` : `${salesGrowth}%`}
-            </span>
-          </div>
-          <span className="text-xs text-slate-500">Baseline Omzet: {formatIDR(baseIncome.totalRevenue)}</span>
-
-          <input
-            type="range"
-            min="-50"
-            max="100"
-            step="1"
-            value={salesGrowth}
-            onChange={(e) => {
-              // soundFx.playClick();
-              setSalesGrowth(Number(e.target.value));
-            }}
-            className="w-full accent-blue-600 cursor-pointer h-2 bg-slate-200 dark:bg-[#383A40] rounded-lg"
-          />
-
-          <div className="flex justify-between text-[10px] font-bold text-slate-400 dark:text-[#80848E]">
-            <span>Min: -50% (Resesi)</span>
-            <span>0%</span>
-            <span>Max: +100% (2x Lipat)</span>
-          </div>
-
-          <div className="pt-2 border-t border-slate-200/60 dark:border-[#3F4147] flex justify-between text-xs">
-            <span className="text-slate-500 dark:text-[#B5BAC1]">Proyeksi Penjualan:</span>
-            <strong className="text-slate-900 dark:text-white tabular-nums font-mono">
-              {formatIDR(simulatedSales)}
-            </strong>
-          </div>
-        </div>
-
-        {/* Slider 2: COGS Inflation */}
-        <div className="p-5 rounded-3xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200/80 dark:border-[#3F4147] space-y-4 shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-wider">
-              Kenaikan Harga Beli / HPP
-            </span>
-            <span
-              className={`font-mono text-xs font-black px-2.5 py-0.5 rounded-full border ${
-                cogsInflation > 0
-                  ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800'
-                  : cogsInflation < 0
-                  ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
-                  : 'bg-slate-200 dark:bg-[#383A40] text-slate-700 dark:text-[#DBDEE1] border-slate-300 dark:border-[#3F4147]'
-              }`}
-            >
-              {cogsInflation > 0 ? `+${cogsInflation}%` : `${cogsInflation}%`}
-            </span>
-          </div>
-          <span className="text-xs text-slate-500">Baseline HPP: {formatIDR(baseIncome.totalCogs)}</span>
-
-          <input
-            type="range"
-            min="-30"
-            max="50"
-            step="1"
-            value={cogsInflation}
-            onChange={(e) => {
-              // soundFx.playClick();
-              setCogsInflation(Number(e.target.value));
-            }}
-            className="w-full accent-rose-600 cursor-pointer h-2 bg-slate-200 dark:bg-[#383A40] rounded-lg"
-          />
-
-          <div className="flex justify-between text-[10px] font-bold text-slate-400 dark:text-[#80848E]">
-            <span>Diskon: -30%</span>
-            <span>0%</span>
-            <span>Inflasi: +50%</span>
-          </div>
-
-          <div className="pt-2 border-t border-slate-200/60 dark:border-[#3F4147] flex justify-between text-xs">
-            <span className="text-slate-500 dark:text-[#B5BAC1]">Proyeksi HPP:</span>
-            <strong className="text-slate-900 dark:text-white tabular-nums font-mono">
-              {formatIDR(simulatedCogs)}
-            </strong>
-          </div>
-        </div>
-
-        {/* Slider 3: OpEx Efficiency */}
-        <div className="p-5 rounded-3xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200/80 dark:border-[#3F4147] space-y-4 shadow-sm">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-black text-slate-800 dark:text-white uppercase tracking-wider">
-              Efisiensi Biaya Operasional
-            </span>
-            <span
-              className={`font-mono text-xs font-black px-2.5 py-0.5 rounded-full border ${
-                opexReduction < 0
-                  ? 'bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800'
-                  : opexReduction > 0
-                  ? 'bg-rose-100 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border-rose-200 dark:border-rose-800'
-                  : 'bg-slate-200 dark:bg-[#383A40] text-slate-700 dark:text-[#DBDEE1] border-slate-300 dark:border-[#3F4147]'
-              }`}
-            >
-              {opexReduction > 0 ? `+${opexReduction}% (Boros)` : opexReduction < 0 ? `${opexReduction}% (Hemat)` : `0% (Tetap)`}
-            </span>
-          </div>
-          <span className="text-xs text-slate-500">Baseline Beban: {formatIDR(baseIncome.totalOperatingExpenses)}</span>
-
-          <input
-            type="range"
-            min="-40"
-            max="40"
-            step="1"
-            value={opexReduction}
-            onChange={(e) => {
-              // soundFx.playClick();
-              setOpexReduction(Number(e.target.value));
-            }}
-            className="w-full accent-emerald-600 cursor-pointer h-2 bg-slate-200 dark:bg-[#383A40] rounded-lg"
           />
 
           <div className="flex justify-between text-[10px] font-bold text-slate-400 dark:text-[#80848E]">

@@ -4,7 +4,7 @@ import { Header } from './components/common/Header';
 import { DashboardView } from './components/dashboard/DashboardView';
 import { CommandPalette } from './components/ui/CommandPalette';
 import { PokaYokeModal, PokaYokeAnomaly } from './components/ui/PokaYokeModal';
-import { store, resetToDefaultSeed, AppState } from './lib/storage';
+import { store, resetToDefaultSeed, AppState, useStore } from './lib/storage';
 import { soundFx } from './lib/soundFx';
 
 // Code-split heavy views and executive intelligence modals for 60fps & sub-100ms TTI
@@ -41,7 +41,12 @@ const ViewFallback: React.FC = () => (
 );
 
 export const App: React.FC = () => {
-  const [state, setState] = useState<AppState>(store.getState());
+    const currentUser = useStore(s => s.currentUser);
+    const journalEntries = useStore(s => s.journalEntries);
+    const products = useStore(s => s.products);
+    const contacts = useStore(s => s.contacts);
+    const invoices = useStore(s => s.invoices);
+  
   const [currentTab, setCurrentTab] = useState<string>('dashboard');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
@@ -79,15 +84,6 @@ export const App: React.FC = () => {
       localStorage.setItem('LEDGER_LOGIC_THEME', 'light');
     }
   }, [isDarkMode]);
-
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      setState({ ...store.getState() });
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   // Global Keyboard Shortcuts (Ctrl+K, Ctrl+N, Ctrl+B, F4, F7, F8, F9, F10, Ctrl+Shift+E, F2)
   useEffect(() => {
@@ -148,18 +144,18 @@ export const App: React.FC = () => {
       if (e.key === 'F2') {
         e.preventDefault();
         soundFx.playClick();
-        store.setCurrentUserRole(state.currentUser.role === 'admin' ? 'staff' : 'admin');
+        store.setCurrentUserRole(currentUser.role === 'admin' ? 'staff' : 'admin');
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [state.currentUser.role]);
+  }, [currentUser.role]);
 
   // Defensive Poka-Yoke Automated Health Check
   const handleOpenPokaYoke = () => {
     // Check 1: Unbalanced journals
-    const unbalanced = state.journalEntries.find((j) => !j.isBalanced);
+    const unbalanced = journalEntries.find((j) => !j.isBalanced);
     if (unbalanced) {
       setPokaYokeAnomaly({
         id: `py-${Date.now()}`,
@@ -178,7 +174,7 @@ export const App: React.FC = () => {
     }
 
     // Check 2: Low stock under reorder point
-    const lowStock = state.products.find((p) => p.qtyOnHand <= 15);
+    const lowStock = products.find((p) => p.qtyOnHand <= 15);
     if (lowStock) {
       setPokaYokeAnomaly({
         id: `py-${Date.now()}`,
@@ -190,7 +186,7 @@ export const App: React.FC = () => {
         autoFixLabel: 'Auto-Fix Terbitkan PO Restock',
         onAutoFix: () => {
           store.createPurchaseBill({
-            contactId: state.contacts.find((c) => c.type === 'vendor')?.id || state.contacts[0]?.id || '',
+            contactId: contacts.find((c) => c.type === 'vendor')?.id || contacts[0]?.id || '',
             date: new Date().toISOString().split('T')[0],
             dueDate: new Date(Date.now() + 30 * 86400000).toISOString().split('T')[0],
             items: [{ productId: lowStock.id, qty: 50, unitCost: lowStock.avgCost, isTaxable: true }],
@@ -204,7 +200,7 @@ export const App: React.FC = () => {
 
     // Check 3: Overdue invoices
     const now = new Date().toISOString().split('T')[0];
-    const overdueInv = state.invoices.find(
+    const overdueInv = invoices.find(
       (i) => i.status !== 'lunas' && i.status !== 'void' && i.dueDate < now
     );
     if (overdueInv) {
@@ -245,7 +241,7 @@ export const App: React.FC = () => {
   };
 
   // Validate live journal double-entry state
-  const isJournalBalanced = state.journalEntries.every((j) => j.isBalanced);
+  const isJournalBalanced = journalEntries.every((j) => j.isBalanced);
 
   return (
     <div className="min-h-screen bg-slate-50/50 dark:bg-[#1E1F22] text-slate-900 dark:text-[#F2F3F5] transition-colors duration-200">
@@ -283,7 +279,7 @@ export const App: React.FC = () => {
             setCurrentTab(tab);
           }
         }}
-        currentUser={state.currentUser}
+        currentUser={currentUser}
         onResetData={() => {
           soundFx.playClick();
           setPokaYokeAnomaly({
@@ -305,7 +301,7 @@ export const App: React.FC = () => {
 
       {/* Docked Global Header */}
       <Header
-        currentUser={state.currentUser}
+        currentUser={currentUser}
         onRoleToggle={(role) => {
           soundFx.playClick();
           store.setCurrentUserRole(role);
@@ -330,7 +326,6 @@ export const App: React.FC = () => {
       <main className="lg:ml-72 ml-0 pt-20 px-6 sm:px-8 pb-16 min-h-screen bg-slate-50/50 dark:bg-[#1E1F22]">
         {currentTab === 'dashboard' && (
           <DashboardView
-            state={state}
             onOpenNewInvoice={() => setCurrentTab('transactions')}
             onOpenNewBill={() => setCurrentTab('transactions')}
             onOpenNewCash={() => setCurrentTab('transactions')}
@@ -341,7 +336,6 @@ export const App: React.FC = () => {
         <Suspense fallback={<ViewFallback />}>
           {currentTab === 'coa' && (
             <CoaView
-              state={state}
               onAddAccount={(acc) => store.addAccount(acc)}
               onDeleteAccount={(id) => store.deleteAccount(id)}
             />
@@ -349,7 +343,6 @@ export const App: React.FC = () => {
 
           {currentTab === 'contacts' && (
             <ContactsView
-              state={state}
               onAddContact={(c) => store.addContact(c)}
               onOpenNewInvoiceForContact={() => setCurrentTab('transactions')}
             />
@@ -357,7 +350,6 @@ export const App: React.FC = () => {
 
           {currentTab === 'products' && (
             <ProductsView
-              state={state}
               onAddProduct={(p) => store.addProduct(p)}
               onOpenNewBill={() => setCurrentTab('transactions')}
             />
@@ -365,8 +357,7 @@ export const App: React.FC = () => {
 
           {currentTab === 'transactions' && (
             <TransactionsView
-              state={state}
-              currentUser={state.currentUser}
+              currentUser={currentUser}
               onCreateInvoice={(data) => store.createSalesInvoice(data)}
               onCreateBill={(data) => store.createPurchaseBill(data)}
               onCreateCashTx={(data) => store.createCashTransaction(data)}
@@ -376,7 +367,6 @@ export const App: React.FC = () => {
 
           {currentTab === 'arap' && (
             <ArapView
-              state={state}
               onReceiveInvoicePayment={(data) => store.receiveInvoicePayment(data)}
               onPayPurchaseBill={(data) => store.payPurchaseBill(data)}
             />
@@ -384,7 +374,6 @@ export const App: React.FC = () => {
 
           {currentTab === 'banking' && (
             <BankReconciliationView
-              state={state}
               onReconcileItem={(statementId) => store.reconcileBankStatement(statementId)}
               onRecordFeeOrInterest={(data) => store.recordBankFeeOrInterest(data)}
             />
@@ -392,16 +381,15 @@ export const App: React.FC = () => {
 
           {currentTab === 'assets' && (
             <FixedAssetsView
-              state={state}
               onPostDepreciation={(assetId, date) => store.postAssetDepreciation(assetId, date)}
             />
           )}
 
-          {currentTab === 'tax' && <TaxStudioView state={state} />}
+          {currentTab === 'tax' && <TaxStudioView />}
 
-          {currentTab === 'reports' && <ReportsView state={state} />}
+          {currentTab === 'reports' && <ReportsView />}
 
-          {currentTab === 'analytics' && <AnalyticsView state={state} />}
+          {currentTab === 'analytics' && <AnalyticsView />}
 
           {currentTab === 'manual' && (
             <ManualBookView onNavigateToTab={(tab) => setCurrentTab(tab)} />
@@ -430,7 +418,7 @@ export const App: React.FC = () => {
           setIsCommandPaletteOpen(false);
         }}
         onToggleRole={() => {
-          store.setCurrentUserRole(state.currentUser.role === 'admin' ? 'staff' : 'admin');
+          store.setCurrentUserRole(currentUser.role === 'admin' ? 'staff' : 'admin');
           setIsCommandPaletteOpen(false);
         }}
         onResetData={() => {
@@ -460,8 +448,8 @@ export const App: React.FC = () => {
           <PosCashierModal
             isOpen={isPosOpen}
             onClose={() => setIsPosOpen(false)}
-            products={state.products}
-            contacts={state.contacts}
+            products={products}
+            contacts={contacts}
             onCompleteSale={(data) => store.createSalesInvoice(data)}
           />
         )}
@@ -471,7 +459,6 @@ export const App: React.FC = () => {
           <PeriodClosingModal
             isOpen={isClosingModalOpen}
             onClose={() => setIsClosingModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -480,7 +467,6 @@ export const App: React.FC = () => {
           <CfoIntelligenceModal
             isOpen={isCfoModalOpen}
             onClose={() => setIsCfoModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -489,7 +475,6 @@ export const App: React.FC = () => {
           <ForensicAuditModal
             isOpen={isForensicModalOpen}
             onClose={() => setIsForensicModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -498,7 +483,6 @@ export const App: React.FC = () => {
           <ForexStudioModal
             isOpen={isForexModalOpen}
             onClose={() => setIsForexModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -507,7 +491,6 @@ export const App: React.FC = () => {
           <AmortizationScheduleModal
             isOpen={isAmortizationModalOpen}
             onClose={() => setIsAmortizationModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -516,7 +499,6 @@ export const App: React.FC = () => {
           <OfficialReportExportModal
             isOpen={isOfficialExportModalOpen}
             onClose={() => setIsOfficialExportModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -525,7 +507,6 @@ export const App: React.FC = () => {
           <JobOrderCostingModal
             isOpen={isCostingModalOpen}
             onClose={() => setIsCostingModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -534,7 +515,6 @@ export const App: React.FC = () => {
           <Tax1771Modal
             isOpen={isTax1771ModalOpen}
             onClose={() => setIsTax1771ModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -543,7 +523,6 @@ export const App: React.FC = () => {
           <DcfValuationModal
             isOpen={isValuationModalOpen}
             onClose={() => setIsValuationModalOpen(false)}
-            state={state}
           />
         )}
 
@@ -552,7 +531,6 @@ export const App: React.FC = () => {
           <EclProvisioningModal
             isOpen={isEclModalOpen}
             onClose={() => setIsEclModalOpen(false)}
-            state={state}
           />
         )}
       </Suspense>

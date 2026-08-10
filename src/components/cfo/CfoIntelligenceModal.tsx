@@ -16,19 +16,21 @@ import { calculateCfoIntelligence } from '../../lib/cfoIntelligence';
 import { formatIDR, formatNumber } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { InteractiveTiltCard } from '../ui/InteractiveTiltCard';
+import { useStore } from '../../lib/storage';
 
 interface CfoIntelligenceModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const CfoIntelligenceModal: React.FC<CfoIntelligenceModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
-  const cfo = calculateCfoIntelligence(state.accounts, state.journalEntries);
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
+  const cfo = calculateCfoIntelligence(accounts, journalEntries);
 
   return (
     <Modal

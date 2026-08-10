@@ -16,22 +16,24 @@ import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { InteractiveTiltCard } from '../ui/InteractiveTiltCard';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface DcfValuationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const DcfValuationModal: React.FC<DcfValuationModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [wacc, setWacc] = useState<number>(10.5);
   const [growthRate, setGrowthRate] = useState<number>(3.5);
 
-  const val = calculateDcfValuation(state.accounts, state.journalEntries, wacc, growthRate);
+  const val = calculateDcfValuation(accounts, journalEntries, wacc, growthRate);
 
   return (
     <Modal

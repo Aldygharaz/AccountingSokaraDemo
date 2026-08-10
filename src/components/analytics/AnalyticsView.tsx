@@ -11,7 +11,7 @@ import {
   Lock,
   Sparkles,
 } from 'lucide-react';
-import { AppState } from '../../lib/storage';
+import { useStore } from '../../lib/storage';
 import {
   formatIDR,
   formatNumber,
@@ -21,11 +21,14 @@ import {
 } from '../../lib/accountingEngine';
 
 interface AnalyticsViewProps {
-  state: AppState;
-}
+  }
 
-export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ state }) => {
-  const isStaff = state.currentUser.role === 'staff';
+export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
+  const currentUser = useStore(s => s.currentUser);
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
+  const isStaff = currentUser.role === 'staff';
 
   if (isStaff) {
     return (
@@ -44,9 +47,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ state }) => {
     );
   }
 
-  const ratios = React.useMemo(() => calculateFinancialRatios(state.accounts, state.journalEntries), [state.accounts, state.journalEntries]);
-  const balanceSheet = React.useMemo(() => generateBalanceSheet(state.accounts, state.journalEntries), [state.accounts, state.journalEntries]);
-  const incomeStatement = React.useMemo(() => generateIncomeStatement(state.accounts, state.journalEntries), [state.accounts, state.journalEntries]);
+  const ratios = React.useMemo(() => calculateFinancialRatios(accounts, journalEntries), [accounts, journalEntries]);
+  const balanceSheet = React.useMemo(() => generateBalanceSheet(accounts, journalEntries), [accounts, journalEntries]);
+  const incomeStatement = React.useMemo(() => generateIncomeStatement(accounts, journalEntries), [accounts, journalEntries]);
 
   const renderBadge = (value: number | string, type: 'current' | 'quick' | 'gpm' | 'npm' | 'der' | 'roe') => {
     let num = Number(value);

@@ -13,9 +13,9 @@ import {
 import { AppState } from '../../lib/storage';
 import { formatIDR } from '../../lib/accountingEngine';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface BankReconciliationViewProps {
-  state: AppState;
   onReconcileItem: (statementId: string) => void;
   onRecordFeeOrInterest: (data: {
     type: 'fee' | 'interest';
@@ -26,18 +26,21 @@ interface BankReconciliationViewProps {
 }
 
 export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
-  state,
   onReconcileItem,
   onRecordFeeOrInterest,
 }) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+  const bankStatements = useStore(s => s.bankStatements);
+
   const [selectedBankAccountId, setSelectedBankAccountId] = useState('acc-1102'); // Bank BCA
   const [datePeriod, setDatePeriod] = useState('2026-08');
 
-  const bankAccount = state.accounts.find((a) => a.id === selectedBankAccountId);
+  const bankAccount = accounts.find((a) => a.id === selectedBankAccountId);
 
   // Compute live ledger bank balance
   let ledgerBalance = 0;
-  state.journalEntries.forEach((je) => {
+  journalEntries.forEach((je) => {
     je.lines.forEach((l) => {
       if (l.accountId === selectedBankAccountId) {
         ledgerBalance += (l.debit || 0) - (l.kredit || 0);
@@ -45,11 +48,11 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
     });
   });
 
-  const unreconciledCount = state.bankStatements.filter((b) => !b.isReconciled).length;
+  const unreconciledCount = bankStatements.filter((b) => !b.isReconciled).length;
 
   const handleAutoMatch = () => {
     soundFx.playAutoFix();
-    state.bankStatements.forEach((b) => {
+    bankStatements.forEach((b) => {
       if (!b.isReconciled && b.referenceNo) {
         onReconcileItem(b.id);
       }
@@ -112,7 +115,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
             {formatIDR(ledgerBalance)}
           </div>
           <p className="text-xs text-emerald-600 font-bold mt-1">
-            {state.journalEntries.filter((j) => j.lines.some((l) => l.accountId === selectedBankAccountId)).length} Transaksi Jurnal
+            {journalEntries.filter((j) => j.lines.some((l) => l.accountId === selectedBankAccountId)).length} Transaksi Jurnal
           </p>
         </div>
 
@@ -133,7 +136,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
       <div className="glass-card rounded-2xl overflow-hidden">
         <div className="p-4 border-b border-slate-200 dark:border-[#3F4147] bg-slate-50 dark:bg-[#1E1F22] flex items-center justify-between">
           <h3 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">
-            Mutasi Rekening Koran Bank BCA ({state.bankStatements.length} baris)
+            Mutasi Rekening Koran Bank BCA ({bankStatements.length} baris)
           </h3>
         </div>
 
@@ -150,7 +153,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
-              {state.bankStatements.map((item) => (
+              {bankStatements.map((item) => (
                 <tr key={item.id} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31] transition-colors">
                   <td className="py-3 px-4 text-slate-500 dark:text-[#B5BAC1]">{item.date}</td>
                   <td className="py-3 px-4">

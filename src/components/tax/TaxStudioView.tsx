@@ -14,18 +14,21 @@ import { AppState } from '../../lib/storage';
 import { formatIDR, generateIncomeStatement, generateBalanceSheet } from '../../lib/accountingEngine';
 import { calculateIndonesianTaxes, calculateMonthlyUmkmTax } from '../../lib/taxEngine';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface TaxStudioViewProps {
-  state: AppState;
-}
+  }
 
-export const TaxStudioView: React.FC<TaxStudioViewProps> = ({ state }) => {
+export const TaxStudioView: React.FC<TaxStudioViewProps> = ({}) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [selectedTaxTab, setSelectedTaxTab] = useState<'ppn' | 'pph_umkm' | 'pph_23'>('ppn');
   const [testTransactionAmount, setTestTransactionAmount] = useState<number>(10000000);
   const [ppnRateOption, setPpnRateOption] = useState<number>(0.11);
 
-  const incomeStatement = generateIncomeStatement(state.accounts, state.journalEntries);
-  const balanceSheet = generateBalanceSheet(state.accounts, state.journalEntries);
+  const incomeStatement = generateIncomeStatement(accounts, journalEntries);
+  const balanceSheet = generateBalanceSheet(accounts, journalEntries);
 
   // Live PPN calculations from balance sheet
   const ppnMasukan = balanceSheet.currentAssets.find((a) => a.accountCode === '1105')?.amount || 0;

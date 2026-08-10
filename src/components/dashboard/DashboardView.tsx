@@ -40,9 +40,9 @@ import {
 import { InteractiveTiltCard } from '../ui/InteractiveTiltCard';
 import { Tooltip } from '../common/Tooltip';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface DashboardViewProps {
-  state: AppState;
   onNavigate: (tab: string) => void;
   onOpenNewInvoice: () => void;
   onOpenNewBill: () => void;
@@ -51,19 +51,23 @@ interface DashboardViewProps {
 }
 
 export const DashboardView: React.FC<DashboardViewProps> = ({
-  state,
   onNavigate,
   onOpenNewInvoice,
   onOpenNewBill,
   onOpenNewCash,
   onTriggerPokaYoke,
 }) => {
+  const accounts = useStore(s => s.accounts);
+  const journalEntries = useStore(s => s.journalEntries);
+  const invoices = useStore(s => s.invoices);
+  const purchaseBills = useStore(s => s.purchaseBills);
+
   const [timeframe, setTimeframe] = useState<'6M' | 'YTD' | '1Y'>('6M');
 
   // Compute live financial figures from journals (memoized to prevent keystroke lag)
-  const balanceSheet = React.useMemo(() => generateBalanceSheet(state.accounts, state.journalEntries), [state.accounts, state.journalEntries]);
-  const incomeStatement = React.useMemo(() => generateIncomeStatement(state.accounts, state.journalEntries), [state.accounts, state.journalEntries]);
-  const ratios = React.useMemo(() => calculateFinancialRatios(state.accounts, state.journalEntries), [state.accounts, state.journalEntries]);
+  const balanceSheet = React.useMemo(() => generateBalanceSheet(accounts, journalEntries), [accounts, journalEntries]);
+  const incomeStatement = React.useMemo(() => generateIncomeStatement(accounts, journalEntries), [accounts, journalEntries]);
+  const ratios = React.useMemo(() => calculateFinancialRatios(accounts, journalEntries), [accounts, journalEntries]);
 
   // Total Cash & Bank (Accounts 1101 + 1102)
   const cashAccounts = balanceSheet.currentAssets.filter(
@@ -130,14 +134,14 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
     profit: 0,
   }));
 
-  state.journalEntries.forEach(entry => {
+  journalEntries.forEach(entry => {
     const d = new Date(entry.date);
     if (d.getFullYear() === currentYear) {
       const monthIdx = d.getMonth();
       let rev = 0;
       let exp = 0;
       entry.lines.forEach((detail: any) => {
-        const acc = state.accounts.find(a => a.id === detail.accountId);
+        const acc = accounts.find(a => a.id === detail.accountId);
         if (acc) {
           if (acc.type === 'pendapatan' && detail.kredit > 0) rev += detail.kredit;
           if (acc.type === 'beban' && detail.debit > 0) exp += detail.debit;
@@ -327,7 +331,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <span>DSO: {dso} Hari</span>
               </div>
               <span className="text-[10px] font-bold text-slate-400 dark:text-[#80848E]">
-                {state.invoices.filter((i) => i.status !== 'lunas').length} faktur aktif
+                {invoices.filter((i) => i.status !== 'lunas').length} faktur aktif
               </span>
             </div>
           </div>
@@ -367,7 +371,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
                 <span>DPO: {dpo} Hari</span>
               </div>
               <span className="text-[10px] font-bold text-slate-400 dark:text-[#80848E]">
-                {state.purchaseBills.filter((b) => b.status !== 'lunas').length} tagihan aktif
+                {purchaseBills.filter((b) => b.status !== 'lunas').length} tagihan aktif
               </span>
             </div>
           </div>
@@ -727,7 +731,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
               <div className="text-right">
                 <span className="text-base font-black text-emerald-600 dark:text-[#23A559] tabular-nums">
-                  {ratios.currentRatio}x
+                  {formatNumber(ratios.currentRatio, 2)}x
                 </span>
                 <div className="text-[10px] font-bold text-emerald-600 dark:text-[#23A559]">Sangat Likuid</div>
               </div>
@@ -750,7 +754,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
               <div className="text-right">
                 <span className="text-base font-black text-blue-600 dark:text-[#0984E3] tabular-nums">
-                  {ratios.quickRatio}x
+                  {formatNumber(ratios.quickRatio, 2)}x
                 </span>
                 <div className="text-[10px] font-bold text-blue-600 dark:text-[#0984E3]">Likuiditas Prima</div>
               </div>
@@ -773,7 +777,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
               </div>
               <div className="text-right">
                 <span className="text-base font-black text-purple-600 dark:text-purple-400 tabular-nums">
-                  {ratios.debtToEquityRatio}x
+                  {formatNumber(ratios.debtToEquityRatio, 2)}x
                 </span>
                 <div className="text-[10px] font-bold text-purple-600 dark:text-purple-400">Modal Sendiri Kuat</div>
               </div>

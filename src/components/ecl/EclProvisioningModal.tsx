@@ -17,27 +17,29 @@ import {
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { soundFx } from '../../lib/soundFx';
+import { useStore } from '../../lib/storage';
 
 interface EclProvisioningModalProps {
   isOpen: boolean;
   onClose: () => void;
-  state: AppState;
-}
+  }
 
 export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
   isOpen,
   onClose,
-  state,
 }) => {
+  const invoices = useStore(s => s.invoices);
+  const journalEntries = useStore(s => s.journalEntries);
+
   const [asOfDate, setAsOfDate] = useState('2026-08-31');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  const ecl = computeEclProvisionMatrix(state.invoices, asOfDate);
+  const ecl = computeEclProvisionMatrix(invoices, asOfDate);
 
   const handlePostEclJournal = () => {
     soundFx.playChaChing();
     const journal = generateEclJournal(ecl, asOfDate);
-    (store as any).state.journalEntries.push(journal);
+    (store as any).journalEntries.push(journal);
     (store as any).notify();
     setSuccessMessage(
       `Jurnal Penyisihan Cadangan Kerugian Piutang PSAK 71 / IFRS 9 sebesar ${formatIDR(ecl.incrementalProvisionExpense)} berhasil diposting ke Buku Besar!`
