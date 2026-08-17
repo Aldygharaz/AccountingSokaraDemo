@@ -181,76 +181,72 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16">
       {/* Top Banner: Executive Business Owner Command Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-gradient-to-r from-[#091e42] via-[#0d2757] to-[#121c3b] dark:from-[#1E1F22] dark:via-[#24262b] dark:to-[#2B2D31] p-6 sm:p-8 rounded-3xl text-white shadow-2xl relative overflow-hidden border border-blue-500/20 dark:border-[#3F4147]">
-        {/* Subtle Background Glow Orbs */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-64 h-64 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 space-y-2 max-w-3xl">
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 bg-slate-900 dark:bg-[#1E1F22] p-6 sm:p-7 rounded-3xl text-white shadow-xl border border-slate-800 dark:border-[#3F4147]">
+        <div className="space-y-2 max-w-3xl">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5 backdrop-blur-md">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-              Sokara Accounting Software
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center gap-1.5 font-mono">
+              <Building2 className="w-3.5 h-3.5 text-blue-400" />
+              Toko Kelontong Sejahtera Utama
             </span>
-            <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-white/10 text-blue-200 border border-white/10 backdrop-blur-md">
-              Audit Grade: A+ (PSAK/IFRS)
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-mono">
+              Standar: PSAK / SAK EMKM
             </span>
-            <span className="text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-400/20 backdrop-blur-md flex items-center gap-1">
-              <Calendar className="w-3 h-3" />
+            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 border border-slate-700 font-mono flex items-center gap-1">
+              <Calendar className="w-3 h-3 text-slate-400" />
               Tahun Buku 2026
             </span>
           </div>
 
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight text-white leading-tight">
-            Pusat Kendali Finansial & Bisnis Eksekutif
+          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+            Ringkasan Keuangan & Operasional Bisnis
           </h1>
-          <p className="text-xs sm:text-sm text-blue-100/80 leading-relaxed">
-            Laporan agregasi real-time Double-Entry, proyeksi runway kas, evaluasi efisiensi modal kerja, dan kepatuhan perpindahan buku besar PSAK/IFRS.
+          <p className="text-xs text-slate-400 leading-relaxed">
+            Pembukuan berpasangan (Double-Entry GL), status piutang & hutang berjalan, serta monitoring likuiditas kas toko.
           </p>
         </div>
 
         {/* Action Controls */}
-        <div className="relative z-10 flex flex-wrap items-center gap-2.5 self-start lg:self-center shrink-0">
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
           <button
             onClick={() => {
               soundFx.playClick();
               window.print();
             }}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-black border border-white/20 transition-all backdrop-blur-md hover:scale-[1.02] active:scale-[0.98]"
-            title="Cetak Ringkasan Eksekutif Dewan Direksi"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-all"
+            title="Cetak Ringkasan Laporan Direksi"
           >
             <Printer className="w-4 h-4" />
-            <span>Cetak Brief Direksi</span>
+            <span>Cetak Ringkasan</span>
           </button>
           <button
             onClick={() => {
               soundFx.playClick();
               onOpenNewInvoice();
             }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs font-black shadow-lg shadow-blue-500/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>+ Faktur Baru</span>
+            <span>+ Faktur</span>
           </button>
           <button
             onClick={() => {
               soundFx.playClick();
               onOpenNewBill();
             }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-500 hover:to-pink-500 text-white text-xs font-black shadow-lg shadow-rose-500/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-all"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>+ Tagihan Baru</span>
+            <span>+ Tagihan</span>
           </button>
           <button
             onClick={() => {
               soundFx.playClick();
               onOpenNewCash();
             }}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black shadow-lg shadow-emerald-500/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-all"
           >
             <PlusCircle className="w-4 h-4" />
-            <span>+ Kas Baru</span>
+            <span>+ Kas</span>
           </button>
         </div>
       </div>

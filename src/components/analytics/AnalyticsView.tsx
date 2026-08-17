@@ -138,9 +138,8 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Analisa Rasio & Profitabilitas Produk (CFO Analytics)
           </h1>
-          <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center gap-1">
-            <Sparkles className="w-3 h-3 text-blue-500" />
-            Sokara AI Financial Analytics
+          <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-lg bg-slate-100 dark:bg-[#1E1F22] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#3F4147] font-mono">
+            PSAK & Financial Ratios
           </span>
         </div>
         <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">

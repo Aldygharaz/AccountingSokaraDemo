@@ -58,7 +58,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
     >
       <div className="space-y-6">
         {/* Banner */}
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-indigo-500/20">
+        <div className="p-4 rounded-2xl bg-slate-900 dark:bg-[#1E1F22] border border-slate-800 dark:border-[#3F4147] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
           <div>
             <div className="text-[11px] font-black uppercase tracking-wider text-blue-200">
               Activity-Based & Job-Order Costing Engine
@@ -211,7 +211,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
             onClick={handlePostCompletion}
             className="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-lg shadow-blue-600/20 flex items-center gap-2 transition-all shrink-0"
           >
-            <Sparkles className="w-4 h-4" />
+            <CheckCircle2 className="w-4 h-4" />
             <span>Posting Jurnal Penyelesaian ({formatIDR(cost.totalManufacturingCost)})</span>
           </button>
         </div>

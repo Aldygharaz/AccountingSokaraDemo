@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, BrainCircuit, SearchCode, Factory, Landmark, 
+import { BookOpen, LineChart, SearchCode, Factory, Landmark, 
   Search,
   UserCheck,
   ShieldAlert,
@@ -124,8 +124,8 @@ export const Header: React.FC<HeaderProps> = ({
           className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 text-amber-900 dark:text-amber-300 border border-amber-200 dark:border-amber-800 text-xs font-black transition-all shadow-sm"
           title="Buka Poka-Yoke Anomaly Inspector & 1-Click Auto-Fix"
         >
-          <Sparkles className="w-3.5 h-3.5 text-amber-600 animate-spin" style={{ animationDuration: '4s' }} />
-          <span>Defensive UX</span>
+          <ShieldAlert className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+          <span>Audit Integritas</span>
         </button>
 
         {/* CFO Intelligence Quick Button */}
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
             className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-xl bg-purple-50 dark:bg-purple-950/40 hover:bg-purple-100 text-purple-900 dark:text-purple-300 border border-purple-200 dark:border-purple-800 text-xs font-black transition-all shadow-sm"
             title="Buka Executive CFO Intelligence & DuPont Analysis (F9)"
           >
-            <BrainCircuit className="w-4 h-4 shrink-0" /><span>CFO (F9)</span>
+            <LineChart className="w-4 h-4 shrink-0" /><span>Analisa CFO (F9)</span>
           </button>
         )}
 

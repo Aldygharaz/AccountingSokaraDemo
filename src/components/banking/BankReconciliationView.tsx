@@ -220,8 +220,8 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
             disabled={matchableCount === 0}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-95 text-white text-xs font-black shadow-lg shadow-blue-600/25 transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:scale-[1.02] active:scale-[0.98]"
           >
-            <Sparkles className="w-4 h-4 text-amber-300" />
-            <span>Auto-Match Semua ({matchableCount} Siap Rekonsil)</span>
+            <CheckCheck className="w-4 h-4 text-white" />
+            <span>Cocokkan Semua ({matchableCount} Siap Rekonsil)</span>
           </button>
         </div>
       </div>
@@ -379,7 +379,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
                           </span>
                         ) : cand.confidence === 90 ? (
                           <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-                            <Sparkles className="w-3 h-3 text-indigo-600" />
+                            <CheckCircle2 className="w-3 h-3 text-indigo-600" />
                             <span>90% Match Tanggal</span>
                           </span>
                         ) : cand.confidence === 75 ? (

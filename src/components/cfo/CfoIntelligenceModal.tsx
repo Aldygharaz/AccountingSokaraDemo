@@ -36,12 +36,12 @@ export const CfoIntelligenceModal: React.FC<CfoIntelligenceModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Executive CFO Intelligence Hub (DuPont & Altman Z-Score)" icon={<BrainCircuit className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+      title="Analisis Kinerja Keuangan & Rasio DuPont (CFO Studio)" icon={<TrendingUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">
         {/* Header summary banner */}
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-blue-600/20">
+        <div className="p-4 rounded-2xl bg-slate-900 dark:bg-[#1E1F22] border border-slate-800 dark:border-[#3F4147] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
           <div>
             <div className="text-[11px] font-black uppercase tracking-wider text-blue-200">
               Analisis Solvabilitas & Profitabilitas Strategis Eksekutif

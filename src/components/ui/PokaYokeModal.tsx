@@ -60,7 +60,7 @@ export const PokaYokeModal: React.FC<PokaYokeModalProps> = ({
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-900 dark:text-amber-300">
-                  Poka-Yoke Defensive UX
+                  Pusat Kontrol & Integritas Jurnal
                 </span>
               </div>
               <h3 className="text-base font-extrabold text-slate-900 dark:text-white mt-1">
@@ -115,7 +115,7 @@ export const PokaYokeModal: React.FC<PokaYokeModalProps> = ({
             onClick={handleExecuteAutoFix}
             className="min-h-[44px] flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-600 hover:opacity-95 text-white text-xs font-black shadow-lg shadow-blue-600/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            <Sparkles className="w-4 h-4 text-amber-300 animate-spin" style={{ animationDuration: '3s' }} />
+            <ShieldAlert className="w-4 h-4 text-amber-300" />
             <span>{anomaly.autoFixLabel}</span>
           </button>
         </div>

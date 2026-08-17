@@ -257,8 +257,8 @@ export const FinancialSimulator: React.FC<FinancialSimulatorProps> = ({}) => {
           {/* Scenario Presets Quick Bar */}
           <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200/80 dark:border-[#3F4147]">
             <span className="text-xs font-bold text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>Preset Skenario Cepat:</span>
+              <Sliders className="w-4 h-4 text-blue-500" />
+              <span>Pilihan Skenario:</span>
             </span>
             <div className="flex flex-wrap items-center gap-2">
               <button

@@ -55,7 +55,7 @@ export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
     >
       <div className="space-y-6">
         {/* Banner */}
-        <div className="p-4 rounded-2xl bg-gradient-to-r from-rose-700 via-pink-700 to-indigo-800 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-lg shadow-rose-600/20">
+        <div className="p-4 rounded-2xl bg-slate-900 dark:bg-[#1E1F22] border border-slate-800 dark:border-[#3F4147] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
           <div>
             <div className="text-[11px] font-black uppercase tracking-wider text-rose-200">
               Standar Akuntansi Keuangan PSAK 71 / IFRS 9 Financial Instruments
@@ -134,7 +134,7 @@ export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
             onClick={handlePostEclJournal}
             className="px-6 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black shadow-lg shadow-rose-600/20 flex items-center gap-2 transition-all shrink-0"
           >
-            <Sparkles className="w-4 h-4" />
+            <CheckCircle2 className="w-4 h-4" />
             <span>Posting Jurnal Cadangan PSAK 71 ({formatIDR(ecl.incrementalProvisionExpense)})</span>
           </button>
         </div>

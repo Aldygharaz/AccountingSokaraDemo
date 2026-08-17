@@ -75,7 +75,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         { id: 'tax1771', label: 'SPT Tahunan 1771 (Fiskal)', icon: FileText, badge: 'DJP', lockedForStaff: true },
         { id: 'costing', label: 'Job-Order Costing (F7)', icon: Layers, badge: 'HPP' },
         { id: 'ecl', label: 'Cadangan Piutang (PSAK 71)', icon: ShieldCheck },
-        { id: 'forensic', label: 'Audit Forensik SHA-256 (F10)', icon: Sparkles, badge: 'Crypto', lockedForStaff: true },
+        { id: 'forensic', label: 'Audit Trail & Log Transaksi (F10)', icon: ShieldCheck, badge: 'Audit', lockedForStaff: true },
         { id: 'forex', label: 'Valuta Asing & Reval Kurs', icon: WalletCards },
         { id: 'amortization', label: 'Amortisasi Dimuka (PSAK 1)', icon: Layers },
       ],
