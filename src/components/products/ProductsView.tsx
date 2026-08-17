@@ -14,6 +14,7 @@ import { Product, StockMovement } from '../../types/accounting';
 import { AppState } from '../../lib/storage';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
+import { CurrencyInput } from '../common/CurrencyInput';
 import { Tooltip } from '../common/Tooltip';
 import { soundFx } from '../../lib/soundFx';
 import { useStore } from '../../lib/storage';

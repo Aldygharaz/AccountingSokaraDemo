@@ -42,8 +42,8 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
   const handlePostCompletion = () => {
     soundFx.playChaChing();
     const res = generateJobCompletionJournal(selectedJob);
-    (store as any).journalEntries.push(res.journalEntry);
-    (store as any).notify();
+    store.state.journalEntries.push(res.journalEntry);
+    store.notify();
     setSuccessMessage(
       `Jurnal Penyelesaian Produksi Job Order ${selectedJob.jobCode} sebesar ${formatIDR(res.summary.totalManufacturingCost)} berhasil diposting ke Akun 1104 Persediaan Barang Jadi!`
     );

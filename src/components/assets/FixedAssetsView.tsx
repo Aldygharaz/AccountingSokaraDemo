@@ -18,7 +18,9 @@ import {
 } from '../../lib/assetEngine';
 import { soundFx } from '../../lib/soundFx';
 import { PokaYokeModal } from '../ui/PokaYokeModal';
-import { useStore } from '../../lib/storage';
+import { store, useStore } from '../../lib/storage';
+import { Modal } from '../common/Modal';
+import { CurrencyInput } from '../common/CurrencyInput';
 
 interface FixedAssetsViewProps {
   onPostDepreciation: (assetId: string, date: string) => { success: boolean; error?: string };
@@ -32,6 +34,39 @@ export const FixedAssetsView: React.FC<FixedAssetsViewProps> = ({
   const [selectedAsset, setSelectedAsset] = useState<FixedAsset | null>(fixedAssets[0] || null);
   const [postDate, setPostDate] = useState(new Date().toISOString().split('T')[0]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [newCode, setNewCode] = useState(`AST-${String(fixedAssets.length + 1).padStart(3, '0')}`);
+  const [newName, setNewName] = useState('');
+  const [newCategory, setNewCategory] = useState<'peralatan' | 'kendaraan' | 'bangunan' | 'elektronik'>('peralatan');
+  const [newAcqDate, setNewAcqDate] = useState(new Date().toISOString().split('T')[0]);
+  const [newCost, setNewCost] = useState<number>(0);
+  const [newSalvage, setNewSalvage] = useState<number>(0);
+  const [newLifeMonths, setNewLifeMonths] = useState<number>(48);
+
+  const handleAddAssetSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName.trim() || newCost <= 0) {
+      soundFx.playError();
+      return;
+    }
+    soundFx.playChaChing();
+    store.addFixedAsset({
+      code: newCode.trim(),
+      name: newName.trim(),
+      category: newCategory,
+      acquisitionDate: newAcqDate,
+      acquisitionCost: newCost,
+      salvageValue: newSalvage,
+      usefulLifeMonths: newLifeMonths,
+      assetAccountId: 'acc-1201',
+      accumulatedDeprAccountId: 'acc-1202',
+      deprExpenseAccountId: 'acc-6103',
+    });
+    setIsAddModalOpen(false);
+    setNewName('');
+    setNewCost(0);
+    setNewSalvage(0);
+    setNewCode(`AST-${String(fixedAssets.length + 2).padStart(3, '0')}`);
+  };
 
   const handleExecuteDepreciation = (asset: FixedAsset) => {
     soundFx.playAutoFix();

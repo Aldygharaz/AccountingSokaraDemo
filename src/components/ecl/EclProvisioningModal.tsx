@@ -39,8 +39,8 @@ export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
   const handlePostEclJournal = () => {
     soundFx.playChaChing();
     const journal = generateEclJournal(ecl, asOfDate);
-    (store as any).journalEntries.push(journal);
-    (store as any).notify();
+    store.state.journalEntries.push(journal);
+    store.notify();
     setSuccessMessage(
       `Jurnal Penyisihan Cadangan Kerugian Piutang PSAK 71 / IFRS 9 sebesar ${formatIDR(ecl.incrementalProvisionExpense)} berhasil diposting ke Buku Besar!`
     );

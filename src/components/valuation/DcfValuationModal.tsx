@@ -80,7 +80,7 @@ export const DcfValuationModal: React.FC<DcfValuationModalProps> = ({
               }}
               className="px-3 py-1 rounded-xl bg-white dark:bg-[#1E1F22] border border-emerald-300 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-bold hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
-              ️ Blue Chip (9.5% / 3.0%)
+              Blue Chip (9.5% / 3.0%)
             </button>
             <button
               onClick={() => {

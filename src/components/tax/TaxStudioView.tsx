@@ -14,6 +14,7 @@ import { AppState } from '../../lib/storage';
 import { formatIDR, generateIncomeStatement, generateBalanceSheet } from '../../lib/accountingEngine';
 import { calculateIndonesianTaxes, calculateMonthlyUmkmTax } from '../../lib/taxEngine';
 import { soundFx } from '../../lib/soundFx';
+import { CurrencyInput } from '../common/CurrencyInput';
 import { useStore } from '../../lib/storage';
 
 interface TaxStudioViewProps {
