@@ -317,14 +317,12 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 mb-1">
                 Harga Jual ke Pelanggan (Rp) *
               </label>
-              <input
-                type="number"
+              <CurrencyInput
                 value={sellingPrice || ''}
-                onChange={(e) => setSellingPrice(Number(e.target.value))}
-                placeholder="35000"
+                onChange={(val: string | number) => setSellingPrice(val === '' ? 0 : Number(val))}
+                placeholder="35.000"
                 required
-                min="0"
-                className="w-full px-3 py-2 text-xs rounded-xl glass-input font-mono font-bold"
+                className="font-bold text-blue-600 dark:text-blue-400"
               />
             </div>
 
@@ -362,13 +360,11 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               <label className="block text-[11px] font-bold text-blue-900 mb-1">
                 HPP Perolehan Awal (Rp)
               </label>
-              <input
-                type="number"
+              <CurrencyInput
                 value={initialCost || ''}
-                onChange={(e) => setInitialCost(Number(e.target.value))}
+                onChange={(val: string | number) => setInitialCost(val === '' ? 0 : Number(val))}
                 placeholder="0"
-                min="0"
-                className="w-full px-3 py-1.5 text-xs rounded-lg border border-blue-200 bg-white"
+                className="text-xs"
               />
             </div>
           </div>

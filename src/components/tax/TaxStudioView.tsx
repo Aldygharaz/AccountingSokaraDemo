@@ -200,12 +200,13 @@ export const TaxStudioView: React.FC<TaxStudioViewProps> = ({}) => {
             <label className="block text-xs font-bold text-slate-700 dark:text-slate-200 dark:text-slate-300">
               Simulasi Nilai Jasa Kena Pajak (Rp)
             </label>
-            <input
-              type="number"
-              value={testTransactionAmount}
-              onChange={(e) => setTestTransactionAmount(Number(e.target.value))}
-              className="w-full sm:w-80 px-3 py-2 text-xs rounded-xl glass-input font-mono font-bold text-blue-600"
-            />
+            <div className="w-full sm:w-80">
+              <CurrencyInput
+                value={testTransactionAmount || ''}
+                onChange={(val: string | number) => setTestTransactionAmount(val === '' ? 0 : Number(val))}
+                className="font-bold text-blue-600 dark:text-blue-400"
+              />
+            </div>
 
             <div className="pt-3 border-t border-slate-200 dark:border-slate-700 flex flex-wrap gap-6 text-xs">
               <div>
