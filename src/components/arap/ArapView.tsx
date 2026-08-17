@@ -19,6 +19,7 @@ import {
 } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
+import { soundFx } from '../../lib/soundFx';
 import { CurrencyInput } from '../common/CurrencyInput';
 import { useStore } from '../../lib/storage';
 
@@ -47,6 +48,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
   const purchaseBills = useStore(s => s.purchaseBills);
   const accounts = useStore(s => s.accounts);
   const journalEntries = useStore(s => s.journalEntries);
+  const contacts = useStore(s => s.contacts);
 
   const [activeModule, setActiveModule] = useState<'ar' | 'ap'>('ar');
   const [selectedAgingBucket, setSelectedAgingBucket] = useState<string>('all');
@@ -105,6 +107,19 @@ export const ArapView: React.FC<ArapViewProps> = ({
   const displayedItems = selectedAgingBucket === 'all'
     ? currentBuckets.flatMap((b) => b.items)
     : currentBuckets.find((b) => b.bucketName === selectedAgingBucket)?.items || [];
+
+  
+  const handleSendWhatsAppReminder = (item: any) => {
+    soundFx.playClick();
+    const contact = contacts.find((c) => c.name.toLowerCase() === item.contactName.toLowerCase());
+    const phone = contact?.phone ? contact.phone.replace(/[^0-9]/g, '') : '';
+    const cleanPhone = phone.startsWith('0') ? '62' + phone.substring(1) : phone;
+    const msg = encodeURIComponent(
+      `Halo ${item.contactName}, ini adalah pengingat dari Manajemen Toko mengenai Faktur ${item.refNumber} senilai ${formatIDR(item.remainingAmount)} yang telah jatuh tempo pada ${item.dueDate}. Mohon konfirmasi jadwal pembayarannya. Terima kasih.`
+    );
+    const url = cleanPhone ? `https://wa.me/${cleanPhone}?text=${msg}` : `https://wa.me/?text=${msg}`;
+    window.open(url, '_blank');
+  };
 
   const handleOpenSettleInvoice = (item: any) => {
     setSettlingInvoice(item);

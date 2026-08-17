@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   LineChart,
   TrendingUp,
@@ -10,6 +10,12 @@ import {
   CheckCircle2,
   Lock,
   Sparkles,
+  Package,
+  Boxes,
+  ArrowUpRight,
+  TrendingDown,
+  Tag,
+  Search,
 } from 'lucide-react';
 import { useStore } from '../../lib/storage';
 import {
@@ -18,15 +24,23 @@ import {
   calculateFinancialRatios,
   generateIncomeStatement,
   generateBalanceSheet,
+  calculateProductProfitability,
+  ProductProfitabilitySummary,
 } from '../../lib/accountingEngine';
+import { Tooltip } from '../common/Tooltip';
 
-interface AnalyticsViewProps {
-  }
+interface AnalyticsViewProps {}
 
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
   const currentUser = useStore(s => s.currentUser);
   const accounts = useStore(s => s.accounts);
   const journalEntries = useStore(s => s.journalEntries);
+  const products = useStore(s => s.products);
+  const stockMovements = useStore(s => s.stockMovements);
+  const invoices = useStore(s => s.invoices);
+
+  const [skuSearch, setSkuSearch] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   const isStaff = currentUser.role === 'staff';
 
@@ -50,6 +64,22 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
   const ratios = React.useMemo(() => calculateFinancialRatios(accounts, journalEntries), [accounts, journalEntries]);
   const balanceSheet = React.useMemo(() => generateBalanceSheet(accounts, journalEntries), [accounts, journalEntries]);
   const incomeStatement = React.useMemo(() => generateIncomeStatement(accounts, journalEntries), [accounts, journalEntries]);
+
+  // Product Profitability & SKU Contribution Matrix
+  const skuProfitability: ProductProfitabilitySummary = React.useMemo(() => {
+    return calculateProductProfitability(products, stockMovements, invoices);
+  }, [products, stockMovements, invoices]);
+
+  const categories = Array.from(new Set(products.map((p) => p.category)));
+
+  const filteredSkuItems = skuProfitability.items.filter((it) => {
+    if (selectedCategory !== 'all' && it.category !== selectedCategory) return false;
+    if (skuSearch) {
+      const q = skuSearch.toLowerCase();
+      return it.name.toLowerCase().includes(q) || it.sku.toLowerCase().includes(q);
+    }
+    return true;
+  });
 
   const renderBadge = (value: number | string, type: 'current' | 'quick' | 'gpm' | 'npm' | 'der' | 'roe') => {
     let num = Number(value);
@@ -101,12 +131,12 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-16">
+    <div className="space-y-8 max-w-7xl mx-auto pb-16">
       {/* Header */}
       <div>
         <div className="flex items-center gap-2">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-            Analisa Rasio Keuangan Otomatis
+            Analisa Rasio & Profitabilitas Produk (CFO Analytics)
           </h1>
           <span className="text-xs font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 flex items-center gap-1">
             <Sparkles className="w-3 h-3 text-blue-500" />
@@ -114,24 +144,24 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
           </span>
         </div>
         <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
-          Kalkulasi real-time indikator kesehatan finansial dari Laporan Neraca & Laba Rugi tanpa input manual.
+          Kalkulasi real-time rasio likuiditas, margin laba, dan kontribusi profitabilitas per SKU produk dagangan.
         </p>
       </div>
 
-      {/* Ratios Grid */}
+      {/* Grid of 6 Financial Health Metric Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* 1. Current Ratio */}
         <div className="glass-card glass-card-hover rounded-2xl p-6 flex flex-col justify-between bg-white dark:bg-[#1E1F22] border border-slate-200/60 dark:border-[#3F4147]">
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Likuiditas Jangka Pendek
+                Likuiditas Lancar
               </span>
               {renderBadge(ratios.currentRatio, 'current')}
             </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">Current Ratio</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">Current Ratio (Rasio Lancar)</h3>
             <p className="text-[11px] text-slate-400 mt-0.5">
-              Rumus: Total Aset Lancar / Liabilitas Lancar
+              Rumus: Aset Lancar / Liabilitas Lancar
             </p>
 
             <div className="my-5">
@@ -139,13 +169,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
                 {ratios.currentRatio.toFixed(2)}x
               </span>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                Tiap Rp 1 hutang lancar dijamin oleh <strong>Rp {ratios.currentRatio}</strong> aset lancar.
+                Ketersediaan kas & piutang untuk menutup setiap Rp 1 hutang jangka pendek.
               </p>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500">
-            Tolok ukur sehat: <strong>&ge; 1.5x</strong>. Toko memiliki cadangan likuiditas kas & persediaan yang sangat aman.
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/60 dark:border-[#3F4147] text-[11px] text-slate-500 dark:text-[#B5BAC1]">
+            Tolok ukur sehat: <strong>&ge; 1.5x</strong>. Menjamin operasional toko aman dari risiko gagal bayar tagihan jatuh tempo.
           </div>
         </div>
 
@@ -158,9 +188,9 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
               </span>
               {renderBadge(ratios.quickRatio, 'quick')}
             </div>
-            <h3 className="text-base font-bold text-slate-900 dark:text-white">Quick (Acid-Test) Ratio</h3>
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">Quick Ratio (Acid-Test)</h3>
             <p className="text-[11px] text-slate-400 mt-0.5">
-              Rumus: (Aset Lancar - Persediaan) / Liabilitas Lancar
+              Rumus: (Kas + Bank + Piutang) / Liabilitas Lancar
             </p>
 
             <div className="my-5">
@@ -168,13 +198,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
                 {ratios.quickRatio.toFixed(2)}x
               </span>
               <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                Likuiditas kas dan piutang cepat tanpa menunggu penjualan stok barang.
+                Likuiditas tanpa mengandalkan penjualan persediaan gudang.
               </p>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500">
-            Tolok ukur sehat: <strong>&ge; 1.0x</strong>. Kemampuan membayar hutang jatuh tempo segera tanpa likuidasi inventaris.
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/60 dark:border-[#3F4147] text-[11px] text-slate-500 dark:text-[#B5BAC1]">
+            Tolok ukur sehat: <strong>&ge; 1.0x</strong>. Bisnis memiliki kas & piutang instan yang cukup tanpa perlu menjual barang.
           </div>
         </div>
 
@@ -183,13 +213,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
           <div>
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Profitabilitas Penjualan
+                Margin Kotor
               </span>
               {renderBadge(ratios.grossProfitMargin, 'gpm')}
             </div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white">Gross Profit Margin (GPM)</h3>
             <p className="text-[11px] text-slate-400 mt-0.5">
-              Rumus: (Pendapatan - HPP) / Pendapatan * 100%
+              Rumus: Laba Kotor / Pendapatan * 100%
             </p>
 
             <div className="my-5">
@@ -202,7 +232,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/60 dark:border-[#3F4147] text-[11px] text-slate-500 dark:text-[#B5BAC1]">
             Tolok ukur retail sehat: <strong>&ge; 20%</strong>. Struktur margin produk retail sangat sehat untuk menopang biaya operasional.
           </div>
         </div>
@@ -231,7 +261,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/60 dark:border-[#3F4147] text-[11px] text-slate-500 dark:text-[#B5BAC1]">
             Tolok ukur sehat: <strong>&ge; 10%</strong>. Toko menghasilkan profit bersih konsisten setelah seluruh gaji, listrik, dan sewa.
           </div>
         </div>
@@ -260,7 +290,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/60 dark:border-[#3F4147] text-[11px] text-slate-500 dark:text-[#B5BAC1]">
             Tolok ukur aman: <strong>&le; 1.5x</strong>. Struktur modal toko didominasi modal disetor pemilik dan laba ditahan mandiri.
           </div>
         </div>
@@ -289,8 +319,199 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({}) => {
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-[11px] text-slate-500">
+          <div className="p-3 rounded-xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/60 dark:border-[#3F4147] text-[11px] text-slate-500 dark:text-[#B5BAC1]">
             Tolok ukur pasar: <strong>&ge; 12%</strong>. Menunjukkan pengembalian modal yang menarik bagi investor dan pemilik usaha.
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================ */}
+      {/* GOD-TIER FITUR 5: PRODUCT PROFITABILITY & SKU CONTRIBUTION   */}
+      {/* ============================================================ */}
+      <div className="space-y-6 pt-4 border-t border-slate-200 dark:border-[#3F4147]">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 flex items-center justify-center border border-indigo-200 dark:border-indigo-800">
+                <Boxes className="w-5 h-5" />
+              </div>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white tracking-tight">
+                Matriks Profitabilitas per Produk (SKU Contribution Matrix)
+              </h2>
+              <Tooltip
+                title="Analisa Margin Kontribusi SKU"
+                content="Mendeteksi margin laba kotor riil per produk (Harga Jual dikurangi Average Costing HPP) dan porsi kontribusinya terhadap total profitabilitas toko."
+                iconOnly
+              />
+            </div>
+            <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">
+              Evaluasi kinerja produk paling menguntungkan (Top Contributor) versus barang dengan margin tipis.
+            </p>
+          </div>
+
+          {/* Quick Filters */}
+          <div className="flex items-center gap-2">
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-1.5 text-xs rounded-xl glass-input font-bold"
+            >
+              <option value="all">Semua Kategori</option>
+              {categories.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+
+            <div className="relative w-48 sm:w-56">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                placeholder="Cari SKU / nama..."
+                value={skuSearch}
+                onChange={(e) => setSkuSearch(e.target.value)}
+                className="w-full pl-8 pr-3 py-1.5 text-xs rounded-xl glass-input"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Top Performer Summary Banner */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="p-4 rounded-2xl bg-gradient-to-tr from-indigo-50 to-blue-50 dark:from-[#1E1F22] dark:to-[#2B2D31] border border-indigo-200/80 dark:border-[#3F4147] flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-black uppercase text-indigo-800 dark:text-indigo-300 block">
+                Top Contributor Utama
+              </span>
+              <h4 className="text-sm font-black text-slate-900 dark:text-white mt-0.5 truncate max-w-[200px]">
+                {skuProfitability.topContributor?.name || '-'}
+              </h4>
+              <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400">
+                Laba: {formatIDR(skuProfitability.topContributor?.grossProfit || 0)} ({skuProfitability.topContributor?.contributionSharePct}%)
+              </span>
+            </div>
+            <Award className="w-8 h-8 text-amber-500 shrink-0" />
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200/80 dark:border-[#3F4147]">
+            <span className="text-[10px] font-black uppercase text-slate-500 dark:text-[#B5BAC1] block">
+              Total Laba Kotor Semua Produk
+            </span>
+            <div className="text-lg font-black text-slate-900 dark:text-white font-mono mt-0.5 tabular-nums">
+              {formatIDR(skuProfitability.totalGrossProfit)}
+            </div>
+            <span className="text-xs text-slate-500 dark:text-[#B5BAC1]">
+              Omzet Agregat: {formatIDR(skuProfitability.totalRevenue)}
+            </span>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200/80 dark:border-[#3F4147]">
+            <span className="text-[10px] font-black uppercase text-slate-500 dark:text-[#B5BAC1] block">
+              Rata-rata Margin Kotor Toko
+            </span>
+            <div className="text-lg font-black text-emerald-600 dark:text-emerald-400 font-mono mt-0.5 tabular-nums">
+              {skuProfitability.overallGrossMarginPct}%
+            </div>
+            <span className="text-xs text-slate-500 dark:text-[#B5BAC1]">
+              Benchmark industri retail sehat: &gt; 20%
+            </span>
+          </div>
+        </div>
+
+        {/* SKU Profitability Table */}
+        <div className="glass-card rounded-2xl overflow-hidden border border-slate-200 dark:border-[#3F4147]">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs border-collapse">
+              <thead>
+                <tr className="bg-slate-100 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black uppercase text-slate-600 dark:text-[#B5BAC1]">
+                  <th className="py-3 px-4">Produk & SKU</th>
+                  <th className="py-3 px-4">Kategori</th>
+                  <th className="py-3 px-4 text-center">Volume Jual</th>
+                  <th className="py-3 px-4 text-right">Harga Jual / HPP</th>
+                  <th className="py-3 px-4 text-right">Total Profit (Rp)</th>
+                  <th className="py-3 px-4 text-center">Gross Margin %</th>
+                  <th className="py-3 px-4 text-center">Share Profit</th>
+                  <th className="py-3 px-4 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+                {filteredSkuItems.length === 0 ? (
+                  <tr>
+                    <td colSpan={8} className="py-8 text-center text-slate-400">
+                      Tidak ada data produk yang cocok.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredSkuItems.map((prod) => (
+                    <tr key={prod.productId} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31] transition-colors">
+                      <td className="py-3 px-4">
+                        <span className="font-bold text-slate-900 dark:text-white block">
+                          {prod.name}
+                        </span>
+                        <span className="text-[10px] font-mono text-slate-400">
+                          SKU: {prod.sku}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-slate-600 dark:text-[#B5BAC1]">
+                        {prod.category}
+                      </td>
+                      <td className="py-3 px-4 text-center font-bold font-mono">
+                        {prod.qtySold} {prod.unit}
+                      </td>
+                      <td className="py-3 px-4 text-right font-mono tabular-nums">
+                        <div className="font-bold text-slate-900 dark:text-white">
+                          {formatIDR(prod.salePrice)}
+                        </div>
+                        <div className="text-[10px] text-slate-400">
+                          HPP: {formatIDR(prod.avgCost)}
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-right font-mono font-black text-emerald-600 dark:text-emerald-400 tabular-nums">
+                        {formatIDR(prod.grossProfit)}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <div className="flex flex-col items-center">
+                          <span className="font-bold font-mono text-slate-900 dark:text-white">
+                            {prod.grossMarginPct}%
+                          </span>
+                          <div className="w-16 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full mt-1 overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${
+                                prod.grossMarginPct >= 35
+                                  ? 'bg-emerald-500'
+                                  : prod.grossMarginPct >= 20
+                                  ? 'bg-blue-500'
+                                  : 'bg-amber-500'
+                              }`}
+                              style={{ width: `${Math.min(100, Math.max(0, prod.grossMarginPct))}%` }}
+                            />
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 text-center font-mono font-bold text-blue-600 dark:text-blue-400">
+                        {prod.contributionSharePct}%
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black ${
+                            prod.status === 'top_performer'
+                              ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800'
+                              : prod.status === 'healthy'
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800'
+                              : 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+                          }`}
+                        >
+                          {prod.status === 'top_performer'
+                            ? 'Top Margin'
+                            : prod.status === 'healthy'
+                            ? 'Margin Sehat'
+                            : 'Margin Tipis'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

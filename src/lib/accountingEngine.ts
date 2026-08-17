@@ -599,3 +599,331 @@ export const calculateAgingBuckets = (
 
   return Object.values(buckets);
 };
+
+
+// ==========================================
+// 90-DAY ROLLING CASH FLOW FORECAST ENGINE
+// ==========================================
+
+export interface DailyCashFlowForecastPoint {
+  dayOffset: number;
+  date: string;
+  label: string;
+  startingCash: number;
+  projectedInflow: number;
+  projectedOutflow: number;
+  netFlow: number;
+  endingCash: number;
+  isLowestPoint?: boolean;
+  isBelowSafetyThreshold?: boolean;
+}
+
+export interface RollingCashFlowForecastResult {
+  currentCashBalance: number;
+  safetyThreshold: number;
+  lowestCashPoint: { date: string; amount: number; dayOffset: number; label: string };
+  daysUntilLowest: number;
+  runwayDays: number;
+  dataPoints: DailyCashFlowForecastPoint[];
+  summary: {
+    totalProjectedInflows: number;
+    totalProjectedOutflows: number;
+    netCashChange90Days: number;
+  };
+}
+
+export const calculateRollingCashFlowForecast = (
+  accounts: Account[],
+  journalEntries: JournalEntry[],
+  invoices: SalesInvoice[],
+  purchaseBills: PurchaseBill[],
+  options?: {
+    forecastDays?: number;
+    salesGrowthPct?: number; // e.g. 15 for +15%
+    cogsInflationPct?: number; // e.g. 5 for +5%
+    opexReductionPct?: number; // e.g. -10 for -10%
+    safetyThreshold?: number; // default Rp 10.000.000
+    startDate?: string;
+  }
+): RollingCashFlowForecastResult => {
+  const forecastDays = options?.forecastDays || 90;
+  const salesGrowth = (options?.salesGrowthPct || 0) / 100;
+  const cogsInflation = (options?.cogsInflationPct || 0) / 100;
+  const opexReduction = (options?.opexReductionPct || 0) / 100;
+  const safetyThreshold = options?.safetyThreshold || 10000000;
+  const baseDate = options?.startDate ? new Date(options.startDate) : new Date();
+
+  // 1. Calculate live current cash balance (Accounts 1101 + 1102)
+  let currentCashBalance = 0;
+  journalEntries.forEach((je) => {
+    je.lines.forEach((l) => {
+      const acc = accounts.find((a) => a.id === l.accountId);
+      if (acc && (acc.code === '1101' || acc.code === '1102')) {
+        currentCashBalance += (l.debit || 0) - (l.kredit || 0);
+      }
+    });
+  });
+
+  // 2. Derive average baseline daily operational burn & daily cash revenue from P&L
+  const pnl = generateIncomeStatement(accounts, journalEntries);
+  const totalRev = pnl.totalRevenue || 0;
+  const totalOpex = pnl.totalOperatingExpenses || 0;
+  const totalCogs = pnl.cogs.reduce((sum, c) => sum + c.amount, 0);
+
+  // Baseline 30-day normalized figures
+  const baseDailySales = ((totalRev * (1 + salesGrowth)) / 30) * 0.4; // 40% immediate cash sales
+  const baseDailyOpex = (totalOpex * (1 + opexReduction)) / 30; // normalized OpEx
+  const baseDailyCogs = (totalCogs * (1 + cogsInflation)) / 30 * 0.3; // 30% immediate cash procurement
+
+  // 3. Map scheduled AR collections by due date
+  const arByDate: Record<string, number> = {};
+  invoices.forEach((inv) => {
+    if (inv.status !== 'lunas' && inv.status !== 'void' && inv.remainingAmount > 0) {
+      const d = inv.dueDate || inv.date;
+      arByDate[d] = (arByDate[d] || 0) + inv.remainingAmount;
+    }
+  });
+
+  // 4. Map scheduled AP payments by due date
+  const apByDate: Record<string, number> = {};
+  purchaseBills.forEach((bill) => {
+    if (bill.status !== 'lunas' && bill.status !== 'void' && bill.remainingAmount > 0) {
+      const d = bill.dueDate || bill.date;
+      apByDate[d] = (apByDate[d] || 0) + bill.remainingAmount;
+    }
+  });
+
+  // 5. Generate daily/weekly projection points
+  const dataPoints: DailyCashFlowForecastPoint[] = [];
+  let runningCash = currentCashBalance;
+  let lowestCashAmount = runningCash;
+  let lowestCashPoint = {
+    date: baseDate.toISOString().split('T')[0],
+    amount: runningCash,
+    dayOffset: 0,
+    label: 'Hari Ini',
+  };
+
+  let totalProjectedInflows = 0;
+  let totalProjectedOutflows = 0;
+  let runwayDays = forecastDays;
+  let hasHitZero = false;
+
+  for (let day = 0; day <= forecastDays; day++) {
+    const targetDate = new Date(baseDate);
+    targetDate.setDate(baseDate.getDate() + day);
+    const dateStr = targetDate.toISOString().split('T')[0];
+    const monthShort = targetDate.toLocaleDateString('id-ID', { month: 'short' });
+    const dayNum = targetDate.getDate();
+    const label = day === 0 ? 'Hari Ini' : `H+${day} (${dayNum} ${monthShort})`;
+
+    const startCashForDay = runningCash;
+
+    // Scheduled flows on this date
+    const scheduledAr = arByDate[dateStr] || 0;
+    const scheduledAp = apByDate[dateStr] || 0;
+
+    // Daily operational flows (weekdays vs weekends)
+    const isWeekend = targetDate.getDay() === 0 || targetDate.getDay() === 6;
+    const dailyInflow = (isWeekend ? baseDailySales * 1.3 : baseDailySales) + scheduledAr;
+    const dailyOutflow = (isWeekend ? baseDailyOpex * 0.5 : baseDailyOpex) + baseDailyCogs + scheduledAp;
+
+    if (day > 0) {
+      runningCash = runningCash + dailyInflow - dailyOutflow;
+      totalProjectedInflows += dailyInflow;
+      totalProjectedOutflows += dailyOutflow;
+    }
+
+    if (runningCash < lowestCashAmount) {
+      lowestCashAmount = runningCash;
+      lowestCashPoint = {
+        date: dateStr,
+        amount: runningCash,
+        dayOffset: day,
+        label,
+      };
+    }
+
+    if (runningCash <= 0 && !hasHitZero) {
+      runwayDays = day;
+      hasHitZero = true;
+    }
+
+    // Capture every 3 days + milestone days (day 0, 7, 14, 30, 60, 90) to maintain crisp charting
+    if (day === 0 || day % 3 === 0 || day === 7 || day === 14 || day === 30 || day === 60 || day === 90) {
+      dataPoints.push({
+        dayOffset: day,
+        date: dateStr,
+        label,
+        startingCash: Math.round(startCashForDay),
+        projectedInflow: Math.round(dailyInflow),
+        projectedOutflow: Math.round(dailyOutflow),
+        netFlow: Math.round(dailyInflow - dailyOutflow),
+        endingCash: Math.round(runningCash),
+        isBelowSafetyThreshold: runningCash < safetyThreshold,
+      });
+    }
+  }
+
+  // Mark the lowest point on the data point closest to lowest offset
+  dataPoints.forEach((pt) => {
+    if (Math.abs(pt.dayOffset - lowestCashPoint.dayOffset) <= 2 && pt.endingCash <= lowestCashPoint.amount + 1000000) {
+      pt.isLowestPoint = true;
+    }
+  });
+
+  return {
+    currentCashBalance: Math.round(currentCashBalance),
+    safetyThreshold,
+    lowestCashPoint,
+    daysUntilLowest: lowestCashPoint.dayOffset,
+    runwayDays: hasHitZero ? runwayDays : forecastDays,
+    dataPoints,
+    summary: {
+      totalProjectedInflows: Math.round(totalProjectedInflows),
+      totalProjectedOutflows: Math.round(totalProjectedOutflows),
+      netCashChange90Days: Math.round(runningCash - currentCashBalance),
+    },
+  };
+};
+
+// ==========================================
+// PRODUCT PROFITABILITY & SKU MATRIX ENGINE
+// ==========================================
+
+export interface ProductProfitabilityItem {
+  productId: string;
+  sku: string;
+  name: string;
+  category: string;
+  unit: string;
+  qtySold: number;
+  avgCost: number;
+  salePrice: number;
+  totalRevenue: number;
+  totalCogs: number;
+  grossProfit: number;
+  grossMarginPct: number;
+  contributionSharePct: number;
+  status: 'top_performer' | 'healthy' | 'thin_margin' | 'loss_making';
+}
+
+export interface ProductProfitabilitySummary {
+  totalRevenue: number;
+  totalCogs: number;
+  totalGrossProfit: number;
+  overallGrossMarginPct: number;
+  topContributor: ProductProfitabilityItem | null;
+  lowestMarginProduct: ProductProfitabilityItem | null;
+  items: ProductProfitabilityItem[];
+}
+
+export const calculateProductProfitability = (
+  products: Product[],
+  stockMovements: StockMovement[],
+  invoices?: SalesInvoice[]
+): ProductProfitabilitySummary => {
+  // Aggregate sales volume per product from stock movements and invoices
+  const salesByProduct: Record<string, { qty: number; revenue: number; cogs: number }> = {};
+
+  // Initialize all products
+  products.forEach((p) => {
+    salesByProduct[p.id] = { qty: 0, revenue: 0, cogs: 0 };
+  });
+
+  // Track stock movements of type 'out' or 'keluar'
+  stockMovements.forEach((m) => {
+    const isOut = m.type === 'out' || m.type === 'keluar' || m.referenceType === 'out' || m.referenceType === 'keluar';
+    if (isOut && m.productId && salesByProduct[m.productId]) {
+      const q = Math.abs(m.qtyChange || m.qty || 0);
+      const prod = products.find((p) => p.id === m.productId);
+      const unitPrice = m.unitPrice || (prod ? prod.salePrice : 0);
+      const unitCost = m.unitCost || (prod ? prod.avgCost : 0);
+
+      salesByProduct[m.productId].qty += q;
+      salesByProduct[m.productId].revenue += q * unitPrice;
+      salesByProduct[m.productId].cogs += q * unitCost;
+    }
+  });
+
+  // If stock movements are sparse in demo, pull from sales invoices items
+  if (invoices && invoices.length > 0) {
+    invoices.forEach((inv) => {
+      if (inv.status !== 'void') {
+        inv.items.forEach((it) => {
+          if (it.productId && salesByProduct[it.productId]) {
+            // Avoid double counting if already counted in stock movements
+            if (salesByProduct[it.productId].qty === 0) {
+              const prod = products.find((p) => p.id === it.productId);
+              const cost = prod ? prod.avgCost : (it.unitPrice * 0.7);
+              salesByProduct[it.productId].qty += it.qty;
+              salesByProduct[it.productId].revenue += it.qty * it.unitPrice;
+              salesByProduct[it.productId].cogs += it.qty * cost;
+            }
+          }
+        });
+      }
+    });
+  }
+
+  // Calculate profitability metrics for each product
+  let totalRevenue = 0;
+  let totalCogs = 0;
+  let totalGrossProfit = 0;
+
+  const rawItems: Omit<ProductProfitabilityItem, 'contributionSharePct'>[] = products.map((prod) => {
+    const stat = salesByProduct[prod.id] || { qty: 0, revenue: 0, cogs: 0 };
+    // If no transactions yet, compute hypothetical unit profitability based on 1 unit benchmark
+    const qtySold = stat.qty > 0 ? stat.qty : 10; // Baseline demo volume
+    const rev = stat.revenue > 0 ? stat.revenue : qtySold * prod.salePrice;
+    const cogs = stat.cogs > 0 ? stat.cogs : qtySold * prod.avgCost;
+    const grossProfit = rev - cogs;
+    const grossMarginPct = rev > 0 ? Math.round((grossProfit / rev) * 100) : 0;
+
+    totalRevenue += rev;
+    totalCogs += cogs;
+    totalGrossProfit += grossProfit;
+
+    let status: ProductProfitabilityItem['status'] = 'healthy';
+    if (grossMarginPct >= 35) status = 'top_performer';
+    else if (grossMarginPct >= 20) status = 'healthy';
+    else if (grossMarginPct > 0) status = 'thin_margin';
+    else status = 'loss_making';
+
+    return {
+      productId: prod.id,
+      sku: prod.sku,
+      name: prod.name,
+      category: prod.category,
+      unit: prod.unit,
+      qtySold,
+      avgCost: prod.avgCost,
+      salePrice: prod.salePrice,
+      totalRevenue: Math.round(rev),
+      totalCogs: Math.round(cogs),
+      grossProfit: Math.round(grossProfit),
+      grossMarginPct,
+      status,
+    };
+  });
+
+  // Calculate contribution share percentage
+  const items: ProductProfitabilityItem[] = rawItems
+    .map((it) => ({
+      ...it,
+      contributionSharePct: totalGrossProfit > 0 ? Math.round((it.grossProfit / totalGrossProfit) * 100) : 0,
+    }))
+    .sort((a, b) => b.grossProfit - a.grossProfit);
+
+  const overallGrossMarginPct = totalRevenue > 0 ? Math.round((totalGrossProfit / totalRevenue) * 100) : 0;
+
+  return {
+    totalRevenue: Math.round(totalRevenue),
+    totalCogs: Math.round(totalCogs),
+    totalGrossProfit: Math.round(totalGrossProfit),
+    overallGrossMarginPct,
+    topContributor: items.length > 0 ? items[0] : null,
+    lowestMarginProduct: items.length > 0 ? items[items.length - 1] : null,
+    items,
+  };
+};
