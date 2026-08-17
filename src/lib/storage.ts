@@ -313,12 +313,11 @@ class AccountingStore {
     });
   }
 
-  constructor() {
+    constructor() {
     this._state = loadInitialState();
     this.state = this.createDeepProxy(this._state);
     useStore.setState(this._state);
   }
-
 
   public getState(): AppState {
     return this.state;
@@ -331,18 +330,28 @@ class AccountingStore {
     };
   }
 
-  private notify() {
-    this.state = {
-      ...this.state,
-      journalEntries: [...this.state.journalEntries],
-      invoices: [...this.state.invoices],
-      purchaseBills: [...this.state.purchaseBills],
-      cashTransactions: [...this.state.cashTransactions],
-      accounts: [...this.state.accounts],
-      contacts: [...this.state.contacts],
-      products: [...this.state.products],
-      stockMovements: [...this.state.stockMovements]
+  public notify() {
+    const updated: AppState = {
+      accounts: [...this._state.accounts],
+      contacts: [...this._state.contacts],
+      products: [...this._state.products],
+      journalEntries: [...this._state.journalEntries],
+      invoices: [...this._state.invoices],
+      purchaseBills: [...this._state.purchaseBills],
+      cashTransactions: [...this._state.cashTransactions],
+      stockMovements: [...this._state.stockMovements],
+      fixedAssets: [...this._state.fixedAssets],
+      bankStatements: [...this._state.bankStatements],
+      closedPeriods: [...this._state.closedPeriods],
+      prepaidExpenses: [...this._state.prepaidExpenses],
+      forexRates: [...this._state.forexRates],
+      forexExposures: [...this._state.forexExposures],
+      currentUser: { ...this._state.currentUser },
     };
+    this._state = updated;
+    this.state = this.createDeepProxy(this._state);
+    useStore.setState(updated);
+
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(this._state));
     } catch (err) {

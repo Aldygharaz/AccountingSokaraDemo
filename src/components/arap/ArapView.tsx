@@ -19,6 +19,7 @@ import {
 } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
+import { CurrencyInput } from '../common/CurrencyInput';
 import { useStore } from '../../lib/storage';
 
 interface ArapViewProps {
@@ -437,14 +438,11 @@ export const ArapView: React.FC<ArapViewProps> = ({
                   Bayar Lunas
                 </button>
               </div>
-              <input
-                type="number"
+              <CurrencyInput
                 value={paymentAmount || ''}
-                onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                max={settlingInvoice.remainingAmount}
-                min="0"
+                onChange={(val) => setPaymentAmount(val === '' ? 0 : Number(val))}
                 required
-                className="w-full px-3 py-2 text-xs rounded-xl glass-input font-mono font-bold text-blue-700"
+                className="font-bold text-blue-600 dark:text-blue-400"
               />
             </div>
 
@@ -541,14 +539,11 @@ export const ArapView: React.FC<ArapViewProps> = ({
                   Bayar Lunas
                 </button>
               </div>
-              <input
-                type="number"
+              <CurrencyInput
                 value={paymentAmount || ''}
-                onChange={(e) => setPaymentAmount(Number(e.target.value))}
-                max={settlingBill.remainingAmount}
-                min="0"
+                onChange={(val) => setPaymentAmount(val === '' ? 0 : Number(val))}
                 required
-                className="w-full px-3 py-2 text-xs rounded-xl glass-input font-mono font-bold text-emerald-800"
+                className="font-bold text-emerald-600 dark:text-emerald-400"
               />
             </div>
 

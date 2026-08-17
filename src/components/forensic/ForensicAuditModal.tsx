@@ -61,7 +61,7 @@ export const ForensicAuditModal: React.FC<ForensicAuditModalProps> = ({
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="️ Forensik Audit Trail & Immutable Ledger SHA-256 Hash Chain" icon={<SearchCode className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+      title="Forensik Audit Trail & Immutable Ledger SHA-256 Hash Chain" icon={<SearchCode className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-5xl"
     >
       <div className="space-y-6">

@@ -417,6 +417,54 @@ export const App: React.FC = () => {
           setCurrentTab('transactions');
           setIsCommandPaletteOpen(false);
         }}
+        onOpenPos={() => {
+          setIsPosOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenClosing={() => {
+          setIsClosingModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenCfo={() => {
+          setIsCfoModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenForensic={() => {
+          setIsForensicModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenForex={() => {
+          setIsForexModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenAmortization={() => {
+          setIsAmortizationModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenCosting={() => {
+          setIsCostingModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenTax1771={() => {
+          setIsTax1771ModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenValuation={() => {
+          setIsValuationModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenEcl={() => {
+          setIsEclModalOpen(true);
+          setIsCommandPaletteOpen(false);
+        }}
+        onOpenManualBook={() => {
+          setCurrentTab('manual');
+          setIsCommandPaletteOpen(false);
+        }}
+        onToggleDarkMode={() => {
+          setIsDarkMode((prev) => !prev);
+          setIsCommandPaletteOpen(false);
+        }}
         onToggleRole={() => {
           store.setCurrentUserRole(currentUser.role === 'admin' ? 'staff' : 'admin');
           setIsCommandPaletteOpen(false);

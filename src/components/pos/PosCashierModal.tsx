@@ -254,41 +254,41 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
               </p>
             </div>
 
-            {/* Thermal Receipt Preview */}
-            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-dashed border-slate-300 dark:border-slate-700 font-mono text-xs text-left space-y-2 text-slate-800 dark:text-slate-200">
-              <div className="text-center font-bold pb-2 border-b border-dashed border-slate-300 dark:border-slate-700">
-                TOKO SEJAHTERA RETAIL
+            {/* Thermal Receipt & QRIS Preview */}
+            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-dashed border-slate-300 dark:border-[#3F4147] font-mono text-xs text-left space-y-2 text-slate-800 dark:text-slate-200 shadow-sm">
+              <div className="text-center font-bold pb-2 border-b border-dashed border-slate-300 dark:border-[#3F4147]">
+                <span className="text-sm font-black tracking-tight text-slate-900 dark:text-white">TOKO SEJAHTERA RETAIL</span>
                 <br />
-                <span className="text-[10px] text-slate-400 font-normal">{completedInvoiceData.date}</span>
+                <span className="text-[10px] text-slate-400 font-normal">Struk Transaksi Kasir POS • {completedInvoiceData.date}</span>
               </div>
               {completedInvoiceData.items.map((it: CartItem, idx: number) => (
                 <div key={idx} className="flex justify-between text-[11px]">
-                  <span>
+                  <span className="truncate pr-2">
                     {it.product.name} x{it.qty}
                   </span>
-                  <span>{formatIDR(it.qty * it.unitPrice)}</span>
+                  <span className="tabular-nums font-bold shrink-0">{formatIDR(it.qty * it.unitPrice)}</span>
                 </div>
               ))}
-              <div className="pt-2 border-t border-dashed border-slate-300 dark:border-slate-700 space-y-1 text-[11px] font-bold">
-                <div className="flex justify-between">
+              <div className="pt-2 border-t border-dashed border-slate-300 dark:border-[#3F4147] space-y-1 text-[11px] font-bold">
+                <div className="flex justify-between text-slate-600 dark:text-[#B5BAC1]">
                   <span>Subtotal:</span>
-                  <span>{formatIDR(completedInvoiceData.subtotal)}</span>
+                  <span className="tabular-nums">{formatIDR(completedInvoiceData.subtotal)}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="flex justify-between text-slate-600 dark:text-[#B5BAC1]">
                   <span>PPN 11%:</span>
-                  <span>{formatIDR(completedInvoiceData.taxAmount)}</span>
+                  <span className="tabular-nums">{formatIDR(completedInvoiceData.taxAmount)}</span>
                 </div>
                 <div className="flex justify-between text-sm font-black text-slate-900 dark:text-white pt-1">
-                  <span>TOTAL:</span>
-                  <span>{formatIDR(completedInvoiceData.grandTotal)}</span>
+                  <span>TOTAL PEMBAYARAN:</span>
+                  <span className="tabular-nums text-blue-600 dark:text-blue-400">{formatIDR(completedInvoiceData.grandTotal)}</span>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-slate-400 pt-1">
+                <div className="flex justify-between text-slate-600 dark:text-[#B5BAC1] pt-1">
                   <span>Tunai Diterima:</span>
-                  <span>{formatIDR(completedInvoiceData.cashTendered)}</span>
+                  <span className="tabular-nums">{formatIDR(completedInvoiceData.cashTendered)}</span>
                 </div>
-                <div className="flex justify-between text-emerald-600 font-black">
-                  <span>Kembalian (Rp 100):</span>
-                  <span>{formatIDR(completedInvoiceData.roundedChange)}</span>
+                <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-black">
+                  <span>Kembalian (Bulat Rp 100):</span>
+                  <span className="tabular-nums">{formatIDR(completedInvoiceData.roundedChange)}</span>
                 </div>
               </div>
             </div>
@@ -296,16 +296,16 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold"
+                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all"
               >
                 <Printer className="w-4 h-4" />
                 <span>Cetak Struk Thermal</span>
               </button>
               <button
                 onClick={() => setIsSuccessReceipt(false)}
-                className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md"
+                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 transition-all"
               >
-                Transaksi Baru
+                Transaksi Baru (F4)
               </button>
             </div>
           </div>

@@ -93,7 +93,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
         setStep(1);
         onClose();
       }}
-      title="️ Wizard Tutup Buku & Jurnal Penutup (Closing Entries)" icon={<Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+      title="Wizard Tutup Buku & Jurnal Penutup (Closing Entries)" icon={<Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-4xl"
     >
       <div className="space-y-6">
