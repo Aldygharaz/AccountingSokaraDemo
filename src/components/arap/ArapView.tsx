@@ -16,11 +16,12 @@ import {
   formatIDR,
   calculateAgingBuckets,
   generateBalanceSheet,
+  AgingBucketItem,
 } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
 import { Tooltip } from '../common/Tooltip';
-import { soundFx } from '../../lib/soundFx';
 import { CurrencyInput } from '../common/CurrencyInput';
+import { soundFx } from '../../lib/soundFx';
 import { useStore } from '../../lib/storage';
 
 interface ArapViewProps {
@@ -109,7 +110,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
     : currentBuckets.find((b) => b.bucketName === selectedAgingBucket)?.items || [];
 
   
-  const handleSendWhatsAppReminder = (item: any) => {
+  const handleSendWhatsAppReminder = (item: AgingBucketItem) => {
     soundFx.playClick();
     const contact = contacts.find((c) => c.name.toLowerCase() === item.contactName.toLowerCase());
     const phone = contact?.phone ? contact.phone.replace(/[^0-9]/g, '') : '';
@@ -121,7 +122,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
     window.open(url, '_blank');
   };
 
-  const handleOpenSettleInvoice = (item: any) => {
+  const handleOpenSettleInvoice = (item: AgingBucketItem) => {
     setSettlingInvoice(item);
     setPaymentAmount(item.remainingAmount);
     setPaymentDate(new Date().toISOString().split('T')[0]);
@@ -129,7 +130,7 @@ export const ArapView: React.FC<ArapViewProps> = ({
     setErrorMessage(null);
   };
 
-  const handleOpenSettleBill = (item: any) => {
+  const handleOpenSettleBill = (item: AgingBucketItem) => {
     setSettlingBill(item);
     setPaymentAmount(item.remainingAmount);
     setPaymentDate(new Date().toISOString().split('T')[0]);

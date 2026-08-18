@@ -15,7 +15,7 @@ import { User,
   Info,
 } from 'lucide-react';
 import { CurrencyInput } from '../common/CurrencyInput';
-import { SalesInvoice, PurchaseBill, CashTransaction, JournalEntry, UserSession } from '../../types/accounting';
+import { SalesInvoice, PurchaseBill, CashTransaction, JournalEntry, UserSession, Account } from '../../types/accounting';
 import { AppState } from '../../lib/storage';
 import { formatIDR, validateJournalBalance } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
@@ -35,7 +35,7 @@ interface TransactionsViewProps {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { useStore } from '../../lib/storage';
 
-const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts: any[] }) => {
+const VirtualJournalList = ({ journals, accounts }: { journals: JournalEntry[], accounts: Account[] }) => {
   const parentRef = React.useRef(null);
 
   const virtualizer = useVirtualizer({
@@ -112,8 +112,8 @@ const VirtualJournalList = ({ journals, accounts }: { journals: any[], accounts:
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 dark:divide-[#3F4147]">
-                      {je.lines.map((l: any) => {
-                        const acc = accounts.find((a: any) => a.id === l.accountId);
+                      {je.lines.map((l) => {
+                        const acc = accounts.find((a) => a.id === l.accountId);
                         return (
                           <tr key={l.id} className="hover:bg-slate-50 dark:hover:bg-[#2B2D31]">
                             <td className="py-2 px-3">

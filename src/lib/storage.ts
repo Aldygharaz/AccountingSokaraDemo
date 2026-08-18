@@ -1141,13 +1141,12 @@ class AccountingStore {
     return this.reconcileBankItem(statementId);
   }
 
-  public addFixedAsset(asset: any) {
+  public addFixedAsset(asset: Omit<FixedAsset, 'id' | 'accumulatedDepreciation' | 'netBookValue'> & { id?: string }) {
     const newAsset: FixedAsset = {
       ...asset,
-      id: `fa-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      id: asset.id || `fa-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       accumulatedDepreciation: 0,
-      netBookValue: asset.purchasePrice,
-      status: 'aktif',
+      netBookValue: asset.acquisitionCost,
     };
     this.state.fixedAssets.push(newAsset);
     this.notify();

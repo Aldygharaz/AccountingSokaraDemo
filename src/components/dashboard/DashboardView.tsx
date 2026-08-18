@@ -140,7 +140,7 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
       const monthIdx = d.getMonth();
       let rev = 0;
       let exp = 0;
-      entry.lines.forEach((detail: any) => {
+      entry.lines.forEach((detail) => {
         const acc = accounts.find(a => a.id === detail.accountId);
         if (acc) {
           if (acc.type === 'pendapatan' && detail.kredit > 0) rev += detail.kredit;

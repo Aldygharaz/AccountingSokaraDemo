@@ -169,7 +169,7 @@ export const BankReconciliationView: React.FC<BankReconciliationViewProps> = ({
     setTimeout(() => setBatchSuccessCount(null), 4000);
   };
 
-  const handleRecordUnrecorded = (b: any) => {
+  const handleRecordUnrecorded = (b: { id: string; date: string; description: string; amount: number; type: 'credit' | 'debit' }) => {
     soundFx.playClick();
     const type = b.description.toLowerCase().includes('bunga') ? 'interest' : 'fee';
     const res = onRecordFeeOrInterest({
