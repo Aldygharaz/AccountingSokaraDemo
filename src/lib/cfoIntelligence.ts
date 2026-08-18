@@ -132,17 +132,17 @@ export const calculateCfoIntelligence = (
   const inventoryAmount = bs.currentAssets.find((a) => a.accountCode === '1104')?.amount || 1;
   const apAmount = bs.currentLiabilities.find((a) => a.accountCode === '2101')?.amount || 1;
 
-  const dso = Math.round((arAmount / revenue) * 365);
-  const dio = Math.round((inventoryAmount / cogs) * 365);
-  const dpo = Math.round((apAmount / cogs) * 365);
-  const ccc = dio + dso - dpo;
+  const cleanDso = Math.max(0, Math.round((arAmount / revenue) * 365));
+  const cleanDio = Math.max(0, Math.round((inventoryAmount / cogs) * 365));
+  const cleanDpo = Math.max(0, Math.round((apAmount / cogs) * 365));
+  const ccc = cleanDio + cleanDso - cleanDpo;
 
   const cccHealth: 'optimal' | 'moderate' | 'slow' = ccc <= 45 ? 'optimal' : ccc <= 90 ? 'moderate' : 'slow';
 
   const workingCapital: WorkingCapitalCycle = {
-    daysSalesOutstanding: Math.max(0, dso),
-    daysInventoryOutstanding: Math.max(0, dio),
-    daysPayableOutstanding: Math.max(0, dpo),
+    daysSalesOutstanding: cleanDso,
+    daysInventoryOutstanding: cleanDio,
+    daysPayableOutstanding: cleanDpo,
     cashConversionCycle: ccc,
     cccHealth,
   };
