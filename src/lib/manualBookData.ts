@@ -25,9 +25,7 @@ export const MANUAL_TOPICS: ManualTopic[] = [
     description:
       'Setiap kali kasir memproses barang di kasir POS, sistem secara simultan membuat jurnal kas dan memotong kuantitas persediaan fisik di gudang secara otomatis dengan metode Moving Average Costing.',
     formulaOrRule:
-      'Jurnal Otomatis:
-[Debit] Kas Toko (1101)  =  [Kredit] Pendapatan Penjualan (4101) + PPN Keluaran 11% (2102)
-[Debit] Beban Pokok Penjualan HPP (5101)  =  [Kredit] Persediaan Barang Dagang (1104)',
+      'Jurnal Otomatis:\n[Debit] Kas Toko (1101)  =  [Kredit] Pendapatan Penjualan (4101) + PPN Keluaran 11% (2102)\n[Debit] Beban Pokok Penjualan HPP (5101)  =  [Kredit] Persediaan Barang Dagang (1104)',
     businessContext:
       'Mencegah selisih kas fisik di akhir shift dan mencegah stok minus atau fiktif tanpa perlu staf menginput jurnal umum secara manual.',
     practicalSteps: [
@@ -57,10 +55,7 @@ export const MANUAL_TOPICS: ManualTopic[] = [
     description:
       'Digunakan untuk penjualan barang dalam partai besar ke distributor atau toko mitra dengan termin pembayaran mundur. Sistem mencatat Piutang Usaha, menghitung umur piutang (Aging), dan menyediakan tombol 1-klik template WhatsApp penagihan.',
     formulaOrRule:
-      'Saat Terbit Faktur:
-[Debit] Piutang Usaha (1103)  =  [Kredit] Penjualan (4101) + PPN 11% (2102)
-Saat Pelunasan:
-[Debit] Bank BCA (1102)  =  [Kredit] Piutang Usaha (1103)',
+      'Saat Terbit Faktur:\n[Debit] Piutang Usaha (1103)  =  [Kredit] Penjualan (4101) + PPN 11% (2102)\nSaat Pelunasan:\n[Debit] Bank BCA (1102)  =  [Kredit] Piutang Usaha (1103)',
     businessContext:
       'Menjaga Days Sales Outstanding (DSO) tetap rendah (<30 hari) agar arus kas operasional toko tidak macet di tangan pembeli.',
     practicalSteps: [
@@ -91,8 +86,7 @@ Saat Pelunasan:
     description:
       'Menganalisis margin kotor riil setiap SKU berdasarkan selisih harga jual dan moving average cost, serta menghitung persentase kontribusi laba tiap produk terhadap total keuntungan kotor bisnis.',
     formulaOrRule:
-      'Gross Margin % = ((Harga Jual - Rata-rata HPP) / Harga Jual) * 100%
-Kontribusi Laba % = (Total Profit SKU / Total Profit Seluruh SKU) * 100%',
+      'Gross Margin % = ((Harga Jual - Rata-rata HPP) / Harga Jual) * 100%\nKontribusi Laba % = (Total Profit SKU / Total Profit Seluruh SKU) * 100%',
     businessContext:
       'Membantu pemilik toko mengidentifikasi produk "Star" (volume tinggi, margin tinggi) dan menghentikan atau merevisi harga produk "Dog" (margin tipis atau minus).',
     practicalSteps: [
@@ -125,8 +119,7 @@ Kontribusi Laba % = (Total Profit SKU / Total Profit Seluruh SKU) * 100%',
     badge: 'Fondasi Akuntansi',
     description:
       'Setiap akun dalam sistem memiliki nomor kode unik, klasifikasi sub-tipe, dan saldo normal (Debit atau Kredit) yang menjamin persamaan dasar akuntansi selalu seimbang.',
-    formulaOrRule: 'Persamaan Dasar Akuntansi:
-ASET = LIABILITAS + EKUITAS + (PENDAPATAN - BEBAN)',
+    formulaOrRule: 'Persamaan Dasar Akuntansi:\nASET = LIABILITAS + EKUITAS + (PENDAPATAN - BEBAN)',
     businessContext:
       'Menjadi pondasi tunggal bagi penyusunan Laporan Laba Rugi dan Neraca tanpa rekayasa angka manual.',
     practicalSteps: [
@@ -161,10 +154,7 @@ ASET = LIABILITAS + EKUITAS + (PENDAPATAN - BEBAN)',
     description:
       'Fitur tutup buku bulanan mengenolkan akun-akun nominal (Pendapatan & Beban) pada Ikhtisar Laba Rugi dan memindahkan surplus keuntungan bersih ke akun Ekuitas Laba Ditahan (Akun 3102).',
     formulaOrRule:
-      'Jurnal Penutup:
-[Debit] Seluruh Akun Pendapatan (4xxx)  =  [Kredit] Ikhtisar Laba Rugi (3999)
-[Debit] Ikhtisar Laba Rugi (3999)  =  [Kredit] Seluruh Akun Beban (5xxx & 6xxx)
-[Debit] Ikhtisar Laba Rugi (3999)  =  [Kredit] Laba Ditahan (3102)',
+      'Jurnal Penutup:\n[Debit] Seluruh Akun Pendapatan (4xxx)  =  [Kredit] Ikhtisar Laba Rugi (3999)\n[Debit] Ikhtisar Laba Rugi (3999)  =  [Kredit] Seluruh Akun Beban (5xxx & 6xxx)\n[Debit] Ikhtisar Laba Rugi (3999)  =  [Kredit] Laba Ditahan (3102)',
     businessContext:
       'Mengunci data masa lalu agar tidak dapat diedit atau dimanipulasi secara retrospektif oleh staf, memenuhi syarat audit BPK / KAP independen.',
     practicalSteps: [
@@ -194,10 +184,7 @@ ASET = LIABILITAS + EKUITAS + (PENDAPATAN - BEBAN)',
     description:
       'Sistem mencocokkan baris mutasi rekening koran (BCA/Mandiri) dengan jurnal kas internal menggunakan 3 tingkatan heuristik kecocokan.',
     formulaOrRule:
-      'Confidence Tiers:
-- 100% Match: Nomor referensi/faktur transaksi persis sama.
-- 90% Match: Nominal persis sama & tanggal mutasi berada dalam rentang ±3 hari.
-- 75% Match: Deteksi kata kunci biaya admin bank / bunga tabungan untuk auto-posting jurnal penyesuaian.',
+      'Confidence Tiers:\n- 100% Match: Nomor referensi/faktur transaksi persis sama.\n- 90% Match: Nominal persis sama & tanggal mutasi berada dalam rentang +-3 hari.\n- 75% Match: Deteksi kata kunci biaya admin bank / bunga tabungan untuk auto-posting jurnal penyesuaian.',
     businessContext:
       'Menghilangkan selisih antara saldo buku kas perusahaan dengan saldo riil rekening koran di bank.',
     practicalSteps: [
@@ -227,8 +214,7 @@ ASET = LIABILITAS + EKUITAS + (PENDAPATAN - BEBAN)',
     description:
       'Memetakan posisi saldo kas awal, jadwal jatuh tempo tagihan piutang dan hutang yang telah terjadwal, serta memproyeksikan burn rate harian yang dinamis terhadap slider pertumbuhan penjualan dan inflasi.',
     formulaOrRule:
-      'Kas Hari ke-N = Kas Hari ke-(N-1) + AR Due Hari N - AP Due Hari N + (Proyeksi Penjualan Harian - Proyeksi Beban Harian)
-Safety Buffer Kas = Rp 10.000.000',
+      'Kas Hari ke-N = Kas Hari ke-(N-1) + AR Due Hari N - AP Due Hari N + (Proyeksi Penjualan Harian - Proyeksi Beban Harian)\nSafety Buffer Kas = Rp 10.000.000',
     businessContext:
       'Memberikan peringatan dini (early warning) hingga 3 bulan ke depan sebelum perusahaan mengalami krisis likuiditas atau kekurangan kas untuk membayar supplier.',
     practicalSteps: [
@@ -261,11 +247,7 @@ Safety Buffer Kas = Rp 10.000.000',
     description:
       'Software secara otomatis memisahkan PPN Masukan (pembelian) dan PPN Keluaran (penjualan) untuk menghasilkan Surat Pemberitahuan (SPT) PPN Kurang/Lebih Bayar, serta modul SPT Tahunan Badan 1771 dengan Koreksi Fiskal Positif & Negatif.',
     formulaOrRule:
-      'SPT PPN:
-PPN Kurang Bayar = PPN Keluaran (Penjualan 11%) - PPN Masukan (Pembelian 11%)
-
-Pasal 31E UU PPh:
-Badan Usaha omset ≤ Rp 4.8 Miliar mendapatkan diskon tarif pajak 50% (yaitu tarif efektif 11%).',
+      'SPT PPN:\nPPN Kurang Bayar = PPN Keluaran (Penjualan 11%) - PPN Masukan (Pembelian 11%)\n\nPasal 31E UU PPh:\nBadan Usaha omset <= Rp 4.8 Miliar mendapatkan diskon tarif pajak 50% (yaitu tarif efektif 11%).',
     businessContext:
       'Menghindarkan perusahaan dari denda sanksi perpajakan DJP dan memudahkan pengisian formulir SPT elektronik (e-Faktur & e-SPT).',
     practicalSteps: [
@@ -299,10 +281,7 @@ Badan Usaha omset ≤ Rp 4.8 Miliar mendapatkan diskon tarif pajak 50% (yaitu ta
     description:
       'Mengolah data historis pembukuan menjadi instrumen proyeksi masa depan: Free Cash Flow to Firm (FCFF), WACC, DuPont 3-Stage Breakdown, dan skor solvabilitas Altman Z-Score.',
     formulaOrRule:
-      'Altman Z-Score = 1.2(X1) + 1.4(X2) + 3.3(X3) + 0.6(X4) + 0.999(X5)
-Skor > 2.99 = Safe Zone (Bebas Risiko Kepailitan)
-
-DuPont ROE = Margin Laba Bersih x Perputaran Aset x Financial Leverage',
+      'Altman Z-Score = 1.2(X1) + 1.4(X2) + 3.3(X3) + 0.6(X4) + 0.999(X5)\nSkor > 2.99 = Safe Zone (Bebas Risiko Kepailitan)\n\nDuPont ROE = Margin Laba Bersih x Perputaran Aset x Financial Leverage',
     businessContext:
       'Menjawab pertanyaan kritis pemilik bisnis: "Apakah bisnis kita menghasilkan kas riil?", "Berapa nilai valuasi wajar perusahaan?", dan "Kapan kita butuh suntikan modal baru?".',
     practicalSteps: [
