@@ -280,7 +280,7 @@ export const CoaView: React.FC<CoaViewProps> = ({
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] uppercase tracking-wider">
+              <tr className="bg-slate-50 dark:bg-[#1E1F22] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-500 dark:text-[#B5BAC1] uppercase tracking-wider">
                 <th className="py-3 px-4">Kode</th>
                 <th className="py-3 px-4">Nama Akun</th>
                 <th className="py-3 px-4">Kategori Utama</th>

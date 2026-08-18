@@ -101,7 +101,7 @@ export const ProductsView: React.FC<ProductsViewProps> = ({
               iconOnly
             />
           </div>
-          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1">
+          <p className="text-sm text-slate-500 dark:text-[#B5BAC1] mt-1">
             Katalog barang dagang dengan kalkulasi HPP otomatis (Metode Weighted Average Costing).
           </p>
         </div>

@@ -44,7 +44,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({}) => {
   const [endDate, setEndDate] = useState(lastDay);
   const [asOfDate, setAsOfDate] = useState(lastDay);
 
-  const [companyName, setCompanyName] = useState('Sokara Accounting Software');
+  const [companyName, setCompanyName] = useState('Toko Kelontong Sejahtera Utama');
 
   const [selectedDrilldownAccount, setSelectedDrilldownAccount] = useState<Account | null>(null);
 
@@ -104,7 +104,7 @@ export const ReportsView: React.FC<ReportsViewProps> = ({}) => {
             { id: 'pnl', label: 'Laba Rugi (P&L)', icon: <TrendingUp className="w-3.5 h-3.5" /> },
             { id: 'balance_sheet', label: 'Neraca (Balance Sheet)', icon: <Scale className="w-3.5 h-3.5" /> },
             { id: 'cash_flow', label: 'Arus Kas (Direct)', icon: <ArrowRightLeft className="w-3.5 h-3.5" /> },
-            { id: 'simulation', label: 'What-If Simulator', icon: <BrainCircuit className="w-3.5 h-3.5" /> },
+            { id: 'simulation', label: 'Simulasi Kas & Margin', icon: <Sliders className="w-3.5 h-3.5" /> },
           ].map((tab) => (
             <button
               key={tab.id}

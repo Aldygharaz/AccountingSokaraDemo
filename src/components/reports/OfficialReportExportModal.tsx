@@ -48,7 +48,7 @@ export const OfficialReportExportModal: React.FC<OfficialReportExportModalProps>
   const handleDownloadCsv = () => {
     soundFx.playChaChing();
     let csvContent = 'data:text/csv;charset=utf-8,';
-    csvContent += `LAPORAN KEUANGAN RESMI - PT SOKARA DEMO ACCOUNTING\n`;
+    csvContent += `LAPORAN KEUANGAN RESMI - TOKO KELONTONG SEJAHTERA UTAMA\n`;
     csvContent += `Periode: Per ${asOfDate}\n\n`;
 
     if (reportType === 'balance_sheet') {

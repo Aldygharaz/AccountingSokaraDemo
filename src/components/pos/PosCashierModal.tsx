@@ -193,7 +193,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
       setCashTendered(0);
     } else {
       soundFx.playError();
-      alert(res.error || 'Gagal memproses transaksi kasir');
+      setStockError(res.error || 'Gagal memproses transaksi kasir');
     }
   };
 
@@ -497,7 +497,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
                 <button
                   type="submit"
                   disabled={cart.length === 0}
-                  className="w-full mt-2 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-95 text-white text-xs font-black shadow-lg shadow-blue-600/30 transition-all disabled:opacity-50"
+                  className="w-full mt-2 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/20 transition-all disabled:opacity-50"
                 >
                   Bayar & Terbitkan Faktur (F4)
                 </button>

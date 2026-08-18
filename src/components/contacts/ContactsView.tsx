@@ -390,12 +390,12 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
         >
           <div className="space-y-6">
             {/* Summary */}
-            <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-slate-50 dark:bg-[#1E1F22] border border-slate-200 dark:border-[#3F4147]">
               <div>
                 <p className="text-xs text-slate-500 dark:text-[#B5BAC1] font-bold uppercase">
                   {selectedContactHistory.type === 'vendor' ? 'Total Pembelian (Purchases)' : 'Total Penjualan (Sales)'}
                 </p>
-                <p className="text-base font-black text-slate-900 tabular-nums">
+                <p className="text-base font-black text-slate-900 dark:text-white tabular-nums">
                   {formatIDR((selectedContactHistory.type === 'vendor' ? selectedContactHistory.totalPurchases : selectedContactHistory.totalSales) || 0)}
                 </p>
               </div>
@@ -409,7 +409,7 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
 
             {/* Invoices List for this contact */}
             <div>
-              <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-2">
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2">
                 Riwayat Transaksi Terkait
               </h4>
               {(() => {
@@ -422,15 +422,15 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                 }
 
                 return (
-                  <div className="divide-y divide-slate-100 border border-slate-200 rounded-xl overflow-hidden text-xs">
+                  <div className="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-[#3F4147] rounded-xl overflow-hidden text-xs">
                     {salesInvoices.map((inv) => (
-                      <div key={inv.id} className="p-3 flex items-center justify-between bg-white hover:bg-slate-50">
+                      <div key={inv.id} className="p-3 flex items-center justify-between bg-white dark:bg-[#2B2D31] hover:bg-slate-50 dark:hover:bg-[#383A40] transition-colors">
                         <div>
                           <p className="font-bold text-blue-600">{inv.invoiceNumber}</p>
                           <p className="text-[11px] text-slate-400">Tgl: {inv.date} • Jatuh Tempo: {inv.dueDate}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-slate-900 tabular-nums">{formatIDR(inv.total)}</p>
+                          <p className="font-bold text-slate-900 dark:text-white tabular-nums">{formatIDR(inv.total)}</p>
                           <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${inv.status === 'lunas' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
                             {inv.status}
                           </span>
@@ -438,13 +438,13 @@ export const ContactsView: React.FC<ContactsViewProps> = ({
                       </div>
                     ))}
                     {filteredPurchaseBills.map((bill) => (
-                      <div key={bill.id} className="p-3 flex items-center justify-between bg-white hover:bg-slate-50">
+                      <div key={bill.id} className="p-3 flex items-center justify-between bg-white dark:bg-[#2B2D31] hover:bg-slate-50 dark:hover:bg-[#383A40] transition-colors">
                         <div>
                           <p className="font-bold text-purple-600">{bill.billNumber}</p>
                           <p className="text-[11px] text-slate-400">Tgl: {bill.date} • Jatuh Tempo: {bill.dueDate}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-slate-900 tabular-nums">{formatIDR(bill.total)}</p>
+                          <p className="font-bold text-slate-900 dark:text-white tabular-nums">{formatIDR(bill.total)}</p>
                           <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${bill.status === 'lunas' ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}`}>
                             {bill.status}
                           </span>
