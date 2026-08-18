@@ -3,8 +3,7 @@ import { Lightbulb,
 
   BookOpen,
   Search,
-  Sparkles,
-  ArrowRight,
+    ArrowRight,
   CheckCircle2,
   HelpCircle,
   Calculator,
@@ -59,9 +58,8 @@ export const ManualBookView: React.FC<ManualBookViewProps> = ({ onNavigateToTab 
   return (
     <div className="space-y-6 max-w-7xl mx-auto pb-16">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="bg-slate-900 dark:bg-[#1E1F22] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-slate-800 dark:border-[#3F4147]">
+        
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="space-y-2 max-w-2xl">
             <div className="flex items-center gap-2">
