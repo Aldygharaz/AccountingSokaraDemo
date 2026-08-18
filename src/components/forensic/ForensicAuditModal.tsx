@@ -139,8 +139,8 @@ export const ForensicAuditModal: React.FC<ForensicAuditModalProps> = ({
         </div>
 
         {/* Chain blocks list */}
-        <div className="border border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden">
-          <div className="bg-slate-100/80 dark:bg-[#2B2D31] px-4 py-2.5 border-b border-slate-200 dark:border-[#3F4147] grid grid-cols-12 text-[11px] font-black text-slate-600 dark:text-[#DBDEE1] uppercase tracking-wider">
+        <div className="border-2 border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden shadow-xs bg-white dark:bg-[#1E1F22]">
+          <div className="bg-slate-900 dark:bg-[#1E1F22] px-5 py-3 border-b border-slate-800 text-white grid grid-cols-12 text-xs font-black uppercase tracking-wider">
             <span className="col-span-1">Blok #</span>
             <span className="col-span-2">No. Jurnal</span>
             <span className="col-span-2">Tanggal</span>
@@ -154,20 +154,20 @@ export const ForensicAuditModal: React.FC<ForensicAuditModalProps> = ({
                 key={b.blockIndex}
                 className="px-4 py-3 grid grid-cols-12 items-center hover:bg-slate-50 dark:hover:bg-[#383A40] transition-colors"
               >
-                <div className="col-span-1 font-mono font-bold text-slate-400">
+                <div className="col-span-1 font-mono font-black text-slate-800 dark:text-slate-200">
                   #{b.blockIndex}
                 </div>
                 <div className="col-span-2 font-mono font-bold text-blue-600 dark:text-blue-400">
                   {b.entryNumber}
                 </div>
-                <div className="col-span-2 text-slate-600 dark:text-[#B5BAC1]">
+                <div className="col-span-2 text-slate-800 dark:text-slate-200 font-bold">
                   {b.date}
                 </div>
                 <div className="col-span-2 text-right font-black font-mono tabular-nums text-slate-800 dark:text-white">
                   {formatIDR(b.amount)}
                 </div>
                 <div className="col-span-5 text-right font-mono text-[10px] space-y-0.5">
-                  <div className="text-slate-400 truncate" title={`Prev: ${b.previousHash}`}>
+                  <div className="text-slate-600 dark:text-slate-400 font-bold truncate" title={`Prev: ${b.previousHash}`}>
                     Prev: {b.previousHash.slice(0, 16)}...
                   </div>
                   <div className="text-emerald-600 dark:text-emerald-400 font-bold truncate" title={`Hash: ${b.currentHash}`}>
