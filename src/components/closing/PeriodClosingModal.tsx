@@ -5,14 +5,10 @@ import {
   CheckCircle2,
   AlertTriangle,
   Award,
-  FileCheck,
-  Calendar,
-  Layers,
   ArrowRight,
   Printer,
-  Sparkles,
 } from 'lucide-react';
-import { AppState, store } from '../../lib/storage';
+import { store } from '../../lib/storage';
 import { generateClosingEntries } from '../../lib/closingEngine';
 import { formatIDR } from '../../lib/accountingEngine';
 import { Modal } from '../common/Modal';
@@ -22,22 +18,22 @@ import { useStore } from '../../lib/storage';
 interface PeriodClosingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  }
+}
 
 export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const closedPeriods = useStore(s => s.closedPeriods);
-  const accounts = useStore(s => s.accounts);
-  const journalEntries = useStore(s => s.journalEntries);
-  const currentUser = useStore(s => s.currentUser);
+  const closedPeriods = useStore((s) => s.closedPeriods);
+  const accounts = useStore((s) => s.accounts);
+  const journalEntries = useStore((s) => s.journalEntries);
+  const currentUser = useStore((s) => s.currentUser);
 
   const generateMonthOptions = () => {
     const options = [];
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth(); // 0-11
-    
+
     for (let i = 0; i < 12; i++) {
       const d = new Date(currentYear, currentMonth - i, 1);
       const mStr = (d.getMonth() + 1).toString().padStart(2, '0');
@@ -48,6 +44,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
     }
     return options;
   };
+
   const monthOptions = generateMonthOptions();
   const [selectedMonth, setSelectedMonth] = useState(monthOptions[0].value);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -93,32 +90,35 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
         setStep(1);
         onClose();
       }}
-      title="Wizard Tutup Buku & Jurnal Penutup (Closing Entries)" icon={<Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
+      title="Wizard Tutup Buku & Jurnal Penutup (Closing Entries)"
+      icon={<Lock className="w-6 h-6 text-blue-600 dark:text-blue-400" />}
       maxWidth="max-w-4xl"
     >
-      <div className="space-y-6">
-        {/* Step Header */}
-        <div className="flex items-center justify-between bg-slate-50 dark:bg-[#2B2D31] p-3 rounded-2xl border border-slate-200/80 dark:border-[#3F4147]">
+      <div className="space-y-6 text-slate-900 dark:text-slate-100">
+        {/* Top Dark Executive Banner */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-slate-900 dark:bg-[#1E1F22] border border-slate-800 dark:border-[#3F4147] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-md">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 font-black text-xs">
+            <div className="p-2.5 rounded-xl bg-blue-500/20 text-blue-300 border border-blue-400/30 font-black text-xs font-mono">
               PSAK / SAK EMKM Standard
             </div>
             <div>
-              <div className="text-xs font-black text-slate-800 dark:text-white">
+              <div className="text-sm font-black text-white">
                 Proses Tutup Buku Periode Fiskal Bulanan
               </div>
-              <div className="text-[11px] text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
-                Nolkan Akun Pendapatan & Beban Alokasikan Saldo Bersih ke Akun 3201/3202 Laba Ditahan.
+              <div className="text-xs text-slate-300 mt-0.5">
+                Nolkan Akun Pendapatan & Beban, Alokasikan Laba Bersih ke Laba Ditahan (Akun 3201/3202).
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className={`px-2.5 py-1 rounded-full text-xs font-black ${
-              isAlreadyClosed
-                ? 'bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-400 border border-rose-200 dark:border-rose-800'
-                : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800'
-            }`}>
+          <div className="flex items-center gap-2 shrink-0">
+            <span
+              className={`px-3 py-1 rounded-full text-xs font-black shadow-xs ${
+                isAlreadyClosed
+                  ? 'bg-rose-500 text-white'
+                  : 'bg-emerald-500 text-white'
+              }`}
+            >
               {isAlreadyClosed ? 'Periode Terkunci' : 'Periode Terbuka'}
             </span>
           </div>
@@ -126,89 +126,117 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
 
         {/* Step 1: Period Selection & Pre-Closing Summary */}
         {step === 1 && (
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-black text-slate-700 dark:text-slate-200 dark:text-slate-200 mb-1.5">
+                <label className="block text-xs font-black text-slate-900 dark:text-white mb-1.5 uppercase tracking-wider">
                   Pilih Periode Fiskal
                 </label>
                 <select
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(e.target.value)}
-                  className="w-full px-3 py-2.5 text-xs rounded-xl bg-white dark:bg-[#1E1F22] border border-slate-200 dark:border-[#3F4147] text-slate-800 dark:text-white font-bold"
+                  className="w-full px-3 py-3 text-xs rounded-xl bg-white dark:bg-[#1E1F22] border-2 border-slate-300 dark:border-[#4E5058] text-slate-900 dark:text-white font-black shadow-xs outline-none"
                 >
-                  {monthOptions.map(opt => (
-                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  {monthOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
                   ))}
                 </select>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/60 dark:border-emerald-800/40">
-                <span className="text-[10px] uppercase font-black text-emerald-800 dark:text-emerald-400 block">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#2B2D31] border-2 border-emerald-300 dark:border-emerald-800 shadow-xs flex flex-col justify-between">
+                <span className="text-[11px] uppercase font-black text-emerald-800 dark:text-emerald-300 block">
                   Total Pendapatan Periode
                 </span>
-                <span className="text-base font-black text-emerald-600 dark:text-emerald-400 tabular-nums">
+                <span className="text-xl font-black text-emerald-700 dark:text-emerald-400 font-mono tabular-nums mt-1">
                   {formatIDR(preview.totalRevenue)}
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-rose-50/70 dark:bg-rose-950/30 border border-rose-200/60 dark:border-rose-800/40">
-                <span className="text-[10px] uppercase font-black text-rose-800 dark:text-rose-400 block">
+              <div className="p-4 rounded-2xl bg-white dark:bg-[#2B2D31] border-2 border-rose-300 dark:border-rose-800 shadow-xs flex flex-col justify-between">
+                <span className="text-[11px] uppercase font-black text-rose-800 dark:text-rose-300 block">
                   Total Beban & HPP Periode
                 </span>
-                <span className="text-base font-black text-rose-600 dark:text-rose-400 tabular-nums">
+                <span className="text-xl font-black text-rose-700 dark:text-rose-400 font-mono tabular-nums mt-1">
                   {formatIDR(preview.totalExpense)}
                 </span>
               </div>
             </div>
 
-            {/* Net Income Callout */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-[#2B2D31] dark:to-[#313338] border border-blue-200 dark:border-[#3F4147] flex items-center justify-between">
+            {/* High-Contrast Net Income Transferred Card */}
+            <div className="p-5 rounded-2xl bg-slate-900 dark:bg-[#1E1F22] border border-slate-800 dark:border-[#3F4147] text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <span className="text-xs font-black text-blue-900 dark:text-blue-400 block uppercase tracking-wider">
-                  Laba / (Rugi) Bersih yang Akan Ditransfer ke Ekuitas (Laba Ditahan)
+                <span className="text-xs font-black uppercase tracking-wider text-slate-300 block">
+                  Laba / (Rugi) Bersih yang Ditransfer ke Laba Ditahan:
                 </span>
-                <span className={`text-xl font-black tabular-nums ${preview.netIncome >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
+                <span
+                  className={`text-2xl font-black font-mono tabular-nums mt-1 block ${
+                    preview.netIncome >= 0 ? 'text-emerald-400' : 'text-rose-400'
+                  }`}
+                >
                   {formatIDR(preview.netIncome)}
                 </span>
               </div>
-              <div className="text-right text-xs font-bold text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
-                Entri Penutup: <span className="font-mono text-blue-600 dark:text-blue-400">JV-CLOSE-{selectedMonth.replace('-', '')}</span>
+              <div className="text-left sm:text-right text-xs">
+                <span className="text-slate-400 font-bold block">Nomor Entri Penutup:</span>
+                <span className="font-mono font-black text-blue-300 text-sm">
+                  JV-CLOSE-{selectedMonth.replace('-', '')}
+                </span>
               </div>
             </div>
 
             {/* Closing Journal Lines Preview */}
-            <div className="border border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden">
-              <div className="bg-slate-100/80 dark:bg-[#2B2D31] px-4 py-2.5 border-b border-slate-200 dark:border-[#3F4147] flex items-center justify-between">
-                <span className="text-xs font-black text-slate-700 dark:text-slate-200 dark:text-slate-200 uppercase tracking-wider">
+            <div className="border-2 border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden shadow-xs bg-white dark:bg-[#1E1F22]">
+              <div className="bg-slate-900 dark:bg-[#1E1F22] px-5 py-3 border-b border-slate-800 text-white flex items-center justify-between">
+                <span className="text-xs font-black uppercase tracking-wider text-white">
                   Draft Jurnal Penutup Majemuk (Compound Closing Entry)
                 </span>
-                <span className="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Seimbang (Balanced)
+                <span className="text-xs font-black text-emerald-400 flex items-center gap-1">
+                  <CheckCircle2 className="w-4 h-4" /> Seimbang (Balanced)
                 </span>
               </div>
-              <div className="max-h-48 overflow-y-auto divide-y divide-slate-100 dark:divide-[#3F4147] text-xs">
+
+              {/* Table Column Sub-headers */}
+              <div className="grid grid-cols-12 px-5 py-2.5 bg-slate-100 dark:bg-[#2B2D31] border-b border-slate-200 dark:border-[#3F4147] text-[11px] font-black text-slate-700 dark:text-slate-200 uppercase">
+                <span className="col-span-8">Akun & Memo Penutupan</span>
+                <span className="col-span-2 text-right">Debit (IDR)</span>
+                <span className="col-span-2 text-right">Kredit (IDR)</span>
+              </div>
+
+              <div className="max-h-56 overflow-y-auto divide-y divide-slate-100 dark:divide-[#3F4147] text-xs">
                 {preview.closingEntry.lines.length === 0 ? (
-                  <div className="p-6 text-center text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">
+                  <div className="p-8 text-center text-slate-500 dark:text-[#B5BAC1] font-bold">
                     Tidak ada transaksi pendapatan atau beban di periode ini.
                   </div>
                 ) : (
                   preview.closingEntry.lines.map((l, i) => {
                     const acc = accounts.find((a) => a.id === l.accountId);
                     return (
-                      <div key={i} className="px-4 py-2 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-[#383A40]">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-slate-400 font-bold">{acc?.code}</span>
-                          <span className="font-bold text-slate-800 dark:text-slate-200">{acc?.name}</span>
-                          <span className="text-[10px] text-slate-400">({l.memo})</span>
+                      <div
+                        key={i}
+                        className="px-5 py-3 grid grid-cols-12 items-center hover:bg-slate-50 dark:hover:bg-[#383A40] transition-colors"
+                      >
+                        <div className="col-span-8 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
+                          <span className="font-mono font-black text-[11px] text-slate-900 dark:text-white px-2 py-0.5 rounded bg-slate-100 dark:bg-[#2B2D31] border border-slate-300 dark:border-[#4E5058] self-start sm:self-center shrink-0">
+                            {acc?.code}
+                          </span>
+                          <div>
+                            <span className="font-bold text-slate-900 dark:text-white text-xs">
+                              {acc?.name}
+                            </span>
+                            <span className="text-[11px] text-slate-600 dark:text-slate-300 block sm:inline sm:ml-1.5 font-medium">
+                              ({l.memo})
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-6 font-mono font-bold tabular-nums">
-                          <span className={l.debit > 0 ? 'text-blue-600 dark:text-blue-400' : 'text-slate-300'}>
-                            {l.debit > 0 ? formatIDR(l.debit) : '-'}
-                          </span>
-                          <span className={l.kredit > 0 ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-300'}>
-                            {l.kredit > 0 ? formatIDR(l.kredit) : '-'}
-                          </span>
+
+                        <div className="col-span-2 text-right font-mono font-black text-xs tabular-nums text-blue-700 dark:text-blue-400">
+                          {l.debit > 0 ? formatIDR(l.debit) : '-'}
+                        </div>
+
+                        <div className="col-span-2 text-right font-mono font-black text-xs tabular-nums text-indigo-700 dark:text-indigo-400">
+                          {l.kredit > 0 ? formatIDR(l.kredit) : '-'}
                         </div>
                       </div>
                     );
@@ -223,7 +251,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
                 <button
                   type="button"
                   onClick={() => handleUnlock(selectedMonth)}
-                  className="px-4 py-2.5 rounded-xl border border-rose-300 text-rose-700 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs font-black flex items-center gap-2 transition-all"
+                  className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-black flex items-center gap-2 transition-all shadow-md"
                 >
                   <Unlock className="w-4 h-4" />
                   <span>Buka Kunci Periode (Unlock for Revisions)</span>
@@ -246,41 +274,49 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
         {step === 2 && (
           <div className="space-y-4">
             {errorMsg && (
-              <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-800 flex items-start gap-3">
+              <div className="p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/30 border-2 border-rose-300 dark:border-rose-800 flex items-start gap-3">
                 <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
                 <div className="text-xs text-rose-900 dark:text-rose-200">
-                  <span className="font-bold">Gagal Menutup Periode:</span> {errorMsg}
+                  <span className="font-black">Gagal Menutup Periode:</span> {errorMsg}
                 </div>
               </div>
             )}
-            
-            <div className="p-3.5 rounded-2xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 flex items-start gap-3">
+
+            <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border-2 border-amber-300 dark:border-amber-800 flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-              <div className="text-xs text-amber-900 dark:text-amber-200">
-                <span className="font-bold">Konfirmasi Kunci Buku Fiskal:</span> Setelah tutup buku dilakukan, seluruh transaksi tanggal {selectedMonth}-01 s.d. {selectedMonth}-{(() => {
-                  const [y, m] = selectedMonth.split('-');
-                  return new Date(parseInt(y), parseInt(m), 0).getDate();
-                })()} akan dikunci permanen untuk mencegah manipulasi data historis.
+              <div className="text-xs text-amber-950 dark:text-amber-100 font-medium">
+                <span className="font-black text-sm block mb-0.5 text-amber-900 dark:text-amber-300">
+                  Konfirmasi Kunci Buku Fiskal:
+                </span>
+                Setelah proses tutup buku dieksekusi, seluruh mutasi transaksi untuk periode {selectedMonth} akan dikunci permanen guna memenuhi kepatuhan standar audit.
               </div>
             </div>
 
-            <div className="border border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden">
-              <div className="bg-slate-100/80 dark:bg-[#2B2D31] px-4 py-2.5 border-b border-slate-200 dark:border-[#3F4147] text-xs font-black text-slate-800 dark:text-white uppercase tracking-wider">
+            <div className="border-2 border-slate-200 dark:border-[#3F4147] rounded-2xl overflow-hidden shadow-xs bg-white dark:bg-[#1E1F22]">
+              <div className="bg-slate-900 dark:bg-[#1E1F22] px-5 py-3 border-b border-slate-800 text-xs font-black text-white uppercase tracking-wider">
                 Pratinjau Neraca Saldo Setelah Penutupan (Post-Closing Trial Balance)
               </div>
               <div className="max-h-56 overflow-y-auto divide-y divide-slate-100 dark:divide-[#3F4147] text-xs">
-                {preview.postClosingTrialBalance.filter((r) => r.debit > 0 || r.kredit > 0).map((row) => (
-                  <div key={row.accountId} className="px-4 py-2 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-slate-400">{row.accountCode}</span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200">{row.accountName}</span>
+                {preview.postClosingTrialBalance
+                  .filter((r) => r.debit > 0 || r.kredit > 0)
+                  .map((row) => (
+                    <div key={row.accountId} className="px-5 py-2.5 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-[#383A40]">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono font-black text-[11px] text-slate-900 dark:text-white px-2 py-0.5 rounded bg-slate-100 dark:bg-[#2B2D31] border border-slate-300 dark:border-[#4E5058]">
+                          {row.accountCode}
+                        </span>
+                        <span className="font-bold text-slate-900 dark:text-white">{row.accountName}</span>
+                      </div>
+                      <div className="flex items-center gap-6 font-mono font-black tabular-nums">
+                        <span className="text-blue-700 dark:text-blue-400">
+                          {row.debit > 0 ? formatIDR(row.debit) : '-'}
+                        </span>
+                        <span className="text-indigo-700 dark:text-indigo-400">
+                          {row.kredit > 0 ? formatIDR(row.kredit) : '-'}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-6 font-mono font-bold tabular-nums">
-                      <span>{row.debit > 0 ? formatIDR(row.debit) : '-'}</span>
-                      <span>{row.kredit > 0 ? formatIDR(row.kredit) : '-'}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
 
@@ -288,7 +324,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#3F4147] text-slate-700 dark:text-slate-200 dark:text-slate-200 text-xs font-black"
+                className="px-5 py-2.5 rounded-xl border border-slate-300 dark:border-[#3F4147] text-slate-800 dark:text-slate-200 text-xs font-black hover:bg-slate-100 dark:hover:bg-[#2B2D31] transition-colors"
               >
                 Kembali
               </button>
@@ -307,7 +343,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
         {/* Step 3: Certificate of Closing */}
         {step === 3 && certData && (
           <div className="space-y-6 text-center py-4 print:fixed print:inset-0 print:bg-white print:z-[9999] print:p-12 print:flex print:flex-col print:items-center print:justify-center print:h-screen">
-            <div className="inline-flex p-4 rounded-3xl bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400">
+            <div className="inline-flex p-4 rounded-3xl bg-emerald-100 dark:bg-emerald-950/60 border-2 border-emerald-300 dark:border-emerald-700 text-emerald-700 dark:text-emerald-400">
               <Award className="w-12 h-12" />
             </div>
 
@@ -315,33 +351,39 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <h3 className="text-xl font-black text-slate-900 dark:text-white">
                 Sertifikat Penutupan Buku Fiskal Resmi
               </h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1] mt-1 font-mono">
+              <p className="text-xs text-slate-700 dark:text-slate-300 mt-1 font-mono font-bold">
                 No. Sertifikasi: {certData.certificateNumber}
               </p>
             </div>
 
-            <div className="max-w-md mx-auto p-5 rounded-2xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200 dark:border-[#3F4147] text-left text-xs space-y-2.5">
-              <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Periode Buku:</span>
-                <span className="font-black text-slate-800 dark:text-white">{certData.periodMonth}</span>
+            <div className="max-w-md mx-auto p-5 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border-2 border-slate-200 dark:border-[#3F4147] text-left text-xs space-y-3 shadow-xs">
+              <div className="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span className="text-slate-600 dark:text-slate-400 font-bold">Periode Buku:</span>
+                <span className="font-black text-slate-900 dark:text-white font-mono">{certData.periodMonth}</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Laba / (Rugi) Bersih Ditransfer:</span>
-                <span className={`font-black tabular-nums ${certData.netIncome >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>
+              <div className="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span className="text-slate-600 dark:text-slate-400 font-bold">Laba / (Rugi) Bersih Ditransfer:</span>
+                <span
+                  className={`font-black font-mono tabular-nums ${
+                    certData.netIncome >= 0 ? 'text-emerald-700 dark:text-emerald-400' : 'text-rose-700 dark:text-rose-400'
+                  }`}
+                >
                   {formatIDR(certData.netIncome)}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Status Akun Nominal:</span>
-                <span className="font-bold text-slate-800 dark:text-white">Saldo 0.00 (Nol)</span>
+              <div className="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span className="text-slate-600 dark:text-slate-400 font-bold">Status Akun Nominal:</span>
+                <span className="font-black text-slate-900 dark:text-white">Saldo 0.00 (Nol Bersih)</span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Otorisasi Oleh:</span>
-                <span className="font-bold text-slate-800 dark:text-white">{currentUser.name} (Role: {currentUser.role.toUpperCase()})</span>
+              <div className="flex justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+                <span className="text-slate-600 dark:text-slate-400 font-bold">Otorisasi Oleh:</span>
+                <span className="font-bold text-slate-900 dark:text-white">
+                  {currentUser.name} (Role: {currentUser.role.toUpperCase()})
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500 dark:text-[#B5BAC1] dark:text-[#B5BAC1]">Tanggal Kunci:</span>
-                <span className="font-bold text-slate-800 dark:text-white">{certData.closedAt}</span>
+              <div className="flex justify-between pt-0.5">
+                <span className="text-slate-600 dark:text-slate-400 font-bold">Tanggal Kunci:</span>
+                <span className="font-bold text-slate-900 dark:text-white">{certData.closedAt}</span>
               </div>
             </div>
 
@@ -349,7 +391,7 @@ export const PeriodClosingModal: React.FC<PeriodClosingModalProps> = ({
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="px-4 py-2.5 rounded-xl border border-slate-200 dark:border-[#3F4147] text-slate-700 dark:text-slate-200 dark:text-slate-200 text-xs font-black flex items-center gap-2 hover:bg-slate-50 dark:hover:bg-[#383A40]"
+                className="px-4 py-2.5 rounded-xl border border-slate-300 dark:border-[#3F4147] text-slate-800 dark:text-slate-200 text-xs font-black flex items-center gap-2 hover:bg-slate-100 dark:hover:bg-[#383A40]"
               >
                 <Printer className="w-4 h-4" />
                 <span>Cetak Sertifikat Penutupan</span>

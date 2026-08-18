@@ -110,7 +110,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
         {/* 3 Pillars of Cost */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Direct Materials */}
-          <div className="p-4 rounded-2xl bg-slate-50 dark:bg-[#2B2D31] border border-slate-200/80 dark:border-[#3F4147] space-y-3">
+          <div className="p-4 rounded-2xl bg-white dark:bg-[#2B2D31] border-2 border-slate-200 dark:border-[#3F4147] shadow-xs space-y-3">
             <div className="flex items-center gap-2">
               <div className="p-2 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
                 <Package className="w-4 h-4" />
@@ -119,7 +119,7 @@ export const JobOrderCostingModal: React.FC<JobOrderCostingModalProps> = ({
                 <h4 className="text-xs font-black text-slate-800 dark:text-white uppercase">
                   1. Bahan Baku Langsung
                 </h4>
-                <span className="text-[10px] text-slate-400 font-mono">Direct Materials (DM)</span>
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-400 font-mono">Direct Materials (DM)</span>
               </div>
             </div>
             <div className="space-y-1.5 text-xs">
