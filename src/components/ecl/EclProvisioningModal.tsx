@@ -98,7 +98,7 @@ export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
               <div key={idx} className="p-4 grid grid-cols-12 items-center hover:bg-slate-50 dark:hover:bg-[#383A40] transition-colors">
                 <div className="col-span-4">
                   <div className="font-bold text-slate-800 dark:text-slate-200">{b.stage}</div>
-                  <div className="text-[10px] text-slate-400 font-mono mt-0.5">
+                  <div className="text-xs font-bold text-slate-700 dark:text-slate-300 font-mono mt-0.5">
                     Rentang Hari: {b.dayRange} • {b.invoiceCount} Faktur
                   </div>
                 </div>
@@ -111,7 +111,7 @@ export const EclProvisioningModal: React.FC<EclProvisioningModalProps> = ({
                   {b.probabilityOfDefaultPct}%
                 </div>
 
-                <div className="col-span-2 text-right font-mono text-slate-500 tabular-nums">
+                <div className="col-span-2 text-right font-mono text-slate-800 dark:text-slate-200 font-bold tabular-nums">
                   {b.lossGivenDefaultPct}%
                 </div>
 

@@ -133,7 +133,7 @@ export const ForexStudioModal: React.FC<ForexStudioModalProps> = ({
               <div key={exp.id} className="px-4 py-3 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-[#383A40]">
                 <div>
                   <div className="font-bold text-slate-800 dark:text-slate-200">{exp.contactName}</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5 font-mono">
+                  <div className="text-xs font-semibold text-slate-700 dark:text-slate-300 mt-0.5 font-mono">
                     Nominal: {exp.currency} {exp.foreignAmount.toLocaleString()} • Nilai Buku: {formatIDR(exp.bookValueIDR)}
                   </div>
                 </div>
