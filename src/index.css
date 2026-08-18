@@ -155,26 +155,69 @@
   background: rgba(100, 116, 139, 0.7);
 }
 
-/* Print / PDF Styles for Financial Reports & Invoices */
+/* Print / PDF Styles for Financial Reports, Invoices & Thermal Receipts */
 @media print {
   body {
     background: #ffffff !important;
     color: #000000 !important;
+    font-size: 12px !important;
   }
+
+  /* Hide all app chrome, headers, sidebars, navigation, modals backdrop & buttons */
   .no-print,
   .glass-header,
   .glass-sidebar,
-  .fixed.inset-0 {
+  header,
+  nav,
+  aside,
+  button,
+  .fixed.inset-0 > div:first-child {
     display: none !important;
   }
-  .print-only {
+
+  /* Ensure modal viewport expands for print */
+  .fixed.inset-0 {
+    position: static !important;
     display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    z-index: auto !important;
   }
+
   .glass-card {
     background: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
+    border: none !important;
     box-shadow: none !important;
     backdrop-filter: none !important;
+    max-height: none !important;
+    padding: 0 !important;
+  }
+
+  /* High-Precision Thermal Receipt Standard (58mm / 80mm roll width) */
+  .thermal-receipt-printable {
+    display: block !important;
+    width: 78mm !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10px 8px !important;
+    border: 1px dashed #000000 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid !important;
+  }
+
+  .thermal-receipt-printable * {
+    color: #000000 !important;
+    background: transparent !important;
+    border-color: #000000 !important;
   }
 }
 
