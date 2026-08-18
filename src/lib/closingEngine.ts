@@ -36,7 +36,9 @@ export const generateClosingEntries = (
   accounts.forEach((acc) => accountTotals.set(acc.id, new Decimal(0)));
 
   const startPeriod = `${periodMonth}-01`;
-  const endPeriod = `${periodMonth}-31`;
+  const [yearStr, monthStr] = periodMonth.split('-');
+  const lastDay = new Date(parseInt(yearStr, 10), parseInt(monthStr, 10), 0).getDate();
+  const endPeriod = `${periodMonth}-${lastDay.toString().padStart(2, '0')}`;
 
   journalEntries.forEach((entry) => {
     if (entry.date < startPeriod || entry.date > endPeriod || entry.isVoided) return;

@@ -34,11 +34,8 @@ export const round2 = (val: number | string): number => {
   return new Decimal(val).toDecimalPlaces(2, Decimal.ROUND_HALF_UP).toNumber();
 };
 
-/**
- * Validates that sum of Debits strictly equals sum of Credits
- */
 export const validateJournalBalance = (
-  lines: { debit: number; kredit: number; [key: string]: any }[]
+  lines: ({ debit?: number; kredit?: number } | JournalLine)[]
 ): {
   isBalanced: boolean;
   totalDebit: number;
@@ -333,9 +330,7 @@ export const generateBalanceSheet = (
 
   const totalAssetsDec = totalCurrentAssets.plus(totalNonCurrentAssets);
   const totalLiabilitiesDec = totalCurrentLiabilities.plus(totalNonCurrentLiabilities);
-  // If closing entries exist for this period, net income is already in retained earnings
-  const hasClosingEntries = journalEntries.some(j => j.sourceType === 'closing_entry' && j.date <= asOfDate && !j.isVoided);
-  const totalEquityDec = hasClosingEntries ? totalBaseEquity : totalBaseEquity.plus(currentPeriodNetIncomeDec);
+  const totalEquityDec = totalBaseEquity.plus(currentPeriodNetIncomeDec);
   const totalLiabilitiesAndEquityDec = totalLiabilitiesDec.plus(totalEquityDec);
 
   const discrepancyDec = totalAssetsDec.minus(totalLiabilitiesAndEquityDec).abs();
