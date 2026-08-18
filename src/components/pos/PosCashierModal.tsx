@@ -210,7 +210,7 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
 
       <div className="relative w-full max-w-5xl glass-card bg-white dark:bg-[#2B2D31] rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden z-10 my-4 flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-[#1E1F22]">
+        <div className="print-hide p-4 sm:p-5 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-[#1E1F22]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/30">
               <ShoppingCart className="w-5 h-5" />
@@ -241,69 +241,102 @@ export const PosCashierModal: React.FC<PosCashierModalProps> = ({
 
         {/* Modal Body */}
         {isSuccessReceipt && completedInvoiceData ? (
-          <div className="p-8 text-center space-y-6 max-w-md mx-auto overflow-y-auto">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto shadow-inner">
-              <CheckCircle2 className="w-10 h-10" />
-            </div>
-            <div>
-              <h3 className="text-xl font-black text-slate-900 dark:text-white">
-                Transaksi Kasir Berhasil Dicatat!
-              </h3>
-              <p className="text-xs text-slate-500 dark:text-[#B5BAC1] mt-1">
-                Jurnal umum berpasangan otomatis terbentuk dan stok barang telah dikurangi.
-              </p>
+          <div className="p-4 sm:p-8 text-center space-y-5 max-w-md mx-auto overflow-y-auto w-full">
+            <div className="print-hide space-y-3">
+              <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-inner">
+                <CheckCircle2 className="w-8 h-8" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-slate-900 dark:text-white">
+                  Transaksi Kasir Berhasil Dicatat!
+                </h3>
+                <p className="text-xs text-slate-500 dark:text-[#B5BAC1]">
+                  Jurnal umum berpasangan otomatis terbentuk dan stok barang telah dikurangi.
+                </p>
+              </div>
             </div>
 
-            {/* Thermal Receipt & QRIS Preview */}
-            <div className="p-5 rounded-2xl bg-slate-50 dark:bg-[#1E1F22] border border-dashed border-slate-300 dark:border-[#3F4147] font-mono text-xs text-left space-y-2 text-slate-800 dark:text-slate-200 shadow-sm">
-              <div className="text-center font-bold pb-2 border-b border-dashed border-slate-300 dark:border-[#3F4147]">
-                <span className="text-sm font-black tracking-tight text-slate-900 dark:text-white">TOKO SEJAHTERA RETAIL</span>
-                <br />
-                <span className="text-[10px] text-slate-400 font-normal">Struk Transaksi Kasir POS • {completedInvoiceData.date}</span>
-              </div>
-              {completedInvoiceData.items.map((it: CartItem, idx: number) => (
-                <div key={idx} className="flex justify-between text-[11px]">
-                  <span className="truncate pr-2">
-                    {it.product.name} x{it.qty}
-                  </span>
-                  <span className="tabular-nums font-bold shrink-0">{formatIDR(it.qty * it.unitPrice)}</span>
+            {/* Thermal Receipt 78mm Standard Container */}
+            <div className="thermal-receipt-printable p-4 rounded-2xl bg-white dark:bg-[#1E1F22] border-2 border-dashed border-slate-300 dark:border-[#4E5058] font-mono text-xs text-left space-y-2 text-slate-900 dark:text-slate-100 shadow-sm mx-auto">
+              <div className="text-center pb-2 border-b border-dashed border-slate-400 dark:border-slate-600 space-y-0.5">
+                <div className="text-sm font-black tracking-tight text-slate-950 dark:text-white uppercase">
+                  TOKO KELONTONG SEJAHTERA UTAMA
                 </div>
-              ))}
-              <div className="pt-2 border-t border-dashed border-slate-300 dark:border-[#3F4147] space-y-1 text-[11px] font-bold">
-                <div className="flex justify-between text-slate-600 dark:text-[#B5BAC1]">
+                <div className="text-[10px] text-slate-600 dark:text-slate-300 font-bold">
+                  Jl. Jenderal Sudirman No. 88, Jakarta Pusat
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                  NPWP: 01.234.567.8-012.000 • Telp: 021-5558899
+                </div>
+                <div className="text-[10px] text-slate-600 dark:text-slate-300 pt-1 font-bold">
+                  Waktu: {completedInvoiceData.date}
+                </div>
+              </div>
+
+              {/* Items List */}
+              <div className="space-y-1.5 py-1">
+                {completedInvoiceData.items.map((it: CartItem, idx: number) => (
+                  <div key={idx} className="space-y-0.5">
+                    <div className="font-bold text-slate-900 dark:text-white truncate">
+                      {it.product.name}
+                    </div>
+                    <div className="flex justify-between text-[11px] text-slate-700 dark:text-slate-300 pl-2">
+                      <span>{it.qty} x {formatIDR(it.unitPrice)}</span>
+                      <span className="font-bold font-mono tabular-nums text-slate-950 dark:text-white">
+                        {formatIDR(it.qty * it.unitPrice)}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Total & Payment Details */}
+              <div className="pt-2 border-t border-dashed border-slate-400 dark:border-slate-600 space-y-1 text-[11px]">
+                <div className="flex justify-between text-slate-700 dark:text-slate-300 font-medium">
                   <span>Subtotal:</span>
-                  <span className="tabular-nums">{formatIDR(completedInvoiceData.subtotal)}</span>
+                  <span className="font-mono tabular-nums font-bold">{formatIDR(completedInvoiceData.subtotal)}</span>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-[#B5BAC1]">
+                <div className="flex justify-between text-slate-700 dark:text-slate-300 font-medium">
                   <span>PPN 11%:</span>
-                  <span className="tabular-nums">{formatIDR(completedInvoiceData.taxAmount)}</span>
+                  <span className="font-mono tabular-nums font-bold">{formatIDR(completedInvoiceData.taxAmount)}</span>
                 </div>
-                <div className="flex justify-between text-sm font-black text-slate-900 dark:text-white pt-1">
-                  <span>TOTAL PEMBAYARAN:</span>
-                  <span className="tabular-nums text-blue-600 dark:text-blue-400">{formatIDR(completedInvoiceData.grandTotal)}</span>
+                <div className="flex justify-between text-sm font-black text-slate-950 dark:text-white pt-1 border-t border-slate-300 dark:border-slate-700">
+                  <span>TOTAL BELANJA:</span>
+                  <span className="font-mono tabular-nums text-blue-700 dark:text-blue-400">
+                    {formatIDR(completedInvoiceData.grandTotal)}
+                  </span>
                 </div>
-                <div className="flex justify-between text-slate-600 dark:text-[#B5BAC1] pt-1">
+                <div className="flex justify-between text-slate-700 dark:text-slate-300 pt-1 font-medium">
                   <span>Tunai Diterima:</span>
-                  <span className="tabular-nums">{formatIDR(completedInvoiceData.cashTendered)}</span>
+                  <span className="font-mono tabular-nums font-bold">{formatIDR(completedInvoiceData.cashTendered)}</span>
                 </div>
-                <div className="flex justify-between text-emerald-600 dark:text-emerald-400 font-black">
+                <div className="flex justify-between text-emerald-700 dark:text-emerald-400 font-black">
                   <span>Kembalian (Bulat Rp 100):</span>
-                  <span className="tabular-nums">{formatIDR(completedInvoiceData.roundedChange)}</span>
+                  <span className="font-mono tabular-nums">{formatIDR(completedInvoiceData.roundedChange)}</span>
                 </div>
+              </div>
+
+              {/* Footer Note */}
+              <div className="text-center text-[10px] text-slate-500 dark:text-slate-400 pt-2 border-t border-dashed border-slate-400 dark:border-slate-600 space-y-0.5">
+                <div>Terima Kasih Atas Kunjungan Anda</div>
+                <div>Barang yang sudah dibeli tidak dapat ditukar</div>
+                <div className="font-bold">Layanan Konsumen: 0812-8888-9999</div>
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-3">
+            <div className="print-hide flex items-center justify-center gap-3 pt-2">
               <button
+                type="button"
                 onClick={() => window.print()}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold shadow-sm transition-all"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 dark:bg-slate-700 hover:bg-slate-800 text-white text-xs font-black shadow-md transition-all"
               >
                 <Printer className="w-4 h-4" />
-                <span>Cetak Struk Thermal</span>
+                <span>Cetak Struk Thermal (78mm)</span>
               </button>
               <button
+                type="button"
                 onClick={() => setIsSuccessReceipt(false)}
-                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-md shadow-blue-600/25 transition-all"
+                className="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-md shadow-blue-600/25 transition-all"
               >
                 Transaksi Baru (F4)
               </button>
